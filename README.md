@@ -76,4 +76,4 @@ In order to access the TwentyThree API, the package needs to be configured with 
 *Example view of the property editor.*
 
 ![image](https://user-images.githubusercontent.com/3634580/190514237-60cc32d0-5467-4adf-9688-9491b63ba754.png)
-*Overlay for picking videos from the configured accounts(s).*
+*Overlay for picking videos from the configured account(s).*
