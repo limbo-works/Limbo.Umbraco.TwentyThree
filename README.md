@@ -67,3 +67,13 @@ In order to access the TwentyThree API, the package needs to be configured with 
 **AccessToken** an OAuth 1.0a consumer key obtained from the TwentyThree management portal.
 
 **AccessTokenSecret** an OAuth 1.0a consumer key obtained from the TwentyThree management portal.
+
+
+<br /><br />
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/3634580/190511380-6f3a9338-9ee6-4e66-9f52-adbeb32c898b.png)
+*Example view of the property editor.*
+
+![image](https://user-images.githubusercontent.com/3634580/190514237-60cc32d0-5467-4adf-9688-9491b63ba754.png)
+*Overlay for picking videos from the configured accounts(s).*
