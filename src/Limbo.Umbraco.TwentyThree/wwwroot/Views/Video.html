@@ -1,0 +1,166 @@
+﻿<div class="limbo-twentythree-video" ng-controller="Limbo.Umbraco.TwentyThree.Video as vm" ng-class="{loading: vm.loading}">
+
+
+    <div class="--input">
+        <h5>{{vm.labels.urlOrEmbedCode}}</h5>
+        <div ng-show="!vm.embed">
+            <input type="text" ng-model="model.value.source" ng-change="vm.updated()" placeholder="twentyThree_urlPlaceholder" localize="placeholder" />
+        </div>
+        <div ng-show="vm.embed">
+            <textarea ng-model="model.value.source" ng-change="vm.updated()" rows="5" placeholder="twentyThree_embedPlaceholder" localize="placeholder"></textarea>
+        </div>
+        <div>
+            <button type="button" ng-click="vm.addVideo()">{{vm.labels.addVideo}}</button>
+            <button type="button" ng-click="vm.refreshVideo()" ng-if="vm.video">{{vm.labels.refreshVideo}}</button>
+        </div>
+    </div>
+
+
+    <div class="--details" ng-if="model.value.video">
+        <div class="--video">
+            <h5>Video</h5>
+            <div class="--box">
+                <div class="--thumbnail">
+                    <img ng-src="{{vm.thumbnail.url}}" width="270" height="153" />
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>
+                                <localize key="twentythree_id">ID</localize>
+                            </th>
+                            <td><code>{{vm.videoId}}</code></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <localize key="twentythree_title">Title</localize>
+                            </th>
+                            <td>{{vm.title}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <localize key="twentythree_duration">Duration</localize>
+                            </th>
+                            <td>
+                                <limbo-video-duration value="vm.duration"></limbo-video-duration>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="--site" ng-if="vm.showSite">
+            <h5>Site</h5>
+            <div class="--box">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <td>
+                            <code>{{model.value.site.id}}</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>
+                            {{model.value.site.name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Domain</th>
+                        <td>
+                            {{model.value.site.secureDomain}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="--player" ng-if="vm.showPlayer">
+            <h5>Player</h5>
+            <umb-node-preview single="true"
+                              icon="'icon-application-window-alt'"
+                              name="model.value.player.name"
+                              description="model.value.player.description"
+                              allow-change="true"
+                              on-change="vm.selectPlayer()">
+            </umb-node-preview>
+        </div>
+        <div class="--embed" ng-if="vm.showEmbed">
+            <h5>Embed</h5>
+            <div class="--box">
+                <table>
+                    <tr>
+                        <th>
+                            Player<br />
+                            <small>Select the player to be used when the video is embedded.</small>
+                        </th>
+                        <td>
+                            <umb-node-preview single="true"
+                                              icon="'icon-application-window-alt'"
+                                              name="model.value.player.name"
+                                              description="model.value.player.description"
+                                              allow-change="true"
+                                              on-change="vm.selectPlayer()">
+                            </umb-node-preview>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Autoplay<br />
+                            <small>Select whether the video should automatically start playing.</small>
+                        </th>
+                        <td>
+                            <div class="--button-list" ng-if="model.config.autoplay === 'inherit'">
+                                <button type="button"
+                                        ng-repeat="o in vm.autoplay"
+                                        ng-class="{'--active': o.alias == model.value.embed.autoplay}"
+                                        ng-click="vm.setAutoplay(o)">
+                                    {{o.label}}
+                                </button>
+                            </div>
+                            <div ng-if="model.config.autoplay !== 'inherit'">
+                                <umb-node-preview single="true"
+                                                  name="vm.currentAutoplay.label"
+                                                  description="vm.labels.overridden">
+                                </umb-node-preview>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            When video ends<br />
+                            <small>Select whap happens when the video ends.</small>
+                        </th>
+                        <td>
+                            <div class="--button-list" ng-if="model.config.endOn === 'inherit'">
+                                <button type="button"
+                                        ng-repeat="o in vm.endOn"
+                                        ng-class="{'--active': o.alias == model.value.embed.endOn}"
+                                        ng-click="vm.setEndOn(o)">
+                                    {{o.label}}
+                                </button>
+                            </div>
+                            <div ng-if="model.config.endOn !== 'inherit'">
+                                <umb-node-preview single="true"
+                                                  name="vm.currentEndOn.label"
+                                                  description="vm.labels.overridden">
+                                </umb-node-preview>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <pre>{{model.value | json}}</pre>
+    <pre>{{vm | json}}</pre>
+
+
+
+
+
+    <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+
+</div>

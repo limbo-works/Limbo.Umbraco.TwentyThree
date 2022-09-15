@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<language alias="en" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
+  <area alias="twentyThree">
+    <key alias="videoId">ID</key>
+    <key alias="title">Title</key>
+    <key alias="duration">Duration</key>
+    <key alias="urlPlaceholder">Enter the URL of the video here...</key>
+    <key alias="urlEmbedPlaceholder">Enter the URL or embed code of the video here...</key>
+  </area>
+</language>

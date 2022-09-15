@@ -1,0 +1,323 @@
+﻿@twentythree: #1ec95b;
+
+.icon-limbo-twentythree-alt {
+    svg {
+        g {
+            fill: @twentythree;
+        }
+    }
+}
+
+.limbo-twentythree-video {
+
+    input {
+        width: 100%;
+        flex: 1;
+            max-width: 800px;
+    }
+    
+    textarea {
+        width: 100%;
+        flex: 1;
+        min-height: 110px;
+        resize: vertical;
+            max-width: 800px;
+    }
+    
+    .--input {
+        button {
+            margin-top: 2px;
+            border: 0;
+            background: none;
+            padding: 0;
+            font-size: 12px;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        button + button {
+            margin-left: 10px;
+        }
+        h5 {
+            margin: 0 0 3px 0;
+        }
+    }
+
+    .--details {
+        margin-top: 10px;
+                img {
+            margin-right: 10px;
+        }
+        h5 {
+            margin: 15px 0 3px 0;
+        }
+        table {
+            background: none;
+            th {
+                text-align: left;
+                padding-right: 25px;
+            }
+            th, td {
+                font-size: 14px;
+                vertical-align: top;
+            }
+            tr + tr {
+                th, td {
+                    padding-top: 4px;
+                }
+            }
+        }
+
+    }
+
+    .--box {
+        display: flex;
+        border: 1px solid #e9e9eb;
+        border-radius: 3px;
+        padding: 12px 15px;
+        max-width: 800px;
+        box-sizing: border-box;
+    }
+
+    .--button-list {
+        display: flex;
+        flex-wrap: wrap;
+        > button {
+            appearance: none;
+            display: inline-block;
+            -webkit-appearance: none;
+            border: 0;
+            font-weight: bold;
+            color: #1A2650;
+            line-height: 1;
+            background-color: rgba(216,215,217, .5);
+            font-size: 13px;
+            margin: 0 7px 7px 0;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: all .2s ease;
+            position: relative;
+            cursor: pointer;        
+            &:hover {
+                background-color: rgba(216,215,217, .3);
+                color: #2152a3;
+            }        
+            &.--active {
+                background-color: #F5C1BC;
+                color: #1A2650;
+            }
+        }
+        > button + button {
+            margin-left: 5px;
+        }    
+    }
+
+    .--site, .--embed {        
+        table {
+            width: 100%;
+            margin-bottom: 0;
+            tr + tr {
+                th, td {
+                    padding-top: 20px;
+                }
+            }
+            th {
+                width: 250px;
+                max-width: 250px;
+                small {
+                    font-weight: normal;
+                    font-size: 12px;
+                    line-height: 14px;
+                }
+            }
+        }
+    }
+
+    &.loading {
+        .--details {
+            opacity: 0.5;
+        }
+    }
+    
+    pre {
+        display: none;
+        ffont-size: 10px;
+        fline-height: 12px;
+    }
+
+}
+
+
+.limbo-twentythree-video-overlay {
+    
+    .umb-card-grid-item {
+        .--thumbnail {
+            margin-bottom: 7px;
+            background: #efefef;
+        }
+        .--title {
+            font-weight: bold;
+        }
+        .--duration {
+            font-size: 12px;
+        }
+
+    }
+
+    .--video-list {
+
+        .umb-card-grid {
+            gap: 10px 10px;
+            display: flex;
+            flex-wrap: wrap !important;
+            width: initial;
+            justify-content: space-evenly;
+            flex-flow: initial;
+
+            li {
+                width: 290px;
+                min-width: 290px;
+                max-width: 290px;
+            }
+
+        }
+        
+        .umb-card-grid-item {
+
+            padding: 10px !important;
+            background: #fff;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px 0 rgb(0 0 0 / 16%);
+
+            &:hover {
+                &:before {
+                    border: 2px solid #3544b1;
+                    border-radius: 5px;
+                    bottom: -2px;
+                    box-shadow: 0 0 4px 0 #1d2663, inset 0 0 2px 0 #1d2663;
+                    content: "";
+                    left: -2px;
+                    pointer-events: none;
+                    position: absolute;
+                    right: -2px;
+                    top: -2px;
+                    z-index: 2;
+                }
+            }
+
+        }
+    
+    }
+    
+    .--accounts {
+        button {
+            div {
+                line-height: 16px;
+            }
+        }
+    }
+
+    .--details {
+        margin: 0 auto;
+        width: 270px;
+    }
+
+    .umb-editor-header-content {
+        height: 69px;
+        display: flex;
+        align-items: center;
+        > div + div {
+            margin-right: 20px;
+        }
+        input {
+            &:focus {
+                width: 1200px;
+                max-width: 800px;
+            }
+        }
+    }
+
+    .umb-panel-header-name {
+        flex: 1;
+    }
+
+    &.loading {
+        .umb-panel-body {
+            opacity: 0.5;
+        }
+    }
+
+    .pagination {
+    
+        margin: 0;
+
+        ul {
+            background: 0;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0);
+        }
+
+        &.pagination-right {
+            > *:first-child {
+                margin-left: auto;
+            }
+        }
+    
+        ul > li > button,
+        ul > li > span {
+            padding: 0 4px;
+            color: #b0b0b0;
+            background: 0;
+            border: 0;
+        }
+
+        ul > li.active > button,
+        ul > li > button:hover {
+            color: #000;
+        }
+
+        ul > li.disabled > button,
+        ul > li.disabled > button:hover {
+            color: #d9d9d9;
+        }
+
+    }
+
+}
+
+.limbo-twentythree-button-list {
+    display: flex;
+    flex-wrap: wrap;
+    > button {
+        appearance: none;
+        display: inline-block;
+        -webkit-appearance: none;
+        border: 0;
+        font-weight: bold;
+        color: #1A2650;
+        line-height: 1;
+        background-color: rgba(216,215,217, .5);
+        font-size: 13px;
+        margin: 0 7px 7px 0;
+        padding: 10px 20px;
+        border-radius: 4px;
+        transition: all .2s ease;
+        position: relative;
+        cursor: pointer;        
+        &:hover {
+            background-color: rgba(216,215,217, .3);
+            color: #2152a3;
+        }        
+        &.--active {
+            background-color: #F5C1BC;
+            color: #1A2650;
+        }
+    }
+    > button + button {
+        margin-left: 5px;
+    }
+}

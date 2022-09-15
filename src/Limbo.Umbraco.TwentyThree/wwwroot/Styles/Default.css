@@ -1,0 +1,255 @@
+﻿.icon-limbo-twentythree-alt svg g {
+  fill: #1ec95b;
+}
+.limbo-twentythree-video input {
+  width: 100%;
+  flex: 1;
+  max-width: 800px;
+}
+.limbo-twentythree-video textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 110px;
+  resize: vertical;
+  max-width: 800px;
+}
+.limbo-twentythree-video .--input button {
+  margin-top: 2px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+}
+.limbo-twentythree-video .--input button:hover {
+  text-decoration: underline;
+}
+.limbo-twentythree-video .--input button + button {
+  margin-left: 10px;
+}
+.limbo-twentythree-video .--input h5 {
+  margin: 0 0 3px 0;
+}
+.limbo-twentythree-video .--details {
+  margin-top: 10px;
+}
+.limbo-twentythree-video .--details img {
+  margin-right: 10px;
+}
+.limbo-twentythree-video .--details h5 {
+  margin: 15px 0 3px 0;
+}
+.limbo-twentythree-video .--details table {
+  background: none;
+}
+.limbo-twentythree-video .--details table th {
+  text-align: left;
+  padding-right: 25px;
+}
+.limbo-twentythree-video .--details table th,
+.limbo-twentythree-video .--details table td {
+  font-size: 14px;
+  vertical-align: top;
+}
+.limbo-twentythree-video .--details table tr + tr th,
+.limbo-twentythree-video .--details table tr + tr td {
+  padding-top: 4px;
+}
+.limbo-twentythree-video .--box {
+  display: flex;
+  border: 1px solid #e9e9eb;
+  border-radius: 3px;
+  padding: 12px 15px;
+  max-width: 800px;
+  box-sizing: border-box;
+}
+.limbo-twentythree-video .--button-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.limbo-twentythree-video .--button-list > button {
+  appearance: none;
+  display: inline-block;
+  -webkit-appearance: none;
+  border: 0;
+  font-weight: bold;
+  color: #1A2650;
+  line-height: 1;
+  background-color: rgba(216, 215, 217, 0.5);
+  font-size: 13px;
+  margin: 0 7px 7px 0;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+.limbo-twentythree-video .--button-list > button:hover {
+  background-color: rgba(216, 215, 217, 0.3);
+  color: #2152a3;
+}
+.limbo-twentythree-video .--button-list > button.--active {
+  background-color: #F5C1BC;
+  color: #1A2650;
+}
+.limbo-twentythree-video .--button-list > button + button {
+  margin-left: 5px;
+}
+.limbo-twentythree-video .--site table,
+.limbo-twentythree-video .--embed table {
+  width: 100%;
+  margin-bottom: 0;
+}
+.limbo-twentythree-video .--site table tr + tr th,
+.limbo-twentythree-video .--embed table tr + tr th,
+.limbo-twentythree-video .--site table tr + tr td,
+.limbo-twentythree-video .--embed table tr + tr td {
+  padding-top: 20px;
+}
+.limbo-twentythree-video .--site table th,
+.limbo-twentythree-video .--embed table th {
+  width: 250px;
+  max-width: 250px;
+}
+.limbo-twentythree-video .--site table th small,
+.limbo-twentythree-video .--embed table th small {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+.limbo-twentythree-video.loading .--details {
+  opacity: 0.5;
+}
+.limbo-twentythree-video pre {
+  display: none;
+  ffont-size: 10px;
+  fline-height: 12px;
+}
+.limbo-twentythree-video-overlay .umb-card-grid-item .--thumbnail {
+  margin-bottom: 7px;
+  background: #efefef;
+}
+.limbo-twentythree-video-overlay .umb-card-grid-item .--title {
+  font-weight: bold;
+}
+.limbo-twentythree-video-overlay .umb-card-grid-item .--duration {
+  font-size: 12px;
+}
+.limbo-twentythree-video-overlay .--video-list .umb-card-grid {
+  gap: 10px 10px;
+  display: flex;
+  flex-wrap: wrap !important;
+  width: initial;
+  justify-content: space-evenly;
+  flex-flow: initial;
+}
+.limbo-twentythree-video-overlay .--video-list .umb-card-grid li {
+  width: 290px;
+  min-width: 290px;
+  max-width: 290px;
+}
+.limbo-twentythree-video-overlay .--video-list .umb-card-grid-item {
+  padding: 10px !important;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16);
+}
+.limbo-twentythree-video-overlay .--video-list .umb-card-grid-item:hover:before {
+  border: 2px solid #3544b1;
+  border-radius: 5px;
+  bottom: -2px;
+  box-shadow: 0 0 4px 0 #1d2663, inset 0 0 2px 0 #1d2663;
+  content: "";
+  left: -2px;
+  pointer-events: none;
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  z-index: 2;
+}
+.limbo-twentythree-video-overlay .--accounts button div {
+  line-height: 16px;
+}
+.limbo-twentythree-video-overlay .--details {
+  margin: 0 auto;
+  width: 270px;
+}
+.limbo-twentythree-video-overlay .umb-editor-header-content {
+  height: 69px;
+  display: flex;
+  align-items: center;
+}
+.limbo-twentythree-video-overlay .umb-editor-header-content > div + div {
+  margin-right: 20px;
+}
+.limbo-twentythree-video-overlay .umb-editor-header-content input:focus {
+  width: 1200px;
+  max-width: 800px;
+}
+.limbo-twentythree-video-overlay .umb-panel-header-name {
+  flex: 1;
+}
+.limbo-twentythree-video-overlay.loading .umb-panel-body {
+  opacity: 0.5;
+}
+.limbo-twentythree-video-overlay .pagination {
+  margin: 0;
+}
+.limbo-twentythree-video-overlay .pagination ul {
+  background: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0);
+}
+.limbo-twentythree-video-overlay .pagination.pagination-right > *:first-child {
+  margin-left: auto;
+}
+.limbo-twentythree-video-overlay .pagination ul > li > button,
+.limbo-twentythree-video-overlay .pagination ul > li > span {
+  padding: 0 4px;
+  color: #b0b0b0;
+  background: 0;
+  border: 0;
+}
+.limbo-twentythree-video-overlay .pagination ul > li.active > button,
+.limbo-twentythree-video-overlay .pagination ul > li > button:hover {
+  color: #000;
+}
+.limbo-twentythree-video-overlay .pagination ul > li.disabled > button,
+.limbo-twentythree-video-overlay .pagination ul > li.disabled > button:hover {
+  color: #d9d9d9;
+}
+.limbo-twentythree-button-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.limbo-twentythree-button-list > button {
+  appearance: none;
+  display: inline-block;
+  -webkit-appearance: none;
+  border: 0;
+  font-weight: bold;
+  color: #1A2650;
+  line-height: 1;
+  background-color: rgba(216, 215, 217, 0.5);
+  font-size: 13px;
+  margin: 0 7px 7px 0;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+.limbo-twentythree-button-list > button:hover {
+  background-color: rgba(216, 215, 217, 0.3);
+  color: #2152a3;
+}
+.limbo-twentythree-button-list > button.--active {
+  background-color: #F5C1BC;
+  color: #1A2650;
+}
+.limbo-twentythree-button-list > button + button {
+  margin-left: 5px;
+}

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<language alias="en" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
+  <area alias="limboVideo">
+    <key alias="videoId">ID</key>
+    <key alias="title">Titel</key>
+    <key alias="duration">Længde</key>
+    <key alias="urlPlaceholder">Angiv videoens URL her...</key>
+    <key alias="urlEmbedPlaceholder">Angiv videoens URL eller embed-kode her...</key>
+  </area>
+</language>

@@ -1,0 +1,37 @@
+﻿<div class="limbo-twentythree-player-overlay" ng-controller="Limbo.Umbraco.TwentyThree.PlayerOverlay as vm" ng-class="{loading: model.loading || vm.loading}">
+    <umb-editor-view>
+        <umb-editor-header name="model.title"
+                           hide-icon="true"
+                           hide-alias="true"
+                           name-locked="true"
+                           hide-description="true">
+        </umb-editor-header>
+        <umb-editor-container>
+            <umb-box>
+                <umb-box-content>
+                    <ul class="umb-card-grid -three-in-row">
+                        <li ng-repeat="player in model.players" ">
+                            <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.select(player)">
+                                <span>
+                                    <umb-icon icon="icon-application-window-alt"></umb-icon>
+                                    <span>{{player.name}}</span>
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </umb-box-content>
+            </umb-box>
+        </umb-editor-container>
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button type="button"
+                            button-style="link"
+                            shortcut="esc"
+                            label-key="general_close"
+                            action="model.close()">
+                </umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+    </umb-editor-view>
+    <umb-load-indicator ng-if="model.loading || vm.loading"></umb-load-indicator>
+</div>
