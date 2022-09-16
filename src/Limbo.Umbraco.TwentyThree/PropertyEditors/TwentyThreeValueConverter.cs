@@ -21,7 +21,8 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         }
         
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview) {
-            return inter is JObject json ? new TwentyThreeValue(json) : null;
+            var config = (TwentyThreeConfiguration) propertyType.DataType.Configuration!;
+            return inter is JObject json ? new TwentyThreeValue(json, config) : null;
         }
 
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType) {

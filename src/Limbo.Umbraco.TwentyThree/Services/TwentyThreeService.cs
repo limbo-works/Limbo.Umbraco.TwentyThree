@@ -114,7 +114,7 @@ namespace Limbo.Umbraco.TwentyThree.Services {
                 string spotId = m3.Groups[3].Value;
                 string token = m2.Groups[4].Value;
 
-                options = new TwentyThreeSpotOptions(scheme, domain, spotId, token);
+                options = new TwentyThreeSpotOptions(source, scheme, domain, spotId, token);
 
                 return true;
 

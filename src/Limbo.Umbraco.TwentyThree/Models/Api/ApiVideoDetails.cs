@@ -12,6 +12,9 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
 
     public class ApiVideoDetails {
 
+        [JsonProperty("type")]
+        public string Type { get; }
+
         [JsonProperty("source")]
         public string? Source { get; }
 
@@ -20,9 +23,6 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
 
         [JsonProperty("parameters")]
         public ApiVideoParameters Parameters { get; }
-
-        [JsonProperty("type")]
-        public string Type { get; }
 
         [JsonProperty("video")]
         public JObject Video { get; }
@@ -34,10 +34,10 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
         public ApiSite Site { get; }
 
         public ApiVideoDetails(TwentyThreeVideoOptions options, TwentyThreeCredentials credentials, TwentyThreePhoto video, TwentyThreePlayer player, TwentyThreeSite site) {
+            Type = "video";
             Source = options.Source;
             Credentials = new ApiCredentials(credentials);
             Parameters = new ApiVideoParameters(video.PhotoId, options);
-            Type = "video";
             Video = video.JObject;
             Player = new ApiPlayer(player);
             Site = new ApiSite(site);

@@ -25,7 +25,9 @@
     vm.labels = {
         urlOrEmbedCode: "URL or embed code",
         addVideo: "Select a video",
+        addSpot: "Select a spot",
         refreshVideo: "Refresh current video",
+        refreshSpot: "Refresh current spot",
         overridden: "Overridden by data type."
     };
 
@@ -54,19 +56,40 @@
 
         $scope.model.value.site = item.site;
         $scope.model.value.credentials = item.credentials;
-        $scope.model.value.parameters = item.parameters;
-        $scope.model.value.video = { _data: angular.toJson(item.video) };
 
-        if (!$scope.model.value.player) {
-            $scope.model.value.player = item.player;
-        } else if (!refresh && item.parameters.playerId) {
-            $scope.model.value.player = item.player;
+        if (item.video) {
+
+            delete $scope.model.value.spot;
+
+            $scope.model.value.parameters = item.parameters;
+            $scope.model.value.video = { _data: angular.toJson(item.video) };
+
+            if (!$scope.model.value.player) {
+                $scope.model.value.player = item.player;
+            } else if (!refresh && item.parameters.playerId) {
+                $scope.model.value.player = item.player;
+            }
+
+            if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
+
+            // Keep the raw video data around for later
+            vm.video = item.video;
+
+        } else if (item.spot) {
+
+            delete $scope.model.value.parameters;
+            delete $scope.model.value.video;
+            delete $scope.model.value.player;
+            delete $scope.model.value.embed;
+
+            $scope.model.value.spot = { _data: angular.toJson(item.spot) };
+            $scope.model.value.thumbnails = item.thumbnails;
+
+            // Keep the raw data around for later
+            vm.spot = item.spot;
+            vm.thumbnails = item.thumbnails;
+
         }
-
-        if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
-
-        // Keep the raw video data around for later
-        vm.video = item.video;
 
         vm.loading = false;
         vm.update();
@@ -119,30 +142,40 @@
             }
         }
 
-        if (!vm.video) {
-            vm.videoId = null;
+        if (vm.video) {
+
+            vm.id = vm.video.photo_id;
+            vm.title = vm.video.title;
+            vm.thumbnails = twentyThreeService.getThumbnails(vm.video);
+            vm.thumbnail = vm.thumbnails.medium;
+
+            if (vm.config.autoplay !== "inherit") {
+                vm.currentAutoplay = vm.autoplay.find(x => x.alias === vm.config.autoplay);
+            } else {
+                vm.currentAutoplay = vm.autoplay.find(x => x.alias === $scope.model.value.embed.autoplay);
+            }
+
+            if (vm.config.endOn !== "inherit") {
+                vm.currentEndOn = vm.endOn.find(x => x.alias === vm.config.endOn);
+            } else {
+                vm.currentEndOn = vm.endOn.find(x => x.alias === $scope.model.value.embed.endOn);
+            }
+
+        } else if (vm.spot) {
+
+            vm.id = vm.spot.spot_id;
+            vm.title = vm.spot.spot_name;
+            vm.duration = null;
+            vm.thumbnail = vm.thumbnails?.find(x => x.alias === "medium");
+
+        } else {
+
+            vm.id = null;
             vm.title = null;
             vm.duration = null;
             vm.thumbnail = null;
             vm.thumbnails = null;
-            return;
-        }
 
-        vm.videoId = vm.video.photo_id;
-        vm.title = vm.video.title;
-        vm.thumbnail = twentyThreeService.getThumbnails(vm.video).medium;
-        vm.duration = vm.video.video_length;
-
-        if (vm.config.autoplay !== "inherit") {
-            vm.currentAutoplay = vm.autoplay.find(x => x.alias === vm.config.autoplay);
-        } else {
-            vm.currentAutoplay = vm.autoplay.find(x => x.alias === $scope.model.value.embed.autoplay);
-        }
-
-        if (vm.config.endOn !== "inherit") {
-            vm.currentEndOn = vm.endOn.find(x => x.alias === vm.config.endOn);
-        } else {
-            vm.currentEndOn = vm.endOn.find(x => x.alias === $scope.model.value.embed.endOn);
         }
 
     };
@@ -199,13 +232,23 @@
             return;
         }
 
-        if (!$scope.model.value.video) return;
-        if (!$scope.model.value.video._data) return;
+        if ($scope.model.value.video) {
 
-        // Get the video data from the "_data" property (necessary due to Umbraco/JSON.net issue)
-        vm.video = angular.fromJson($scope.model.value.video._data);
+            // Get the video data from the "_data" property (necessary due to Umbraco/JSON.net issue)
+            vm.video = angular.fromJson($scope.model.value.video._data);
+            vm.duration = vm.video.video_length;
 
-        if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
+            if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
+
+            vm.update();
+
+        } else if ($scope.model.value.spot) {
+
+            // Get the spot data from the "_data" property (necessary due to Umbraco/JSON.net issue)
+            vm.spot = angular.fromJson($scope.model.value.spot._data);
+            vm.thumbnails = $scope.model.value.thumbnails;
+
+        }
 
         vm.update();
 

@@ -6,14 +6,19 @@ using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.Services;
 using Microsoft.Extensions.Options;
+using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 using Skybrud.Social.TwentyThree.Models.Players;
+using Skybrud.Social.TwentyThree.Models.Spots;
 using Skybrud.Social.TwentyThree.Options.Photos;
 using Skybrud.Social.TwentyThree.Options.Players;
+using Skybrud.Social.TwentyThree.Options.Spots;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
+using Skybrud.Social.TwentyThree.Responses.Spots;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
+using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
 // ReSharper disable RedundantAssignment
 
@@ -55,6 +60,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
             return options switch {
                 TwentyThreeVideoOptions vo => GetVideo(credentials!, vo),
+                TwentyThreeSpotOptions so => GetSpot(credentials!, so),
                 _ => BadRequest($"Unknown type {options.GetType()}.")
             };
 
@@ -155,6 +161,49 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 .First(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
 
             return new ApiVideoDetails(options, credentials, video, player, response1.Body.Site);
+
+        }
+
+        private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options) {
+
+            var http = _service.GetHttpService(credentials);
+
+            // Get information about the spot
+            TwentyThreeSpotListResponse response1 = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
+                SpotId = options.SpotId,
+                Token = options.Token
+            });
+
+            // Get the first spot (if any)
+            TwentyThreeSpot? spot = response1.Body.Spots.FirstOrDefault();
+            if (spot == null) return NotFound("Spot not found.");
+
+            // The spot is made up of one or more videos (aka photos), so we can get information about the first video
+            // to find some thumbnails (seems to be the best approach for now)
+            string? firstPhotoId = spot.SpotSelection
+                .Split(' ')
+                .Select(x => x.Split(':')[1])
+                .FirstOrDefault();
+
+            TwentyThreeThumbnail[] thumbnails;
+            if (firstPhotoId.HasValue()) {
+                try {
+
+                    TwentyThreePhotoListResponse response2 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                        PhotoId = firstPhotoId
+                    });
+
+                    // Get the thumbnails from the first video/photo (currently asuming that one video is returned)
+                    thumbnails = response2.Body.Photos[0].Thumbnails.Select(x => new TwentyThreeThumbnail(options, x)).ToArray();
+
+                } catch {
+                    thumbnails = Array.Empty<TwentyThreeThumbnail>();
+                }
+            } else {
+                thumbnails = Array.Empty<TwentyThreeThumbnail>();
+            }
+
+            return new ApiSpotDetails(options, credentials, spot, thumbnails, response1.Body.Site);
 
         }
 
