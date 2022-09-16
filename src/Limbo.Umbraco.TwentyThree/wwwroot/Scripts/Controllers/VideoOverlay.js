@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $http, $timeout, twentyThreeService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $element, $http, $timeout, twentyThreeService) {
 
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
@@ -9,6 +9,7 @@
     vm.loaded = false;
 
     vm.text = null;
+    vm.limit = null;
 
     let wait = null;
 
@@ -24,11 +25,24 @@
 
     vm.getVideos = function (page) {
 
+        if (!vm.limit) {
+            const container = $element[0].querySelector(".umb-editor-container");
+            if (!container) {
+                vm.limit = 20;
+            } else {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                const x = Math.floor(width / 290); // 290
+                const y = Math.floor(height / 230);
+                vm.limit = Math.floor(Math.min(x * y, 50) / x) * x;
+            }
+        }
+
         $scope.model.loading = true;
 
         const params = {
             accountId: vm.account.id,
-            limit: 20
+            limit: Math.max(10, vm.limit)
         };
 
         if (page) params.page = page;
@@ -93,7 +107,7 @@
         $scope.model.loading = true;
 
         $scope.model.title = "Select video";
-        $scope.model.size = "normal";
+        $scope.model.size = "large";
 
         vm.account = account;
 

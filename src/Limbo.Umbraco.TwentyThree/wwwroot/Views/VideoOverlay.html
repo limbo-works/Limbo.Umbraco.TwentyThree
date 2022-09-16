@@ -16,7 +16,7 @@
         </div>
         <umb-editor-container>
             <div ng-if="!vm.account" class="--accounts">
-                <umg-box>
+                <umb-box>
                     <umb-box-content>
                         <ul class="umb-card-grid" ng-class="{'-three-in-row': model.accounts.length < 7, '-four-in-row': model.accounts.length >= 7}">
                             <li ng-repeat="account in model.accounts" ">
@@ -32,7 +32,7 @@
                             </li>
                         </ul>
                     </umb-box-content>
-                </umg-box>
+                </umb-box>
             </div>
             <div ng-if="vm.account" class="--video-list">
                 <ul class="umb-card-grid -four-in-row">
