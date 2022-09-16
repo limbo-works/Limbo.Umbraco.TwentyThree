@@ -62,9 +62,42 @@
   max-width: 800px;
   box-sizing: border-box;
 }
+.limbo-twentythree-video .--video .--box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.limbo-twentythree-video .--video .--box .--thumbnail {
+  width: 270px;
+}
+.limbo-twentythree-video .--properties {
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0;
+  flex: 1;
+}
+.limbo-twentythree-video .--property {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 20px;
+}
+.limbo-twentythree-video .--property .--label {
+  flex: 0;
+  font-size: 14px;
+  min-width: 250px;
+  font-weight: bold;
+}
+.limbo-twentythree-video .--property .--label small {
+  font-weight: normal;
+}
+.limbo-twentythree-video .--property .--value {
+  flex: 1;
+  min-width: 60%;
+}
 .limbo-twentythree-video .--button-list {
   display: flex;
   flex-wrap: wrap;
+  gap: 7px;
 }
 .limbo-twentythree-video .--button-list > button {
   appearance: none;
@@ -76,7 +109,7 @@
   line-height: 1;
   background-color: rgba(216, 215, 217, 0.5);
   font-size: 13px;
-  margin: 0 7px 7px 0;
+  margin: 0;
   padding: 10px 20px;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -90,9 +123,6 @@
 .limbo-twentythree-video .--button-list > button.--active {
   background-color: #F5C1BC;
   color: #1A2650;
-}
-.limbo-twentythree-video .--button-list > button + button {
-  margin-left: 5px;
 }
 .limbo-twentythree-video .--site table,
 .limbo-twentythree-video .--embed table {
@@ -249,7 +279,4 @@
 .limbo-twentythree-button-list > button.--active {
   background-color: #F5C1BC;
   color: #1A2650;
-}
-.limbo-twentythree-button-list > button + button {
-  margin-left: 5px;
 }
