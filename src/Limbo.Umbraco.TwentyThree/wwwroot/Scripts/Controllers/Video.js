@@ -28,7 +28,9 @@
         addSpot: "Select a spot",
         refreshVideo: "Refresh current video",
         refreshSpot: "Refresh current spot",
-        overridden: "Overridden by data type."
+        overridden: "Overridden by data type.",
+        video: "video",
+        videos: "videos"
     };
 
     vm.setVideo = function (item, source, refresh) {
@@ -59,6 +61,8 @@
 
         if (item.video) {
 
+            delete vm.spot;
+
             delete $scope.model.value.spot;
 
             $scope.model.value.parameters = item.parameters;
@@ -76,6 +80,8 @@
             vm.video = item.video;
 
         } else if (item.spot) {
+
+            delete vm.video;
 
             delete $scope.model.value.parameters;
             delete $scope.model.value.video;
@@ -146,6 +152,7 @@
 
             vm.id = vm.video.photo_id;
             vm.title = vm.video.title;
+            vm.duration = vm.video.video_length;
             vm.thumbnails = twentyThreeService.getThumbnails(vm.video);
             vm.thumbnail = vm.thumbnails.medium;
 
@@ -165,6 +172,7 @@
 
             vm.id = vm.spot.spot_id;
             vm.title = vm.spot.spot_name;
+            vm.videoCount = vm.spot.video_count;
             vm.duration = null;
             vm.thumbnail = vm.thumbnails?.find(x => x.alias === "medium");
 
@@ -185,6 +193,15 @@
         twentyThreeService.openAddVideo(function (model) {
             if (!$scope.model.value) $scope.model.value = {};
             vm.setVideo(model.selectedItem, model.selectedItem.url);
+            model.close();
+        });
+    };
+
+    // Opens a new overlay where the editor can browse and pick spots
+    vm.addSpot = function () {
+        twentyThreeService.openAddSpot(function (model) {
+            if (!$scope.model.value) $scope.model.value = {};
+            vm.setVideo(model.selectedItem, model.selectedItem.source);
             model.close();
         });
     };

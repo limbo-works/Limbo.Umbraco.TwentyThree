@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
+using J2N.Collections.Generic;
 using Limbo.Umbraco.TwentyThree.Models.Api;
 using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.Services;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 using Skybrud.Social.TwentyThree.Models.Players;
@@ -18,6 +20,7 @@ using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Extensions;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
 // ReSharper disable RedundantAssignment
@@ -111,6 +114,63 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 pages = response.Body.TotalCount == 0 ? 0 : Math.Ceiling((double) response.Body.TotalCount / response.Body.Size),
                 site = new ApiSite(response.Body.Site),
                 videos = response.Body.Photos.Select(ToApiModel)
+            };
+
+        }
+
+        public object GetSpots(Guid accountId, string? text = null, int limit = 0, int page = 1) {
+
+            var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
+            if (credentials == null) return NotFound("Account not found.");
+
+            var http = _service.GetHttpService(credentials);
+
+            TwentyThreeSpotListResponse response1 = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
+                Size = limit,
+                Page = page
+            });
+
+            List<string> photoIds = new();
+            foreach (var spot in response1.Body.Spots) {
+                if (string.IsNullOrWhiteSpace(spot.SpotSelection)) continue;
+                foreach (string selection in spot.SpotSelection.Split(' ')) {
+                    if (!selection.StartsWith("photo:")) continue;
+                    photoIds.Add(selection.Split(':')[1]);
+                    break;
+                }
+            }
+
+            Dictionary<string, TwentyThreePhoto> hest = new();
+
+            foreach (var group in photoIds.Distinct().InGroupsOf(50)) {
+                
+                TwentyThreePhotoListResponse response2 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                    Search = string.Join(" OR ", group),
+                    Size = 50
+                });
+
+                foreach (var photo in response2.Body.Photos) {
+                    hest[photo.PhotoId] = photo;
+                }
+
+            }
+
+            return new {
+                page = response1.Body.Page,
+                limit = response1.Body.Size,
+                total = response1.Body.TotalCount,
+                pages = response1.Body.TotalCount == 0 ? 0 : Math.Ceiling((double) response1.Body.TotalCount / response1.Body.Size),
+                site = new ApiSite(response1.Body.Site),
+                spots = response1.Body.Spots.Select(x => {
+                    TwentyThreePhoto? photo = null;
+                    if (!string.IsNullOrWhiteSpace(x.SpotSelection)) {
+                        foreach (string selection in x.SpotSelection.Split(' ')) {
+                            if (!selection.StartsWith("photo:")) continue;
+                            if (hest.TryGetValue(selection.Split(':')[1], out photo)) break;
+                        }
+                    }
+                    return ToApiModel(x, photo);
+                })
             };
 
         }
@@ -217,6 +277,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
         private static object? ToApiModel(TwentyThreePhoto? photo) {
             return photo?.JObject;
+        }
+
+        private static object? ToApiModel(TwentyThreeSpot? spot, TwentyThreePhoto? photo) {
+            if (spot == null) return null;
+            if (photo != null) spot.JObject.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => new TwentyThreeThumbnail(photo, x))));
+            return spot.JObject;
         }
 
         #endregion

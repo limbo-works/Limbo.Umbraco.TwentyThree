@@ -15,6 +15,7 @@ namespace Limbo.Umbraco.TwentyThree.Manifests {
                 Scripts = new[] {
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Services/TwentyThreeService.js",
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Controllers/ButtonList.js",
+                    $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Controllers/SpotOverlay.js",
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Controllers/Video.js",
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Controllers/VideoOverlay.js",
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Controllers/VideoOverlay.js",

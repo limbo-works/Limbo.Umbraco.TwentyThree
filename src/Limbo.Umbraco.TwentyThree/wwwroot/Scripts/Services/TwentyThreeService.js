@@ -46,6 +46,33 @@
 
     }
 
+    function openAddSpot(submit) {
+
+        const options = {
+            title: "Select account",
+            view: `/App_Plugins/Limbo.Umbraco.TwentyThree/Views/SpotOverlay.html?v=${cacheBuster}`,
+            size: "medium",
+            loading: true,
+            accounts: [],
+            close: function () {
+                editorService.close();
+            },
+            submit: submit ? submit : function () { editorService.close(); }
+        };
+
+        editorService.open(options);
+
+        $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAccounts`).then(function (res) {
+            options.accounts = res.data;
+            if (options.selectAccount && res.data.length === 1) {
+                options.selectAccount(res.data[0]);
+            } else {
+                options.loading = false;
+            }
+        });
+
+    }
+
     function selectPlayer(options) {
 
         if (!options) options = {};
@@ -111,6 +138,7 @@
     return {
         getVideo,
         openAddVideo,
+        openAddSpot,
         getDuration,
         selectPlayer,
         getThumbnails
