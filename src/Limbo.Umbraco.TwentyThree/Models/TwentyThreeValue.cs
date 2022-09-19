@@ -1,4 +1,5 @@
 ﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
+using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
@@ -8,7 +9,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
     /// <summary>
     /// Class representing the value returned by the <see cref="TwentyThreeEditor"/> property editor.
     /// </summary>
-    public class TwentyThreeValue {
+    public abstract class TwentyThreeValue : IVideoValue {
 
         /// <summary>
         /// Gets a reference to the underlying JSON the instance was parsed from.
@@ -17,35 +18,54 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         public JObject Json { get; }
 
         /// <summary>
-        /// Gets a reference to the video parameters.
+        /// Gets the source (URL or embed code) as entered by the user.
         /// </summary>
         [JsonIgnore]
-        public TwentyThreeParameters Parameters { get; }
+        public string Source { get; }
 
         /// <summary>
-        /// Gets a reference to the video details.
+        /// Gets the type of the video or spot.
         /// </summary>
-        [JsonProperty("video")]
-        public TwentyThreeVideoDetails Video { get; }
+        [JsonProperty("type", Order = -99)]
+        public string Type { get; }
 
         /// <summary>
-        /// Gets a reference to the video embed information.
+        /// Gets the alias of the provider. Always <c>twentythree</c>.
+        /// </summary>
+        [JsonProperty("provider", Order = -98)]
+        public string Provider => "twentythree";
+
+        /// <summary>
+        /// Gets a reference to the video or spot details.
+        /// </summary>
+        [JsonProperty("details")]
+        public TwentyThreeDetails Details { get; protected set; }
+
+        /// <summary>
+        /// Gets embed information for the video or spot.
         /// </summary>
         [JsonProperty("embed")]
-        public TwentyThreeEmbed Embed { get; }
+        public TwentyThreeEmbed Embed { get; protected set; }
+
+        IVideoDetails IVideoValue.Details => Details;
+
+        IVideoEmbed IVideoValue.Embed => Embed;
 
         /// <summary>
         /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
         /// <param name="json">The JSON object representing the value.</param>
-        /// <param name="config">The configuration of the <see cref="TwentyThreeEditor"/> data type.</param>
-        public TwentyThreeValue(JObject json, TwentyThreeConfiguration? config) {
+        /// <param name="type">The type.</param>
+        /// <param name="details">The details about the video or spot.</param>
+        /// <param name="embed">The embed information.</param>
+        protected TwentyThreeValue(JObject json, string type, TwentyThreeDetails details, TwentyThreeEmbed embed) {
             Json = json;
-            Parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x));
-            Video = json.GetObject("video", x => new TwentyThreeVideoDetails(x));
-            Embed = json.GetObject("embed", x => new TwentyThreeEmbed(x, Video, Parameters, config));
+            Source = json.GetString("source");
+            Type = type;
+            Details = details;
+            Embed = embed;
         }
-
+        
     }
 
 }

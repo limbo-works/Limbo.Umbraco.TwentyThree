@@ -1,6 +1,4 @@
 ﻿<div class="limbo-twentythree-video" ng-controller="Limbo.Umbraco.TwentyThree.Video as vm" ng-class="{loading: vm.loading}">
-
-
     <div class="--input">
         <h5>{{vm.labels.urlOrEmbedCode}}</h5>
         <div ng-show="!vm.embed">
@@ -10,8 +8,8 @@
             <textarea ng-model="model.value.source" ng-change="vm.updated()" rows="5" placeholder="twentyThree_embedPlaceholder" localize="placeholder"></textarea>
         </div>
         <div>
-            <button type="button" ng-click="vm.addVideo()">{{vm.labels.addVideo}}</button>
-            <button type="button" ng-click="vm.addSpot()">{{vm.labels.addSpot}}</button>
+            <button type="button" ng-click="vm.addVideo()" ng-if="vm.config.allowVideos">{{vm.labels.addVideo}}</button>
+            <button type="button" ng-click="vm.addSpot()" ng-if="vm.config.allowSpots">{{vm.labels.addSpot}}</button>
             <button type="button" ng-click="vm.refreshVideo()" ng-if="vm.video">{{vm.labels.refreshVideo}}</button>
             <button type="button" ng-click="vm.refreshVideo()" ng-if="vm.spot">{{vm.labels.refreshSpot}}</button>
         </div>

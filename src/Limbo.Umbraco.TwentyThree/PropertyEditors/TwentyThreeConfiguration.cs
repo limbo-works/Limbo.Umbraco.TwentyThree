@@ -1,4 +1,6 @@
-﻿using Limbo.Umbraco.TwentyThree.Models;
+﻿using System.Runtime.Serialization;
+using Limbo.Umbraco.TwentyThree.Models;
+using Newtonsoft.Json;
 using Umbraco.Cms.Core.PropertyEditors;
 
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
@@ -43,6 +45,19 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
             "boolean",
             Description = "Select whether embed options should be hidden in the property editor.")]
         public bool HideEmbed { get; set; }
+
+        [ConfigurationField("allowVideos",
+            "Allow videos",
+            "boolean",
+            Description = "Select whether videos should be allowed in the property editor.")]
+        public bool AllowVideos { get; } = true;
+
+        [ConfigurationField("allowSpots",
+            "Allow spots",
+            "boolean",
+            Description = "Select whether spots should be allowed in the property editor.")]
+        [JsonProperty("allowVideos")]
+        public bool AllowSpots { get; } = false;
 
     }
 }

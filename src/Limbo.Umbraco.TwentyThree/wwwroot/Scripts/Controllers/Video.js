@@ -1,11 +1,23 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.Video", function ($scope, $element, $timeout, twentyThreeService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.Video", function ($scope, $element, $timeout, notificationsService, twentyThreeService) {
 
     const vm = this;
 
     vm.config = $scope.model.config ?? {};
 
+    if (!vm.config.autoplay) vm.config.autoplay = "inherit";
+    if (!vm.config.endOn) vm.config.endOn = "inherit";
+
+    vm.config.hideSite = vm.config.hideSite === true;
+    vm.config.hidePlayer = vm.config.hidePlayer === true;
+    vm.config.hideEmbed = vm.config.hideEmbed === true;
+
+    vm.config.allowVideos = vm.config.allowVideos !== false;
+    vm.config.allowSpots = vm.config.allowSpots !== false;
+
+    vm.config.dataTypeKey = $scope.model.dataTypeKey;
+
     vm.showSite = vm.config.hideSite !== true;
-    vm.showPlayer = true;
+    vm.showPlayer = vm.config.hidePlayer !== true;
     vm.showEmbed = vm.config.hideEmbed !== true;
     
     vm.autoplay = [
@@ -115,10 +127,17 @@
         vm.loading = true;
         vm.update();
 
-        twentyThreeService.getVideo(source).then(function(res) {
+        twentyThreeService.getVideo(source, vm.config).then(function(res) {
             vm.setVideo(res.data, null, refresh);
             vm.loading = false;
             vm.update();
+        }, function(res) {
+            vm.loading = false;
+            if (typeof res.data === "string") {
+                notificationsService.error("TwentyThree", res.data);
+            } else {
+                notificationsService.error("TwentyThree", "An unknown error occured.");
+            }
         });
 
     };

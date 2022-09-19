@@ -4,16 +4,21 @@
     const cacheBuster = Umbraco.Sys.ServerVariables.application.cacheBuster;
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
-    function getVideo(source) {
+    function getVideo(source, config) {
 
         const data = {
             source: source
+        };
+
+        const params = {
+            dataTypeKey: config?.dataTypeKey
         };
 
         return $http({
             method: "POST",
             url: `${umbracoPath}/backoffice/Limbo/TwentyThree/GetVideo`,
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            params: params,
             data: $.param(data)
         });
 

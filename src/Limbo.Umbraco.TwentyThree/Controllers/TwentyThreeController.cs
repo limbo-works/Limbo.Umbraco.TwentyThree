@@ -5,12 +5,17 @@ using Limbo.Umbraco.TwentyThree.Models.Api;
 using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
+using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Limbo.Umbraco.TwentyThree.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Strings.Extensions;
+using Skybrud.Social.TwentyThree.Exceptions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 using Skybrud.Social.TwentyThree.Models.Players;
+using Skybrud.Social.TwentyThree.Models.Sites;
 using Skybrud.Social.TwentyThree.Models.Spots;
 using Skybrud.Social.TwentyThree.Options.Photos;
 using Skybrud.Social.TwentyThree.Options.Players;
@@ -18,6 +23,8 @@ using Skybrud.Social.TwentyThree.Options.Spots;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Extensions;
@@ -31,11 +38,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
     [PluginController("Limbo")]
     public class TwentyThreeController : UmbracoAuthorizedApiController {
-
+        private readonly IDataTypeService _dataTypeService;
         private readonly IOptions<TwentyThreeSettings> _options;
         private readonly TwentyThreeService _service;
 
-        public TwentyThreeController(IOptions<TwentyThreeSettings> options, TwentyThreeService service) {
+        public TwentyThreeController(IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service) {
+            _dataTypeService = dataTypeService;
             _options = options;
             _service = service;
         }
@@ -46,8 +54,9 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
         /// Returns information about the video with the specified <paramref name="source"/>.
         /// </summary>
         /// <param name="source">The video source (URL or embed code).</param>
+        /// <param name="dataTypeKey">The key of the underlying data type, if any.</param>
         /// <returns>Information about the video matching <paramref name="source"/>.</returns>
-        public object GetVideo(string? source) {
+        public object GetVideo(string? source, Guid? dataTypeKey = null) {
 
             // Get the "source" parameter from either GET or POST
             source = HttpContext.Request.Query["source"].FirstOrDefault();
@@ -61,9 +70,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
             if (!_service.TryGetCredentials(options!.Domain, out TwentyThreeCredentials? credentials)) return BadRequest($"No or invalid configuration found for the '{options.Domain}' domain.");
 
+            IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
+            TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
+
             return options switch {
-                TwentyThreeVideoOptions vo => GetVideo(credentials!, vo),
-                TwentyThreeSpotOptions so => GetSpot(credentials!, so),
+                TwentyThreeVideoOptions vo => GetVideo(credentials!, vo, config),
+                TwentyThreeSpotOptions so => GetSpot(credentials!, so, config),
                 _ => BadRequest($"Unknown type {options.GetType()}.")
             };
 
@@ -101,19 +113,31 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
             var http = _service.GetHttpService(credentials);
 
-            TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
-                Search = text,
-                Size = limit,
-                Page = page
-            });
+            TwentyThreePhotoList list;
+
+            try {
+
+                TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                    Search = text,
+                    Size = limit,
+                    Page = page
+                });
+
+                list = response.Body;
+
+            } catch {
+
+                return InternalServerError("Failed getting list of videos from the TwentyThree API.");
+
+            }
 
             return new {
-                page = response.Body.Page,
-                limit = response.Body.Size,
-                total = response.Body.TotalCount,
-                pages = response.Body.TotalCount == 0 ? 0 : Math.Ceiling((double) response.Body.TotalCount / response.Body.Size),
-                site = new ApiSite(response.Body.Site),
-                videos = response.Body.Photos.Select(ToApiModel)
+                page = list.Page,
+                limit = list.Size,
+                total = list.TotalCount,
+                pages = list.TotalCount == 0 ? 0 : Math.Ceiling((double) list.TotalCount / list.Size),
+                site = new ApiSite(list.Site),
+                videos = list.Photos.Select(ToApiModel)
             };
 
         }
@@ -125,13 +149,25 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
             var http = _service.GetHttpService(credentials);
 
-            TwentyThreeSpotListResponse response1 = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
-                Size = limit,
-                Page = page
-            });
+            TwentyThreeSpotList list;
+
+            try {
+
+                var response = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
+                    Size  = limit,
+                    Page = page
+                });
+
+                list = response.Body;
+
+            } catch {
+
+                return InternalServerError("Failed getting list of spots from the TwentyThree API.");
+
+            }
 
             List<string> photoIds = new();
-            foreach (var spot in response1.Body.Spots) {
+            foreach (var spot in list.Spots) {
                 if (string.IsNullOrWhiteSpace(spot.SpotSelection)) continue;
                 foreach (string selection in spot.SpotSelection.Split(' ')) {
                     if (!selection.StartsWith("photo:")) continue;
@@ -143,25 +179,32 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             Dictionary<string, TwentyThreePhoto> hest = new();
 
             foreach (var group in photoIds.Distinct().InGroupsOf(50)) {
-                
-                TwentyThreePhotoListResponse response2 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
-                    Search = string.Join(" OR ", group),
-                    Size = 50
-                });
 
-                foreach (var photo in response2.Body.Photos) {
-                    hest[photo.PhotoId] = photo;
+                try {
+
+                    TwentyThreePhotoListResponse response2 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                        Search = string.Join(" OR ", group), Size = 50
+                    });
+
+                    foreach (var photo in response2.Body.Photos) {
+                        hest[photo.PhotoId] = photo;
+                    }
+
+                } catch {
+
+                    // Ignore
+
                 }
 
             }
 
             return new {
-                page = response1.Body.Page,
-                limit = response1.Body.Size,
-                total = response1.Body.TotalCount,
-                pages = response1.Body.TotalCount == 0 ? 0 : Math.Ceiling((double) response1.Body.TotalCount / response1.Body.Size),
-                site = new ApiSite(response1.Body.Site),
-                spots = response1.Body.Spots.Select(x => {
+                page = list.Page,
+                limit = list.Size,
+                total = list.TotalCount,
+                pages = list.TotalCount == 0 ? 0 : Math.Ceiling((double) list.TotalCount / list.Size),
+                site = new ApiSite(list.Site),
+                spots = list.Spots.Select(x => {
                     TwentyThreePhoto? photo = null;
                     if (!string.IsNullOrWhiteSpace(x.SpotSelection)) {
                         foreach (string selection in x.SpotSelection.Split(' ')) {
@@ -184,13 +227,26 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             // Get a reference to the HTTP service
             var http = _service.GetHttpService(credentials);
 
-            // Request the first 200 players from the ID (ideally there shouldn't be more)
-            var response = http.Players.GetList(new TwentyThreeGetPlayersOptions {
-                Size = 200
-            });
+            TwentyThreePlayer[] players;
+
+            try {
+
+                // Request the first 200 players from the ID (ideally there shouldn't be more)
+                var response = http.Players.GetList(new TwentyThreeGetPlayersOptions {
+                    Size = 200
+                });
+
+                // Get the players from the response body
+                players = response.Body.Players;
+
+            } catch {
+
+                return InternalServerError("Failed getting list of players from the TwentyThree API.");
+
+            }
 
             // Return the players
-            return response.Body.Players.Select(ToApiModel);
+            return players.Select(ToApiModel);
 
         }
 
@@ -198,45 +254,92 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
         #region Private methods
 
-        private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options) {
+        private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
+
+            if (config is { AllowVideos: false }) return BadRequest("Videos are not allowed.");
 
             var http = _service.GetHttpService(credentials);
 
-            // Get information about the video from the TwentyThree API
-            TwentyThreePhotoListResponse response1 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
-                PhotoId = options.VideoId
-            });
+            TwentyThreePhoto? video = null;
+            TwentyThreeSite? site = null;
+            TwentyThreePlayer? player = null;
 
-            // Get the first video of the response (if any)
-            TwentyThreePhoto? video = response1.Body.Photos.FirstOrDefault();
-            if (video == null) return NotFound("Video not found.");
+            try {
 
-            // Get a list of the first 200 players from the TwentyThree API
-            TwentyThreePlayerListResponse? response2 = http.Players.GetList(new TwentyThreeGetPlayersOptions {
-                Size = 200
-            });
+                // Get information about the video from the TwentyThree API
+                TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                    PhotoId = options.VideoId
+                });
 
-            // Get the selected player from the response
-            TwentyThreePlayer? player = response2.Body.Players
-                .First(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
+                // Get the first video of the response (if any)
+                video = response.Body.Photos.FirstOrDefault();
+                if (video == null) return NotFound("Video not found.");
 
-            return new ApiVideoDetails(options, credentials, video, player, response1.Body.Site);
+                // Get a reference to the current site
+                site = response.Body.Site;
+
+            } catch (TwentyThreeHttpException ex) {
+
+                if (ex.Error.Code == "photo_not_found") return NotFound("Video not found.");
+                return InternalServerError("Failed getting video information from the TwentyThree API.");
+
+
+            } catch {
+
+                return InternalServerError("Failed getting video information from the TwentyThree API.");
+
+            }
+
+            try {
+
+                // Get a list of the first 200 players from the TwentyThree API
+                TwentyThreePlayerListResponse? response = http.Players.GetList(new TwentyThreeGetPlayersOptions {
+                    Size = 200
+                });
+
+                // Get the selected player from the response
+                player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
+                if (player == null) return NotFound("Player not found.");
+
+            } catch {
+
+                return InternalServerError("Failed getting player information from the TwentyThree API.");
+
+            }
+
+            return new ApiVideoDetails(options, credentials, video, player, site);
 
         }
 
-        private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options) {
+        private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeConfiguration? config) {
+
+            if (config is { AllowSpots: false }) return BadRequest("Spots are not allowed.");
 
             var http = _service.GetHttpService(credentials);
 
-            // Get information about the spot
-            TwentyThreeSpotListResponse response1 = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
-                SpotId = options.SpotId,
-                Token = options.Token
-            });
+            TwentyThreeSpot? spot = null;
+            TwentyThreeSite? site = null;
 
-            // Get the first spot (if any)
-            TwentyThreeSpot? spot = response1.Body.Spots.FirstOrDefault();
-            if (spot == null) return NotFound("Spot not found.");
+            try {
+
+                // Get information about the spot
+                TwentyThreeSpotListResponse response = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
+                    SpotId = options.SpotId,
+                    Token = options.Token
+                });
+
+                // Get the first spot (if any)
+                spot = response.Body.Spots.FirstOrDefault();
+                if (spot == null) return NotFound("Spot not found.");
+
+                // Get a reference to the current site
+                site = response.Body.Site;
+
+            } catch {
+
+                return InternalServerError("Failed getting spot information from the TwentyThree API.");
+
+            }
 
             // The spot is made up of one or more videos (aka photos), so we can get information about the first video
             // to find some thumbnails (seems to be the best approach for now)
@@ -249,12 +352,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             if (firstPhotoId.HasValue()) {
                 try {
 
-                    TwentyThreePhotoListResponse response2 = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
+                    TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
                         PhotoId = firstPhotoId
                     });
 
                     // Get the thumbnails from the first video/photo (currently asuming that one video is returned)
-                    thumbnails = response2.Body.Photos[0].Thumbnails.Select(x => new TwentyThreeThumbnail(options, x)).ToArray();
+                    thumbnails = response.Body.Photos[0].Thumbnails.Select(x => new TwentyThreeThumbnail(options, x)).ToArray();
 
                 } catch {
                     thumbnails = Array.Empty<TwentyThreeThumbnail>();
@@ -263,7 +366,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 thumbnails = Array.Empty<TwentyThreeThumbnail>();
             }
 
-            return new ApiSpotDetails(options, credentials, spot, thumbnails, response1.Body.Site);
+            return new ApiSpotDetails(options, credentials, spot, thumbnails, site);
 
         }
 
@@ -283,6 +386,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             if (spot == null) return null;
             if (photo != null) spot.JObject.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => new TwentyThreeThumbnail(photo, x))));
             return spot.JObject;
+        }
+
+        private static object InternalServerError(object value) {
+            return new ObjectResult(value) {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
         }
 
         #endregion

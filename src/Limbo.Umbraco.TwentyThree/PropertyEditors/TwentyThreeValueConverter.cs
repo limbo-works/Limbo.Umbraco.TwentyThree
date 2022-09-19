@@ -21,12 +21,28 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         }
         
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview) {
-            var config = (TwentyThreeConfiguration) propertyType.DataType.Configuration!;
-            return inter is JObject json ? new TwentyThreeValue(json, config) : null;
+
+            var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
+
+            if (inter is not JObject json) return null;
+
+            if (json.Property("video") is not null) return TwentyThreeVideoValue.Create(json, config);
+            if (json.Property("spot") is not null) return TwentyThreeSpotValue.Create(json);
+
+            return null;
+
         }
 
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType) {
+
+            var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
+            if (config == null) return typeof(TwentyThreeValue);
+
+            if (config.AllowVideos && !config.AllowSpots) return typeof(TwentyThreeVideoValue);
+            if (!config.AllowVideos && config.AllowSpots) return typeof(TwentyThreeSpotValue);
+
             return typeof(TwentyThreeValue);
+
         }
 
         public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) {
