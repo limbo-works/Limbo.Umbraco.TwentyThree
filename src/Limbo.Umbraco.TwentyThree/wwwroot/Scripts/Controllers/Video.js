@@ -48,6 +48,7 @@
     vm.setVideo = function (item, source, refresh) {
 
         if (!item) {
+            vm.spot = null;
             vm.video = null;
             if ($scope.model.value) {
                 if ($scope.model.value.source) {
