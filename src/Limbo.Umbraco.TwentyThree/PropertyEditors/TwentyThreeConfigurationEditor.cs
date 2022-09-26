@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.IO;
+﻿using System.Collections.Generic;
+using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 
@@ -23,6 +24,11 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
             }
 
         }
+
+        public override IDictionary<string, object> DefaultConfiguration => new Dictionary<string, object> {
+            { "allowVideos", true },
+            { "allowSpots", true }
+        };
 
     }
 
