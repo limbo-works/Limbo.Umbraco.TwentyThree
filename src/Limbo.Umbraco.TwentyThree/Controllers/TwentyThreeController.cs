@@ -38,6 +38,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
     [PluginController("Limbo")]
     public class TwentyThreeController : UmbracoAuthorizedApiController {
+
         private readonly IDataTypeService _dataTypeService;
         private readonly IOptions<TwentyThreeSettings> _options;
         private readonly TwentyThreeService _service;
@@ -51,7 +52,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
         #region Public API methods
 
         /// <summary>
-        /// Returns information about the video with the specified <paramref name="source"/>.
+        /// Returns information about the video or spot with the specified <paramref name="source"/>.
         /// </summary>
         /// <param name="source">The video source (URL or embed code).</param>
         /// <param name="dataTypeKey">The key of the underlying data type, if any.</param>
@@ -64,15 +65,20 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 source = HttpContext.Request.Form["source"].FirstOrDefault();
             }
 
+            // Check whether a "source" was specified
             if (string.IsNullOrWhiteSpace(source)) return BadRequest("No URL or embed code specified.");
 
+            // Does "source" match a valid TwentyThree URL or embed code?
             if (!_service.IsMatch(source, out ITwentyThreeOptions? options)) return BadRequest("Invalid URL or embed code specified.");
 
+            // Do we have valid credentials for the TwentyThree site/domain?
             if (!_service.TryGetCredentials(options!.Domain, out TwentyThreeCredentials? credentials)) return BadRequest($"No or invalid configuration found for the '{options.Domain}' domain.");
 
+            // Get a reference to the data type (if specified)
             IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
             TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
 
+            // Handle the different options types
             return options switch {
                 TwentyThreeVideoOptions vo => GetVideo(credentials!, vo, config),
                 TwentyThreeSpotOptions so => GetSpot(credentials!, so, config),
