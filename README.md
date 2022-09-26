@@ -2,25 +2,65 @@
 
 This package features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
 
+<table>
+  <tr>
+    <td><strong>License:</strong></td>
+    <td><a href="./LICENSE.md"><strong>MIT License</strong></a></td>
+  </tr>
+  <tr>
+    <td><strong>Umbraco:</strong></td>
+    <td>
+      Umbraco 10
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Target Framework:</strong></td>
+    <td>
+      .NET 6
+    </td>
+  </tr>
+</table>
 
 
 
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.0-alpha001). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.0-alpha002). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.0-alpha001
+dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.0-alpha002
 ```
 
 or the older NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.0-alpha001
+Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.0-alpha002
 ```
 
 
+
+
+
+
+
+<br /><br />
+## Dependencies
+
+- [**Umbraco 10**](https://github.com/umbraco/Umbraco-CMS)  
+The package currently only supports Umbraco 10.
+
+- [**Skybrud.Essentials.Http**](https://github.com/skybrud/Skybrud.Essentials.Http)  
+Our package for making HTTP requests.
+
+- [**Skybrud.Social.TwentyThree**](https://github.com/abjerner/Skybrud.Social.TwentyThree)  
+Our integration package and API wrapper for the Twenty Three API.
+
+- [**Limbo.Umbraco.Video**](https://github.com/limbo-works/Limbo.Umbraco.Video)  
+Base package with common functionality for our various video pickers.
+
+- [**Limbo.Umbraco.IconServiceFix**](https://github.com/limbo-works/Limbo.Umbraco.IconServiceFix)  
+Small package fixing an issue with Umbraco's icon service not detecing backoffice icons in Razor class libraries.
 
 
 
@@ -40,7 +80,7 @@ In order to access the TwentyThree API, the package needs to be configured with 
           "Key": "00000000-0000-0000-0000-000000000000",
           "Name": "MyProject",
           "Description": "A description about the credentials.",
-          "Domains": "The domain(s) of your account here.",
+          "Domains": [ "The domain(s) of your account here." ],
           "ConsumerKey": "Your consumer key here.",
           "ConsumerSecret": "Your consumer secret here.",
           "AccessToken": "Your access token here.",
