@@ -61,7 +61,7 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
             "Allow spots",
             "boolean",
             Description = "Select whether spots should be allowed in the property editor.")]
-        [JsonProperty("allowVideos")]
+        [JsonProperty("allowSpots")]
         public bool AllowSpots { get; set; }
 
     }
