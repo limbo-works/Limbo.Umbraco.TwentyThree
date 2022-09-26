@@ -23,7 +23,7 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
 
         internal const string EditorView = "/App_Plugins/Limbo.Umbraco.TwentyThree/Views/Video.html";
 
-        internal const string EditorIcon = "icon-limbo-twentythree color-limbo";
+        internal const string EditorIcon = "icon-limbo-twentythree-alt color-limbo";
 
         #endregion
 
