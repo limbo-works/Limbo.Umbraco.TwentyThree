@@ -233,7 +233,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             // Get a reference to the HTTP service
             var http = _service.GetHttpService(credentials);
 
-            TwentyThreePlayer[] players;
+            IReadOnlyList<TwentyThreePlayer> players;
 
             try {
 
