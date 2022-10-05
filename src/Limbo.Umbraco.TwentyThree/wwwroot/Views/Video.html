@@ -15,7 +15,6 @@
             <button type="button" ng-click="vm.refreshVideo()" ng-if="vm.spot">{{vm.labels.refreshSpot}}</button>
         </div>
     </div>
-    
     <div class="--details" ng-if="vm.spot">
         <div class="--spot">
             <h5>Spot</h5>
@@ -172,17 +171,8 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     <pre>{{model.value | json}}</pre>
     <pre>{{vm | json}}</pre>
-
-
-
-
-
     <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
-
-
 </div>
