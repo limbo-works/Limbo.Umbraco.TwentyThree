@@ -264,7 +264,7 @@
 
     function init() {
 
-        if (!$scope.model.value) {
+        if (!$scope.model.value || $scope.model.value === "null") {
             $scope.model.value = null;
             return;
         }
@@ -292,5 +292,10 @@
     }
 
     init();
+
+    // Hack to re-set the property value to null as Umbraco may change the value to a string with the value "null"
+    $scope.$watch("model.value", function() {
+        if ($scope.model.value === "null") $scope.model.value = null;
+    });
 
 });
