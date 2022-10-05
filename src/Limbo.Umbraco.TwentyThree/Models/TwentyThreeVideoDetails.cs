@@ -38,6 +38,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// Gets the duration of the video.
         /// </summary>
         [JsonProperty("duration")]
+        [JsonConverter(typeof(Skybrud.Essentials.Json.Converters.Time.TimeSpanSecondsConverter))]
         public new TimeSpan Duration {
             get => base.Duration!.Value;
             set => base.Duration = value;
@@ -72,4 +73,5 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         #endregion
 
     }
+
 }
