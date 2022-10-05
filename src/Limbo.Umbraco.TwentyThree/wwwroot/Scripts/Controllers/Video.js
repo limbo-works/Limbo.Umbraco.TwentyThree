@@ -145,7 +145,10 @@
 
     // Triggered by the UI when the user changes the URL
     vm.updated = function () {
-        vm.getVideo();
+        if (vm.wait) $timeout.cancel(vm.wait);
+        vm.wait = $timeout(function () {
+            vm.getVideo();
+        }, 250);
     };
 
     // Triggered by the user when they click the refresh button
