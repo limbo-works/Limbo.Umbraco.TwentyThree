@@ -159,7 +159,7 @@
 
         if (embed !== vm.embed) {
             vm.embed = embed;
-            const el = $element[0].querySelector(embed ? "textarea" : "input");
+            const el = $element[0].querySelector(embed ? "textarea.source" : "input.source");
             if (el) {
                 // Add a bit delay so the element is visible before we try to focus it
                 $timeout(function () {

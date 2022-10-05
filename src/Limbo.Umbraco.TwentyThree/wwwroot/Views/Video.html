@@ -1,11 +1,12 @@
 ﻿<div class="limbo-twentythree-video" ng-controller="Limbo.Umbraco.TwentyThree.Video as vm" ng-class="{loading: vm.loading}">
+    <input type="hidden" ng-required="model.validation.mandatory" value="{{model.value ? '1' : ''}}"  />
     <div class="--input">
         <h5>{{vm.labels.urlOrEmbedCode}}</h5>
         <div ng-show="!vm.embed">
-            <input type="text" ng-model="model.value.source" ng-change="vm.updated()" placeholder="twentyThree_urlPlaceholder" localize="placeholder" />
+            <input type="text" class="source" ng-model="model.value.source" ng-change="vm.updated()" placeholder="twentyThree_urlPlaceholder" localize="placeholder" />
         </div>
         <div ng-show="vm.embed">
-            <textarea ng-model="model.value.source" ng-change="vm.updated()" rows="5" placeholder="twentyThree_embedPlaceholder" localize="placeholder"></textarea>
+            <textarea class="source" ng-model="model.value.source" ng-change="vm.updated()" rows="5" placeholder="twentyThree_embedPlaceholder" localize="placeholder"></textarea>
         </div>
         <div>
             <button type="button" ng-click="vm.addVideo()" ng-if="vm.config.allowVideos">{{vm.labels.addVideo}}</button>
