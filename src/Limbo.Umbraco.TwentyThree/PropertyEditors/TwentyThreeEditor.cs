@@ -17,13 +17,13 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
 
         #region Constants
 
-        internal const string EditorAlias = "Limbo.Umbraco.TwentyThree";
+        public const string EditorAlias = "Limbo.Umbraco.TwentyThree";
 
-        internal const string EditorName = "Limbo TwentyThree Video";
+        public const string EditorName = "Limbo TwentyThree Video";
 
-        internal const string EditorView = "/App_Plugins/Limbo.Umbraco.TwentyThree/Views/Video.html";
+        public const string EditorView = "/App_Plugins/Limbo.Umbraco.TwentyThree/Views/Video.html";
 
-        internal const string EditorIcon = "icon-limbo-twentythree-alt color-limbo";
+        public const string EditorIcon = "icon-limbo-twentythree-alt color-limbo";
 
         #endregion
 
