@@ -37,7 +37,12 @@ namespace Limbo.Umbraco.TwentyThree.Models {
 
         #region Static methods
 
-        internal static TwentyThreeSpotValue Create(JObject json) {
+        /// <summary>
+        /// Creates and returns a new <see cref="TwentyThreeSpotValue"/> instance based on the specified <paramref name="json"/>.
+        /// </summary>
+        /// <param name="json">The JSOn object representing the video spot.</param>
+        /// <returns>An instance of <see cref="TwentyThreeSpotValue"/>.</returns>
+        public static TwentyThreeSpotValue Create(JObject json) {
             var thumbnails = json.GetArrayItems("thumbnails", TwentyThreeThumbnail.Parse);
             var details = json.GetObject("spot", x => new TwentyThreeSpotDetails(x, thumbnails));
             var embed = new TwentyThreeSpotEmbed(details);
