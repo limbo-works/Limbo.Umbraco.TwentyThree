@@ -9,6 +9,7 @@ using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Limbo.Umbraco.TwentyThree.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Strings.Extensions;
@@ -39,11 +40,13 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
     [PluginController("Limbo")]
     public class TwentyThreeController : UmbracoAuthorizedApiController {
 
+        private readonly ILogger<TwentyThreeController> _logger;
         private readonly IDataTypeService _dataTypeService;
         private readonly IOptions<TwentyThreeSettings> _options;
         private readonly TwentyThreeService _service;
 
-        public TwentyThreeController(IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service) {
+        public TwentyThreeController(ILogger<TwentyThreeController> logger, IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service) {
+            _logger = logger;
             _dataTypeService = dataTypeService;
             _options = options;
             _service = service;
@@ -131,7 +134,9 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
                 list = response.Body;
 
-            } catch {
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting list of videos from the TwentyThree API.");
 
                 return InternalServerError("Failed getting list of videos from the TwentyThree API.");
 
@@ -166,7 +171,9 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
                 list = response.Body;
 
-            } catch {
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting list of spots from the TwentyThree API.");
 
                 return InternalServerError("Failed getting list of spots from the TwentyThree API.");
 
@@ -245,7 +252,9 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 // Get the players from the response body
                 players = response.Body.Players;
 
-            } catch {
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting list of players from the TwentyThree API.");
 
                 return InternalServerError("Failed getting list of players from the TwentyThree API.");
 
@@ -287,10 +296,15 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
             } catch (TwentyThreeHttpException ex) {
 
                 if (ex.Error.Code == "photo_not_found") return NotFound("Video not found.");
+
+                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with {VideoId}.", options.VideoId);
+
                 return InternalServerError("Failed getting video information from the TwentyThree API.");
 
 
-            } catch {
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with {VideoId}.", options.VideoId);
 
                 return InternalServerError("Failed getting video information from the TwentyThree API.");
 
@@ -307,7 +321,9 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
                 if (player == null) return NotFound("Player not found.");
 
-            } catch {
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting player information from the TwentyThree API for player with {PlayerId}.", options.PlayerId);
 
                 return InternalServerError("Failed getting player information from the TwentyThree API.");
 
@@ -390,7 +406,7 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
         private static object? ToApiModel(TwentyThreeSpot? spot, TwentyThreePhoto? photo) {
             if (spot == null) return null;
-            if (photo != null) spot.JObject.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => new TwentyThreeThumbnail(photo, x))));
+            if (photo != null) spot.JObject!.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => new TwentyThreeThumbnail(photo, x))));
             return spot.JObject;
         }
 
