@@ -6,7 +6,7 @@ using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DependencyInjection;
 
 namespace Limbo.Umbraco.TwentyThree.Extensions {
-    
+
     internal static class TwentyThreeExtensions {
 
         internal static IUmbracoBuilder AddUmbracoOptions<TOptions>(this IUmbracoBuilder builder, Action<OptionsBuilder<TOptions>>? configure = null) where TOptions : class {
