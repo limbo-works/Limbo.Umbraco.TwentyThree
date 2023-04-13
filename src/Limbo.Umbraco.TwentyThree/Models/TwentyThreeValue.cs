@@ -1,4 +1,5 @@
 ﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
+using Limbo.Umbraco.Video.Models.Providers;
 using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,19 +22,19 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// Gets the source (URL or embed code) as entered by the user.
         /// </summary>
         [JsonIgnore]
-        public string Source { get; }
+        public string? Source { get; }
+
+        /// <summary>
+        /// Gets information about the video provider.
+        /// </summary>
+        [JsonProperty("provider")]
+        public TwentyThreeProvider Provider { get; }
 
         /// <summary>
         /// Gets the type of the video or spot.
         /// </summary>
         [JsonProperty("type", Order = -99)]
         public string Type { get; }
-
-        /// <summary>
-        /// Gets the alias of the provider. Always <c>twentythree</c>.
-        /// </summary>
-        [JsonProperty("provider", Order = -98)]
-        public string Provider => "twentythree";
 
         /// <summary>
         /// Gets a reference to the video or spot details.
@@ -46,6 +47,8 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// </summary>
         [JsonProperty("embed")]
         public TwentyThreeEmbed Embed { get; protected set; }
+
+        IVideoProvider IVideoValue.Provider => Provider;
 
         IVideoDetails IVideoValue.Details => Details;
 
@@ -61,11 +64,12 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         protected TwentyThreeValue(JObject json, string type, TwentyThreeDetails details, TwentyThreeEmbed embed) {
             Json = json;
             Source = json.GetString("source");
+            Provider = TwentyThreeProvider.Default;
             Type = type;
             Details = details;
             Embed = embed;
         }
-        
+
     }
 
 }
