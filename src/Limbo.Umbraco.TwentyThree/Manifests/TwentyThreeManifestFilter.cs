@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Skybrud.Essentials.Strings.Extensions;
 using Umbraco.Cms.Core.Manifest;
 
 namespace Limbo.Umbraco.TwentyThree.Manifests {
@@ -10,7 +9,9 @@ namespace Limbo.Umbraco.TwentyThree.Manifests {
         /// <inheritdoc />
         public void Filter(List<PackageManifest> manifests) {
             manifests.Add(new PackageManifest {
-                PackageName = TwentyThreePackage.Alias.ToKebabCase(),
+                AllowPackageTelemetry = true,
+                PackageName = TwentyThreePackage.Name,
+                Version = TwentyThreePackage.InformationalVersion,
                 BundleOptions = BundleOptions.Independent,
                 Scripts = new[] {
                     $"/App_Plugins/{TwentyThreePackage.Alias}/Scripts/Services/TwentyThreeService.js",

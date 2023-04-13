@@ -23,7 +23,7 @@
     <PackageId>Limbo.Umbraco.TwentyThree</PackageId>
     <PackageTags>Skybrud, Limbo, Umbraco, TwentyThree, 23Video, Video, Umbraco-Marketplace</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/limbo-works/Limbo.Umbraco.TwentyThree</PackageProjectUrl>
+    <PackageProjectUrl>https://packages.limbo.works/limbo.umbraco.twentythree/v2</PackageProjectUrl>
     <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/limbo-works/Limbo.Umbraco.TwentyThree</RepositoryUrl>
