@@ -79,7 +79,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
                 return config.Autoplay == TwentyThreeAutoplay.Enabled;
             }
             
-            string value = json.GetString("autoplay");
+            string? value = json.GetString("autoplay");
             return value switch {
                 "enabled" => true,
                 "disabled" => false,

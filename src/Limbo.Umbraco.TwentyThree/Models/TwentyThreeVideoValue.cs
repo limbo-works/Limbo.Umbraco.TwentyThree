@@ -51,9 +51,9 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// <param name="config">The configuration of the TwentyThree data type.</param>
         /// <returns>An instance of <see cref="TwentyThreeVideoValue"/>.</returns>
         public static TwentyThreeVideoValue Create(JObject json, TwentyThreeConfiguration? config) {
-            var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x));
-            var details = json.GetObject("video", x => new TwentyThreeVideoDetails(x));
-            var embed = json.GetObject("embed", x => new TwentyThreeVideoEmbed(x, details, parameters, config));
+            var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x))!;
+            var details = json.GetObject("video", x => new TwentyThreeVideoDetails(x))!;
+            var embed = json.GetObject("embed", x => new TwentyThreeVideoEmbed(x, details, parameters, config))!;
             return new TwentyThreeVideoValue(json, parameters, details, embed);
         }
 

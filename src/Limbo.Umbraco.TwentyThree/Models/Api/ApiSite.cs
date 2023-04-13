@@ -21,7 +21,7 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
         public string SecureDomain { get; }
 
         public ApiSite(TwentyThreeSite site) {
-            Id = site.JObject.GetString("site_id");
+            Id = site.JObject.GetString("site_id")!;
             Name = site.SiteName;
             Domain = site.Domain;
             SecureDomain = site.SecureDomain;

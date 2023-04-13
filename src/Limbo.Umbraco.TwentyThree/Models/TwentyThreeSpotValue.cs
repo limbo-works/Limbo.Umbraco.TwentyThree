@@ -27,7 +27,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         #endregion
 
         #region Constructors
-        
+
         private TwentyThreeSpotValue(JObject json, TwentyThreeSpotDetails details, TwentyThreeSpotEmbed embed) : base(json, "spot", details, embed) {
             Details = details;
             Embed = embed;
@@ -44,7 +44,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// <returns>An instance of <see cref="TwentyThreeSpotValue"/>.</returns>
         public static TwentyThreeSpotValue Create(JObject json) {
             var thumbnails = json.GetArrayItems("thumbnails", TwentyThreeThumbnail.Parse);
-            var details = json.GetObject("spot", x => new TwentyThreeSpotDetails(x, thumbnails));
+            var details = json.GetObject("spot", x => new TwentyThreeSpotDetails(x, thumbnails))!;
             var embed = new TwentyThreeSpotEmbed(details);
             return new TwentyThreeSpotValue(json, details, embed);
         }

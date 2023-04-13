@@ -93,10 +93,10 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         #region Static methods
 
         internal static TwentyThreeThumbnail Parse(JObject json) {
-            string alias = json.GetString("alias");
+            string alias = json.GetString("alias")!;
             int width = json.GetInt32("width");
             int height = json.GetInt32("height");
-            string url = json.GetString("url");
+            string url = json.GetString("url")!;
             return new TwentyThreeThumbnail(alias, width, height, url);
         }
 

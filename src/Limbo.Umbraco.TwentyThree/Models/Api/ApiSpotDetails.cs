@@ -35,7 +35,7 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
             Type = "spot";
             Source = options.Source;
             Credentials = new ApiCredentials(credentials);
-            Spot = spot.JObject;
+            Spot = spot.JObject!;
             Site = new ApiSite(site);
         }
 

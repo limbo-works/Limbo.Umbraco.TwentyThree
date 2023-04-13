@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 
 namespace Limbo.Umbraco.TwentyThree.Models {
@@ -62,7 +62,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// </summary>
         /// <param name="json">The JSON object representing the details.</param>
         public TwentyThreeVideoDetails(JObject json) {
-            Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreePhoto.Parse));
+            Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreePhoto.Parse))!;
             Id = Data.PhotoId;
             Title = Data.Title;
             Duration = Data.VideoLength;

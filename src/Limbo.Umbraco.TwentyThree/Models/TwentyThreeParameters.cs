@@ -1,8 +1,6 @@
 ﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Enums;
-using Skybrud.Essentials.Json.Extensions;
-using Skybrud.Essentials.Strings;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 
 namespace Limbo.Umbraco.TwentyThree.Models {
 
@@ -47,11 +45,11 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// </summary>
         /// <param name="json">The JSON object representing the parameters.</param>
         public TwentyThreeParameters(JObject json) {
-            VideoId = json.GetString("videoId");
-            Token = json.GetString("token");
+            VideoId = json.GetString("videoId")!;
+            Token = json.GetString("token")!;
             PlayerId = json.GetString("playerId");
-            Autoplay = json.GetString("autoplay", x => x == null ? default(bool?) : StringUtils.ParseBoolean(x));
-            EndOn = json.GetString("endOn", x => x == null ? default(TwentyThreeEndOn?) : EnumUtils.ParseEnum<TwentyThreeEndOn>(x));
+            Autoplay = json.GetBooleanOrNull("autoplay");
+            EndOn = json.GetEnumOrNull<TwentyThreeEndOn>("endOn");
         }
 
         #endregion

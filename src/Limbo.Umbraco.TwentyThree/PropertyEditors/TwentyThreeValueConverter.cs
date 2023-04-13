@@ -1,7 +1,7 @@
 ﻿using System;
 using Limbo.Umbraco.TwentyThree.Models;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Json.Newtonsoft;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Extensions;
@@ -15,11 +15,11 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         public override bool IsConverter(IPublishedPropertyType propertyType) {
             return propertyType.EditorAlias == TwentyThreeEditor.EditorAlias;
         }
-        
+
         public override object? ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object? source, bool preview) {
             return source is string str && str.DetectIsJson() ? JsonUtils.ParseJsonObject(str) : null;
         }
-        
+
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview) {
 
             var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
@@ -36,12 +36,12 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType) {
 
             var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
-            if (config == null) return typeof(TwentyThreeValue);
 
-            if (config.AllowVideos && !config.AllowSpots) return typeof(TwentyThreeVideoValue);
-            if (!config.AllowVideos && config.AllowSpots) return typeof(TwentyThreeSpotValue);
-
-            return typeof(TwentyThreeValue);
+            return config switch {
+                { AllowVideos: true, AllowSpots: false } => typeof(TwentyThreeVideoValue),
+                { AllowVideos: false, AllowSpots: true } => typeof(TwentyThreeSpotValue),
+                _ => typeof(TwentyThreeValue)
+            };
 
         }
 

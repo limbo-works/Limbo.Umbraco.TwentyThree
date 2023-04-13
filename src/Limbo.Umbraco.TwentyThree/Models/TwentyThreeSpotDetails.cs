@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Social.TwentyThree.Models.Spots;
 
 namespace Limbo.Umbraco.TwentyThree.Models {
@@ -30,7 +30,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
         /// <param name="json">The JSON object representing the details.</param>
         /// <param name="thumbnails">An array of thumbnails.</param>
         public TwentyThreeSpotDetails(JObject json, IReadOnlyList<TwentyThreeThumbnail> thumbnails) {
-            Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreeSpot.Parse));
+            Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreeSpot.Parse))!;
             Id = Data.SpotId;
             Title = Data.SpotName;
             Thumbnails = thumbnails;

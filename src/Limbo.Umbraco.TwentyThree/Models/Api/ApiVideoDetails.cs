@@ -38,7 +38,7 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
             Source = options.Source;
             Credentials = new ApiCredentials(credentials);
             Parameters = new ApiVideoParameters(video.PhotoId, options);
-            Video = video.JObject;
+            Video = video.JObject!;
             Player = new ApiPlayer(player);
             Site = new ApiSite(site);
         }
