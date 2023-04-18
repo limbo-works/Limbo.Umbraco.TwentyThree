@@ -1,4 +1,4 @@
-# Limbo TwentyThree [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) [![NuGet](https://img.shields.io/nuget/v/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree) [![NuGet](https://img.shields.io/nuget/dt/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree) [![Our Umbraco](https://img.shields.io/badge/our-umbraco-%233544B1)](https://our.umbraco.com/packages/backoffice-extensions/limbo-twentythree/)
+# Limbo TwentyThree [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) [![NuGet](https://img.shields.io/nuget/v/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree) [![NuGet](https://img.shields.io/nuget/dt/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree) [![Umbraco Marketplace](https://img.shields.io/badge/umbraco-marketplace-%233544B1)](https://marketplace.umbraco.com/package/limbo.umbraco.twentythree)
 
 This package features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
 
@@ -10,7 +10,7 @@ This package features a property editor for inserting (via URL or embed code) a 
   <tr>
     <td><strong>Umbraco:</strong></td>
     <td>
-      Umbraco 10
+      Umbraco 10 + 11
     </td>
   </tr>
   <tr>
@@ -26,16 +26,16 @@ This package features a property editor for inserting (via URL or embed code) a 
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.0-alpha003). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.1). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.0-alpha003
+dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.1
 ```
 
 or the older NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.0-alpha003
+Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.1
 ```
 
 
@@ -48,7 +48,7 @@ Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.0-alpha003
 ## Dependencies
 
 - [**Umbraco 10**](https://github.com/umbraco/Umbraco-CMS)  
-The package currently only supports Umbraco 10.
+The package currently only supports Umbraco 10 and 11. While build against Umbraco 10, the package can also be used with Umbraco 11.
 
 - [**Skybrud.Essentials.Http**](https://github.com/skybrud/Skybrud.Essentials.Http)  
 Our package for making HTTP requests.
