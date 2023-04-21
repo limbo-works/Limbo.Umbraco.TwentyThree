@@ -13,13 +13,14 @@
 
     vm.config.allowVideos = vm.config.allowVideos !== false;
     vm.config.allowSpots = vm.config.allowSpots !== false;
+    vm.config.showUploadLink = vm.config.showUploadLink !== false;
 
     vm.config.dataTypeKey = $scope.model.dataTypeKey;
 
     vm.showSite = vm.config.hideSite !== true;
     vm.showPlayer = vm.config.hidePlayer !== true;
     vm.showEmbed = vm.config.hideEmbed !== true;
-    
+
     vm.autoplay = [
         { alias: "inherit", label: "Inherit" },
         { alias: "enabled", label: "Enabled" },
@@ -42,7 +43,8 @@
         refreshSpot: "Refresh current spot",
         overridden: "Overridden by data type.",
         video: "video",
-        videos: "videos"
+        videos: "videos",
+        uploadVideoExternal: "Upload video"
     };
 
     vm.setVideo = function (item, source, refresh) {
@@ -128,11 +130,11 @@
         vm.loading = true;
         vm.update();
 
-        twentyThreeService.getVideo(source, vm.config).then(function(res) {
+        twentyThreeService.getVideo(source, vm.config).then(function (res) {
             vm.setVideo(res.data, null, refresh);
             vm.loading = false;
             vm.update();
-        }, function(res) {
+        }, function (res) {
             vm.loading = false;
             if (typeof res.data === "string") {
                 notificationsService.error("TwentyThree", res.data);
@@ -229,18 +231,22 @@
         });
     };
 
+    vm.uploadVideoExternal = function () {
+        twentyThreeService.openUploadVideoExternal();
+    };
+
     vm.selectPlayer = function () {
         twentyThreeService.selectPlayer({
             credentials: $scope.model.value.credentials,
             player: $scope.model.value.player,
-            submit: function(model) {
+            submit: function (model) {
                 $scope.model.value.player = model.selectedPlayer;
                 model.close();
             }
         });
     };
 
-    vm.setAutoplay = function(o) {
+    vm.setAutoplay = function (o) {
         if (!$scope.model.embed) $scope.model.embed = {};
         switch (o.alias) {
             case "enabled":
@@ -297,7 +303,7 @@
     init();
 
     // Hack to re-set the property value to null as Umbraco may change the value to a string with the value "null"
-    $scope.$watch("model.value", function() {
+    $scope.$watch("model.value", function () {
         if ($scope.model.value === "null") $scope.model.value = null;
         if ($scope.model.value && !$scope.model.value.source) $scope.model.value = null;
     });

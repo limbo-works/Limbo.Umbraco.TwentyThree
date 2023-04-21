@@ -50,6 +50,11 @@ namespace Limbo.Umbraco.TwentyThree.Models.Credentials {
         public string? AccessTokenSecret { get; internal set; }
 
         /// <summary>
+        /// If configured, gets the URL of the upload page.
+        /// </summary>
+        public string? UploadUrl { get; internal set; }
+
+        /// <summary>
         /// Initializes a new instance with default options.
         /// </summary>
         public TwentyThreeCredentials() { }

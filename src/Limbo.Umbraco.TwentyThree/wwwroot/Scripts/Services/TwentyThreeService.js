@@ -78,6 +78,31 @@
 
     }
 
+    function openUploadVideoExternal() {
+
+        const options = {
+            title: "Select account",
+            view: `/App_Plugins/Limbo.Umbraco.TwentyThree/Views/UploadExternal.html?v=${cacheBuster}`,
+            size: "medium",
+            loading: true,
+            accounts: [],
+            close: function () {
+                editorService.close();
+            },
+            submit: function () {
+                editorService.close();
+            }
+        };
+
+        editorService.open(options);
+
+        $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAccounts`).then(function (res) {
+            options.accounts = res.data.filter(x => !!x.uploadUrl);
+            options.loading = false;
+        });
+
+    }
+
     function selectPlayer(options) {
 
         if (!options) options = {};
@@ -92,7 +117,7 @@
 
         editorService.open(options);
 
-        $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetPlayers?credentialsId=${options.credentials.id}`).then(function(res) {
+        $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetPlayers?credentialsId=${options.credentials.id}`).then(function (res) {
             options.players = res.data;
             options.loading = false;
         });
@@ -111,7 +136,7 @@
 
         const scheme = video.absolute_url.split(":")[0];
         const domain = video.absolute_url.split("/")[2];
-        
+
         const aliases = ["quad16", "quad50", "quad75", "quad100", "small", "medium", "portrait", "standard", "large", "original"];
 
         const thumbnails = [];
@@ -144,6 +169,7 @@
         getVideo,
         openAddVideo,
         openAddSpot,
+        openUploadVideoExternal,
         getDuration,
         selectPlayer,
         getThumbnails

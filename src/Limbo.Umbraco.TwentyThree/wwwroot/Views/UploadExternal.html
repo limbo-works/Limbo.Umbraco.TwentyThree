@@ -1,0 +1,48 @@
+﻿<div class="limbo-twentythree-video-overlay" ng-controller="Limbo.Umbraco.TwentyThree.UploadExternal as vm" ng-class="{loading: model.loading || vm.loading}">
+    <umb-editor-view>
+        <div class="umb-editor-header">
+            <div class="umb-loader-wrapper top" ng-show="model.loading || vm.loading" aria-hidden="true">
+                <div class="umb-loader"></div>
+            </div>
+            <div class="umb-editor-header-content">
+                <div class="umb-panel-header-name" aria-hidden="false">
+                    {{model.title}}
+                </div>
+            </div>
+        </div>
+        <umb-editor-container>
+            <div class="--accounts">
+                <umb-box>
+                    <umb-box-content>
+                        <div ng-if="model.accounts.length == 0" class="alert alert-danger">
+                            None of the configured accounts allows video upload.
+                        </div>
+                        <ul ng-if="model.accounts.length > 0" class="umb-card-grid" ng-class="{'-three-in-row': model.accounts.length < 7, '-four-in-row': model.accounts.length >= 7}">
+                            <li ng-repeat="account in model.accounts">
+                                <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectAccount(account)">
+                                    <span>
+                                        <umb-icon icon="icon-application-window-alt"></umb-icon>
+                                        <div>
+                                            <span>{{account.name}}</span><br />
+                                            <small>{{account.domains[0]}}</small>
+                                        </div>
+                                    </span>
+                                </button>
+                            </li>
+                        </ul>
+                    </umb-box-content>
+                </umb-box>
+            </div>
+        </umb-editor-container>
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button type="button"
+                            button-style="link"
+                            shortcut="esc"
+                            label-key="general_close"
+                            action="model.close()">
+                </umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+    </umb-editor-view>
+</div>

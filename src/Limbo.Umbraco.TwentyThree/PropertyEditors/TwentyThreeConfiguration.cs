@@ -46,7 +46,7 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         public bool HideEmbed { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the property editor show allow regular videos.
+        /// Gets or sets whether the property editor should allow regular videos.
         /// </summary>
         [ConfigurationField("allowVideos",
             "Allow videos",
@@ -55,7 +55,7 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         public bool AllowVideos { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the property editor show allow spots.
+        /// Gets or sets whether the property editor should allow spots.
         /// </summary>
         [ConfigurationField("allowSpots",
             "Allow spots",
@@ -63,6 +63,16 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
             Description = "Select whether spots should be allowed in the property editor.")]
         [JsonProperty("allowSpots")]
         public bool AllowSpots { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the property editor should show a link for an external upload page.
+        /// </summary>
+        [ConfigurationField("showUploadLink",
+            "Show upload link",
+            "boolean",
+            Description = "Select whether the property editor should show a link for an external upload page.")]
+        [JsonProperty("showUploadLink")]
+        public bool ShowUploadLink { get; set; }
 
     }
 
