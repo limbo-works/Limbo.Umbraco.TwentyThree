@@ -1,6 +1,5 @@
 ﻿<div class="limbo-twentythree-video-overlay" ng-controller="Limbo.Umbraco.TwentyThree.VideoOverlay as vm" ng-class="{loading: model.loading || vm.loading}">
     <umb-editor-view>
-        
         <div class="umb-editor-header">
             <div class="umb-loader-wrapper top" ng-show="model.loading || vm.loading" aria-hidden="true">
                 <div class="umb-loader"></div>
@@ -19,7 +18,7 @@
                 <umb-box>
                     <umb-box-content>
                         <ul class="umb-card-grid" ng-class="{'-three-in-row': model.accounts.length < 7, '-four-in-row': model.accounts.length >= 7}">
-                            <li ng-repeat="account in model.accounts" ">
+                            <li ng-repeat="account in model.accounts">
                                 <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectAccount(account)">
                                     <span>
                                         <umb-icon icon="icon-application-window-alt"></umb-icon>
@@ -36,7 +35,7 @@
             </div>
             <div ng-if="vm.account" class="--video-list">
                 <ul class="umb-card-grid -four-in-row">
-                    <li ng-repeat="video in vm.videos" ">
+                    <li ng-repeat="video in vm.videos">
                         <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectVideo(video)">
                             <div class="--thumbnail">
                                 <img ng-src="{{video.thumbnails.medium.url}}" width="270" height="153" />
@@ -46,6 +45,7 @@
                                 <div class="--duration">
                                     <limbo-video-duration value="video.duration"></limbo-video-duration>
                                 </div>
+                                <div class="--description" ng-if="video.description">{{video.description}}</div>
                             </div>
                         </button>
                     </li>

@@ -11,6 +11,10 @@
     vm.text = null;
     vm.limit = null;
 
+    // Parse the configuration passed to the overlay. This will likely come from the data type
+    vm.config = $scope.model.config ?? {};
+    if (!vm.config.descriptionMaxLength) vm.config.descriptionMaxLength = 0;
+
     let wait = null;
 
     // Loads the previous page
@@ -86,10 +90,22 @@
                     video: x,
                     videoId: x.photo_id,
                     title: x.title,
+                    description: x.content_text,
                     duration: x.video_length,
                     thumbnails: twentyThreeService.getThumbnails(x),
                     player: vm.player
                 };
+
+                // If the description is the same as the title, we shouldn't show the description
+                if (item.description == item.title) item.description = null;
+
+                // If a maximum description length is configured, we truncate the description if it's too long
+                if (vm.config.descriptionMaxLength > 3 && item.description && item.description.length > vm.config.descriptionMaxLength) {
+                    item.description = item.description.substr(0, vm.config.descriptionMaxLength - 3) + "...";
+                }
+
+                // If the maximum description length is a negative number, we hide the escription entirely
+                if (vm.config.descriptionMaxLength < 0) item.description = null;
 
                 return item;
 

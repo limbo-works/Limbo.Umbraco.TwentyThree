@@ -74,6 +74,15 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         [JsonProperty("showUploadLink")]
         public bool ShowUploadLink { get; set; }
 
+        /// <summary>
+        /// Gets or sets the maximum description length that will be shown in overlays.
+        /// </summary>
+        [ConfigurationField(key: "descriptionMaxLength",
+            name: "Max description length",
+            view: "number",
+            Description = "Select the maximum description length that will be shown in overlays. The descriptions that exceed this limit will be truncated.")]
+        public int DescriptionMaxLength { get; set; }
+
     }
 
 }

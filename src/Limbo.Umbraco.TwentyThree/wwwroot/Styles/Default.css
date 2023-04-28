@@ -164,6 +164,11 @@
 .limbo-twentythree-video-overlay .umb-card-grid-item .--duration {
   font-size: 12px;
 }
+.limbo-twentythree-video-overlay .umb-card-grid-item .--description {
+  margin-top: 5px;
+  color: #333;
+  line-height: 18px;
+}
 .limbo-twentythree-video-overlay .--video-list .umb-card-grid {
   gap: 10px 10px;
   display: flex;

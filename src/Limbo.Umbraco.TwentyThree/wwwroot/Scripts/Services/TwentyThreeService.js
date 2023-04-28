@@ -24,12 +24,13 @@
 
     }
 
-    function openAddVideo(submit) {
+    function openAddVideo(submit, config) {
 
         const options = {
             title: "Select account",
             view: `/App_Plugins/Limbo.Umbraco.TwentyThree/Views/VideoOverlay.html?v=${cacheBuster}`,
             size: "medium",
+            config: config,
             loading: true,
             accounts: [],
             close: function () {
@@ -57,6 +58,7 @@
             title: "Select account",
             view: `/App_Plugins/Limbo.Umbraco.TwentyThree/Views/SpotOverlay.html?v=${cacheBuster}`,
             size: "medium",
+            config: config,
             loading: true,
             accounts: [],
             close: function () {

@@ -219,7 +219,7 @@
             if (!$scope.model.value) $scope.model.value = {};
             vm.setVideo(model.selectedItem, model.selectedItem.url);
             model.close();
-        });
+        }, vm.config);
     };
 
     // Opens a new overlay where the editor can browse and pick spots
@@ -228,7 +228,7 @@
             if (!$scope.model.value) $scope.model.value = {};
             vm.setVideo(model.selectedItem, model.selectedItem.source);
             model.close();
-        });
+        }, vm.config);
     };
 
     vm.uploadVideoExternal = function () {
