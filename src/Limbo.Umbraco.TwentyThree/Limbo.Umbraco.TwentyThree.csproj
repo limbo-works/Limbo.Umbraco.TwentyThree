@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.0.2</VersionPrefix>
+    <VersionPrefix>2.0.3</VersionPrefix>
     <VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
     <Company>Limbo</Company>
     <Authors>Anders Bjerner</Authors>
@@ -23,7 +23,7 @@
     <PackageId>Limbo.Umbraco.TwentyThree</PackageId>
     <PackageTags>Skybrud, Limbo, Umbraco, TwentyThree, 23Video, Video, Umbraco-Marketplace</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://packages.limbo.works/limbo.umbraco.twentythree/v2</PackageProjectUrl>
+    <PackageProjectUrl>https://packages.limbo.works/limbo.umbraco.twentythree/v2/</PackageProjectUrl>
     <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/limbo-works/Limbo.Umbraco.TwentyThree</RepositoryUrl>
