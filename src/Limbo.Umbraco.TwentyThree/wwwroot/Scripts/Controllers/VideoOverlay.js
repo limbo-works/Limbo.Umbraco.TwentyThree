@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $element, $http, $timeout, localizationService, twentyThreeService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $element, $http, $timeout, localizationService, notificationsService, twentyThreeService) {
 
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
@@ -114,6 +114,16 @@
             $scope.model.loading = false;
             vm.loaded = true;
 
+        }, function (res) {
+
+            $scope.model.loading = false;
+
+            if (typeof res.data === "string") {
+                notificationsService.error("TwentyThree", res.data);
+            } else {
+                notificationsService.error("TwentyThree", "Failed getting list of videos from the TwentyThree API.");
+            }
+
         });
 
     };
@@ -136,6 +146,14 @@
             vm.player = res1.data.find(x => x.default);
 
             vm.getVideos();
+
+        }, function (res) {
+
+            if (typeof res.data === "string") {
+                notificationsService.error("TwentyThree", res.data);
+            } else {
+                notificationsService.error("TwentyThree", "Failed getting list of TwentyThree accounts.");
+            }
 
         });
 

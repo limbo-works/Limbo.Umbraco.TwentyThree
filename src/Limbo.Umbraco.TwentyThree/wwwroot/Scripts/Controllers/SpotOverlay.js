@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.SpotOverlay", function ($scope, $http, $timeout, localizationService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.SpotOverlay", function ($scope, $http, $timeout, localizationService, notificationsService) {
 
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
@@ -82,6 +82,16 @@
 
             $scope.model.loading = false;
             vm.loaded = true;
+
+        }, function (res) {
+
+            vm.loaded = true;
+
+            if (typeof res.data === "string") {
+                notificationsService.error("TwentyThree", res.data);
+            } else {
+                notificationsService.error("TwentyThree", "Failed getting list of spots from the TwentyThree API.");
+            }
 
         });
 

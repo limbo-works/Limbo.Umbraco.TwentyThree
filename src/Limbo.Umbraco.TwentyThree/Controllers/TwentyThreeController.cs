@@ -134,6 +134,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
                 list = response.Body;
 
+            } catch (TwentyThreeHttpException ex) when(ex.HasError) {
+
+                _logger.LogError(ex, "Failed getting list of videos from the TwentyThree API: {ErrorCode} - {Message}", ex.Error.Code, ex.Error.Message);
+
+                return InternalServerError("Failed getting list of videos from the TwentyThree API.");
+
             } catch (Exception ex) {
 
                 _logger.LogError(ex, "Failed getting list of videos from the TwentyThree API.");
@@ -170,6 +176,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 });
 
                 list = response.Body;
+
+            } catch (TwentyThreeHttpException ex) when (ex.HasError) {
+
+                _logger.LogError(ex, "Failed getting list of spots from the TwentyThree API: {ErrorCode} - {Message}", ex.Error.Code, ex.Error.Message);
+
+                return InternalServerError("Failed getting list of spots from the TwentyThree API.");
 
             } catch (Exception ex) {
 
@@ -252,6 +264,12 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 // Get the players from the response body
                 players = response.Body.Players;
 
+            } catch (TwentyThreeHttpException ex) when(ex.HasError) {
+
+                 _logger.LogError(ex, "Failed getting list of players from the TwentyThree API: {ErrorCode} - {Message}", ex.Error.Code, ex.Error.Message);
+
+                return InternalServerError("Failed getting list of players from the TwentyThree API.");
+
             } catch (Exception ex) {
 
                 _logger.LogError(ex, "Failed getting list of players from the TwentyThree API.");
@@ -293,18 +311,17 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 // Get a reference to the current site
                 site = response.Body.Site;
 
-            } catch (TwentyThreeHttpException ex) {
+            } catch (TwentyThreeHttpException ex) when (ex.HasError) {
 
                 if (ex.Error.Code == "photo_not_found") return NotFound("Video not found.");
 
-                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with {VideoId}.", options.VideoId);
+                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with ID {VideoId}: {ErrorCode} - {Message}", options.VideoId, ex.Error.Code, ex.Error.Message);
 
                 return InternalServerError("Failed getting video information from the TwentyThree API.");
 
-
             } catch (Exception ex) {
 
-                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with {VideoId}.", options.VideoId);
+                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with ID {VideoId}.", options.VideoId);
 
                 return InternalServerError("Failed getting video information from the TwentyThree API.");
 
@@ -321,15 +338,19 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
                 if (player == null) return NotFound("Player not found.");
 
+                return new ApiVideoDetails(options, credentials, video, player, site);
+
+            } catch (TwentyThreeHttpException ex) when (ex.HasError) {
+
+                _logger.LogError(ex, "Failed getting video information from the TwentyThree API for video with ID {VideoId}: {ErrorCode} - {Message}", options.PlayerId, ex.Error.Code, ex.Error.Message);
+
             } catch (Exception ex) {
 
                 _logger.LogError(ex, "Failed getting player information from the TwentyThree API for player with {PlayerId}.", options.PlayerId);
 
-                return InternalServerError("Failed getting player information from the TwentyThree API.");
-
             }
 
-            return new ApiVideoDetails(options, credentials, video, player, site);
+            return InternalServerError("Failed getting player information from the TwentyThree API.");
 
         }
 
@@ -357,7 +378,15 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
                 // Get a reference to the current site
                 site = response.Body.Site;
 
-            } catch {
+            } catch (TwentyThreeHttpException ex) when (ex.HasError) {
+
+                _logger.LogError(ex, "Failed getting spot information from the TwentyThree API: {ErrorCode} - {Message}", ex.Error.Code, ex.Error.Message);
+
+                return InternalServerError("Failed getting spot information from the TwentyThree API.");
+
+            } catch (Exception ex) {
+
+                _logger.LogError(ex, "Failed getting spot information from the TwentyThree API.");
 
                 return InternalServerError("Failed getting spot information from the TwentyThree API.");
 
