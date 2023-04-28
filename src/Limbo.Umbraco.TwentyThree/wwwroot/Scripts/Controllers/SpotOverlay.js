@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.SpotOverlay", function ($scope, $http, $timeout) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.SpotOverlay", function ($scope, $http, $timeout, localizationService) {
 
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
@@ -6,8 +6,15 @@
 
     vm.labels = {
         video: "video",
-        videos: "videos"
+        videos: "videos",
+        spotOverlayTitle: "Select a spot"
     };
+
+    Object.keys(vm.labels).forEach(function (key) {
+        localizationService.localize("twentyThree_" + key).then(function (value) {
+            if (value[0] != "[") vm.labels[key] = value;
+        });
+    });
 
     vm.account = null;
     vm.spots = [];
@@ -84,10 +91,14 @@
 
         $scope.model.loading = true;
 
-        $scope.model.title = "Select spot";
+        $scope.model.title = vm.labels.spotOverlayTitle;
         $scope.model.size = "large";
 
         vm.account = account;
+
+        localizationService.localize("twentyThree_spotOverlayTitle").then(function (value) {
+            $scope.model.title = value;
+        });
 
         vm.getSpots();
 

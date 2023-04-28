@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $element, $http, $timeout, twentyThreeService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.VideoOverlay", function ($scope, $element, $http, $timeout, localizationService, twentyThreeService) {
 
     const umbracoPath = Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath;
 
@@ -126,6 +126,10 @@
         $scope.model.size = "large";
 
         vm.account = account;
+
+        localizationService.localize("twentyThree_videoOverlayTitle").then(function (value) {
+            $scope.model.title = value;
+        });
 
         $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetPlayers?credentialsId=${vm.account.id}`).then(function (res1) {
 

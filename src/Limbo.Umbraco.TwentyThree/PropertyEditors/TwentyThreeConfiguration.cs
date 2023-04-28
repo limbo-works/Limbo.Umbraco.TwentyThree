@@ -28,12 +28,12 @@ namespace Limbo.Umbraco.TwentyThree.PropertyEditors {
         public TwentyThreeEndOn EndOn { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the <strong>Site</strong> block should be hidden in the property editor.
+        /// Gets or sets whether the <strong>Account</strong> block should be hidden in the property editor.
         /// </summary>
         [ConfigurationField("hideSite",
-            "Hide site information",
+            "Hide account information",
             "boolean",
-            Description = "Select whether the site information should be hidden in the property editor.")]
+            Description = "Select whether the account information should be hidden in the property editor.")]
         public bool HideSite { get; set; }
 
         /// <summary>

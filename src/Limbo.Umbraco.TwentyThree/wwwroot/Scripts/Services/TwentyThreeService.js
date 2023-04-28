@@ -1,4 +1,4 @@
-﻿angular.module("umbraco.services").factory("twentyThreeService", function ($http, editorService, limboVideoService) {
+﻿angular.module("umbraco.services").factory("twentyThreeService", function ($http, editorService, limboVideoService, localizationService) {
 
     // Get relevant settings from Umbraco's server variables
     const cacheBuster = Umbraco.Sys.ServerVariables.application.cacheBuster;
@@ -41,6 +41,10 @@
 
         editorService.open(options);
 
+        localizationService.localize("twentyThree_accountOverlayTitle").then(function (value) {
+            options.title = value;
+        });
+
         $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAccounts`).then(function (res) {
             options.accounts = res.data;
             if (options.selectAccount && res.data.length === 1) {
@@ -52,7 +56,7 @@
 
     }
 
-    function openAddSpot(submit) {
+    function openAddSpot(submit, config) {
 
         const options = {
             title: "Select account",
@@ -68,6 +72,10 @@
         };
 
         editorService.open(options);
+
+        localizationService.localize("twentyThree_accountOverlayTitle").then(function (value) {
+            options.title = value;
+        });
 
         $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAccounts`).then(function (res) {
             options.accounts = res.data;
@@ -97,6 +105,10 @@
         };
 
         editorService.open(options);
+
+        localizationService.localize("twentyThree_accountOverlayTitle").then(function (value) {
+            options.title = value;
+        });
 
         $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAccounts`).then(function (res) {
             options.accounts = res.data.filter(x => !!x.uploadUrl);

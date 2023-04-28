@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.Video", function ($scope, $element, $timeout, notificationsService, twentyThreeService) {
+﻿angular.module("umbraco").controller("Limbo.Umbraco.TwentyThree.Video", function ($scope, $element, $timeout, localizationService, notificationsService, twentyThreeService) {
 
     const vm = this;
 
@@ -37,15 +37,23 @@
 
     vm.labels = {
         urlOrEmbedCode: "URL or embed code",
-        addVideo: "Select a video",
-        addSpot: "Select a spot",
+        addVideo: "Select video",
+        addSpot: "Select spot",
         refreshVideo: "Refresh current video",
         refreshSpot: "Refresh current spot",
         overridden: "Overridden by data type.",
         video: "video",
         videos: "videos",
+        titleVideo: "Video",
+        titleSpot: "Spot",
         uploadVideoExternal: "Upload video"
     };
+
+    Object.keys(vm.labels).forEach(function (key) {
+        localizationService.localize("twentyThree_" + key).then(function (value) {
+            if (value[0] != "[") vm.labels[key] = value;
+        });
+    });
 
     vm.setVideo = function (item, source, refresh) {
 

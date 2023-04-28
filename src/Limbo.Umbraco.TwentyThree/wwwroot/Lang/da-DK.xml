@@ -1,11 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 
 <language alias="en" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
-  <area alias="limboVideo">
+  <area alias="twentyThree">
     <key alias="videoId">ID</key>
     <key alias="title">Titel</key>
     <key alias="duration">Længde</key>
     <key alias="urlPlaceholder">Angiv videoens URL her...</key>
     <key alias="urlEmbedPlaceholder">Angiv videoens URL eller embed-kode her...</key>
+    <key alias="accountOverlayTitle">Vælg en konto</key>
+    <key alias="videoOverlayTitle">Vælg en video</key>
+    <key alias="spotOverlayTitle">Vælg et spot</key>
+    <key alias="addVideo">Indsæt video</key>
+    <key alias="addSpot">Indsæt spot</key>
+    <key alias="uploadVideoExternal">Upload video</key>
+    <key alias="refreshVideo">Genindlæs nuværende video</key>
+    <key alias="refreshSpot">Genindlæs nuværende spot</key>
+    <key alias="video">video</key>
+    <key alias="videos">videoer</key>
+    <key alias="spot">spot</key>
+    <key alias="urlOrEmbedCode">URL eller embedkode</key>
+
+    <key alias="titleVideo">Video</key>
+    <key alias="titleSpot">Spot</key>
+
+    <key alias="labelAccount">Konto</key>
+    <key alias="labelEmbed">Embed</key>
+    <key alias="labelAccountId">ID</key>
+    <key alias="labelAccountName">Navn</key>
+    <key alias="labelAccountDomain">Domæne</key>
+
   </area>
 </language>
