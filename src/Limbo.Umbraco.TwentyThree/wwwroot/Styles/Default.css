@@ -62,13 +62,29 @@
   max-width: 800px;
   box-sizing: border-box;
 }
+.limbo-twentythree-video .--box .flex {
+  display: flex;
+}
+.limbo-twentythree-video .--box .flex-wrap {
+  flex-wrap: wrap;
+}
 .limbo-twentythree-video .--video .--box {
+  display: block;
+}
+.limbo-twentythree-video .--video .--box .--top {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 20px 10px;
 }
 .limbo-twentythree-video .--video .--box .--thumbnail {
   width: 270px;
+}
+.limbo-twentythree-video .--video .--box .--description {
+  margin-top: 15px;
+  white-space: pre-wrap;
+  color: #333;
+  line-height: 20px;
+  font-size: 14px;
 }
 .limbo-twentythree-video .--properties {
   display: flex;

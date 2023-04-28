@@ -77,15 +77,36 @@
         padding: 12px 15px;
         max-width: 800px;
         box-sizing: border-box;
+        .flex {
+            display: flex;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
     }
 
     .--video .--box {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
+
+        display: block;
+
+        .--top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px 10px;
+        }
+
         .--thumbnail {
             width: 270px;
         }
+
+        .--description {
+            margin-top: 15px;
+            white-space: pre-wrap;
+            color: #333;
+            line-height: 20px;
+            font-size: 14px;
+        }
+
     }
 
     .--properties {

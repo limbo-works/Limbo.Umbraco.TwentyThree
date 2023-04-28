@@ -51,33 +51,36 @@
         <div class="--video">
             <h5>{{vm.labels.titleVideo}}</h5>
             <div class="--box">
-                <div class="--thumbnail">
-                    <img ng-src="{{vm.thumbnail.url}}" width="270" height="153" />
+                <div class="--top">
+                    <div class="--thumbnail">
+                        <img ng-src="{{vm.thumbnail.url}}" width="270" height="153" />
+                    </div>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>
+                                    <localize key="twentyThree_videoId">ID</localize>
+                                </th>
+                                <td><code>{{vm.id}}</code></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <localize key="twentyThree_title">Title</localize>
+                                </th>
+                                <td>{{vm.title}}</td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <localize key="twentyThree_duration">Duration</localize>
+                                </th>
+                                <td>
+                                    <limbo-video-duration ng-if="vm.duration" value="vm.duration"></limbo-video-duration>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div>
-                    <table>
-                        <tr>
-                            <th>
-                                <localize key="twentyThree_videoId">ID</localize>
-                            </th>
-                            <td><code>{{vm.id}}</code></td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <localize key="twentyThree_title">Title</localize>
-                            </th>
-                            <td>{{vm.title}}</td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <localize key="twentyThree_duration">Duration</localize>
-                            </th>
-                            <td>
-                                <limbo-video-duration ng-if="vm.duration" value="vm.duration"></limbo-video-duration>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                <div ng-if="vm.video.content_text" class="--description">{{vm.video.content_text}}</div>
             </div>
         </div>
         <div class="--site" ng-if="vm.showSite">
