@@ -15,10 +15,10 @@
                 <umb-box>
                     <umb-box-content>
                         <ul class="umb-card-grid" ng-class="{'-three-in-row': model.accounts.length < 7, '-four-in-row': model.accounts.length >= 7}">
-                            <li ng-repeat="account in model.accounts" ">
+                            <li ng-repeat="account in model.accounts">
                                 <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectAccount(account)">
                                     <span>
-                                        <umb-icon icon="icon-application-window-alt"></umb-icon>
+                                        <umb-icon icon="{{account.icon}}"></umb-icon>
                                         <div>
                                             <span>{{account.name}}</span><br />
                                             <small>{{account.domains[0]}}</small>
@@ -32,7 +32,7 @@
             </div>
             <div ng-if="vm.account" class="--video-list">
                 <ul class="umb-card-grid -four-in-row">
-                    <li ng-repeat="item in vm.spots" ">
+                    <li ng-repeat="item in vm.spots">
                         <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectSpot(item)">
                             <div class="--thumbnail">
                                 <img ng-src="{{item.thumbnails.medium.url}}" width="270" height="153" />

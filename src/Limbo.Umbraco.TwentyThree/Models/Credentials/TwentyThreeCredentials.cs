@@ -25,6 +25,11 @@ namespace Limbo.Umbraco.TwentyThree.Models.Credentials {
         public string? Description { get; internal set; }
 
         /// <summary>
+        /// Gets the icon of the credentials.
+        /// </summary>
+        public string? Icon { get; internal set; }
+
+        /// <summary>
         /// If configured, gets the domains of the associated TwentyThree site.
         /// </summary>
         public IReadOnlyList<string> Domains { get; internal set; } = null!;

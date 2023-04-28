@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Newtonsoft.Json;
+using Skybrud.Essentials.Strings;
 using Skybrud.Essentials.Strings.Extensions;
 
 #pragma warning disable CS1591
@@ -19,6 +20,9 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
         [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
         public string? Description { get; }
 
+        [JsonProperty("icon")]
+        public string Icon { get; }
+
         [JsonProperty("domains")]
         public IReadOnlyList<string> Domains { get; }
 
@@ -30,6 +34,7 @@ namespace Limbo.Umbraco.TwentyThree.Models.Api {
             Key = credentials.Key;
             Name = credentials.Name;
             Description = credentials.Description;
+            Icon = StringUtils.FirstWithValue(credentials.Icon, "icon-application-window-alt");
             Domains = credentials.Domains;
             UploadUrl = credentials.UploadUrl.NullIfWhiteSpace();
 
