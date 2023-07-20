@@ -38,7 +38,7 @@ namespace Limbo.Umbraco.TwentyThree.Models {
 
         #endregion
 
-        #region Properties
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance based on the specified <paramref name="json"/> object.
