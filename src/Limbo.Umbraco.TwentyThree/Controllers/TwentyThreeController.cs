@@ -301,7 +301,8 @@ namespace Limbo.Umbraco.TwentyThree.Controllers {
 
                 // Get information about the video from the TwentyThree API
                 TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
-                    PhotoId = options.VideoId
+                    PhotoId = options.VideoId,
+                    Token = options.Token
                 });
 
                 // Get the first video of the response (if any)
