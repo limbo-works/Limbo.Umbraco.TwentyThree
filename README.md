@@ -28,16 +28,16 @@
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.4). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.5). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.4
+dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.5
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.4
+Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.5
 ```
 
 
