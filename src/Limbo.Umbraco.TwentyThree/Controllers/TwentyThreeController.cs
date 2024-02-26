@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Limbo.Umbraco.TwentyThree.Models.Api;
+using Limbo.Umbraco.TwentyThree.Models.Api.Albums;
 using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
@@ -13,14 +14,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Strings.Extensions;
+using Skybrud.Social.TwentyThree;
 using Skybrud.Social.TwentyThree.Exceptions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 using Skybrud.Social.TwentyThree.Models.Players;
 using Skybrud.Social.TwentyThree.Models.Sites;
 using Skybrud.Social.TwentyThree.Models.Spots;
+using Skybrud.Social.TwentyThree.Options.Albums;
 using Skybrud.Social.TwentyThree.Options.Photos;
 using Skybrud.Social.TwentyThree.Options.Players;
 using Skybrud.Social.TwentyThree.Options.Spots;
+using Skybrud.Social.TwentyThree.Responses.Albums;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
@@ -107,6 +111,37 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         return _options.Value.Credentials.Select(ToApiModel);
     }
 
+    public object GetAlbums(Guid accountId) {
+
+        TwentyThreeCredentials? credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
+        if (credentials == null) return NotFound("Account not found.");
+
+        TwentyThreeHttpService http = _service.GetHttpService(credentials);
+
+        try {
+
+            TwentyThreeAlbumListResponse response = http.Albums.GetList(new TwentyThreeGetAlbumsOptions {
+                Size = 1000
+            });
+
+            return new ApiAlbumList(response);
+
+        } catch (TwentyThreeHttpException ex) when (ex.HasError) {
+
+            _logger.LogError(ex, "Failed getting list of videos from the TwentyThree API: {ErrorCode} - {Message}", ex.Error.Code, ex.Error.Message);
+
+            return InternalServerError("Failed getting list of videos from the TwentyThree API.");
+
+        } catch (Exception ex) {
+
+            _logger.LogError(ex, "Failed getting list of videos from the TwentyThree API.");
+
+            return InternalServerError("Failed getting list of videos from the TwentyThree API.");
+
+        }
+
+    }
+
     /// <summary>
     /// Returns a list of videos of the account with the specified <paramref name="accountId"/>.
     /// </summary>
@@ -114,8 +149,9 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// <param name="text">The text to search for.</param>
     /// <param name="limit">The maximum amount of videos to return for each page.</param>
     /// <param name="page">The page to be returned.</param>
+    /// <param name="albumId">The ID of the album the returned videos should match. Default is <see langword="null"/>.</param>
     /// <returns>A list of vídeos.</returns>
-    public object GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1) {
+    public object GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1, string? albumId = null) {
 
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
@@ -126,11 +162,14 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         try {
 
-            TwentyThreePhotoListResponse response = http.Photos.GetList(new TwentyThreeGetPhotosOptions {
-                Search = text,
-                Size = limit,
-                Page = page
-            });
+            // Initialize the options for the request
+            TwentyThreeGetPhotosOptions options = new() { Search = text, Size = limit, Page = page };
+
+            // Set the album ID if present in the query string
+            if (!string.IsNullOrWhiteSpace(albumId)) options.AlbumId = albumId;
+
+            // Make the request to the TwnetyThree API
+            TwentyThreePhotoListResponse response = http.Photos.GetList(options);
 
             list = response.Body;
 
@@ -170,10 +209,11 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         try {
 
-            var response = http.Spots.GetList(new TwentyThreeGetSpotsOptions {
-                Size  = limit,
-                Page = page
-            });
+            // Initialize the options for the request
+            TwentyThreeGetSpotsOptions options = new() { Size = limit, Page = page };
+
+            // Make the request to the TwnetyThree API
+            TwentyThreeSpotListResponse? response = http.Spots.GetList(options);
 
             list = response.Body;
 

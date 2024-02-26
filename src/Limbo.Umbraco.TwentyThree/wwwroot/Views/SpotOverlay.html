@@ -31,6 +31,9 @@
                 </umb-box>
             </div>
             <div ng-if="vm.account" class="--video-list">
+                <umb-empty-state ng-if="vm.loaded && vm.spots.length === 0" position="center">
+                    <localize key="twentyThree_searchNoSpots">Your search did not match any spots.</localize>
+                </umb-empty-state>
                 <ul class="umb-card-grid -four-in-row">
                     <li ng-repeat="item in vm.spots">
                         <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectSpot(item)">

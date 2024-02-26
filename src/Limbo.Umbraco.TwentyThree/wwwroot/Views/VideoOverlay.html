@@ -8,8 +8,9 @@
                 <div class="umb-panel-header-name" aria-hidden="false">
                     {{model.title}}
                 </div>
-                <div ng-if="vm.loaded">
-                    <input type="text" ng-model="vm.text" ng-change="vm.textChanged()" placeholder="typeToSearch" localize="placeholder" no-dirty-check />
+                <div ng-if="vm.loaded" class="search">
+                    <input class="search-text" type="text" ng-model="vm.text" ng-change="vm.textChanged()" placeholder="typeToSearch" localize="placeholder" no-dirty-check />
+                    <select class="search-album" ng-if="vm.albums.length > 0" ng-options="item as item.title for item in vm.albums track by item.id" ng-model="vm.album" ng-change="vm.albumChanged()"></select>
                 </div>
             </div>
         </div>
@@ -34,6 +35,9 @@
                 </umb-box>
             </div>
             <div ng-if="vm.account" class="--video-list">
+                <umb-empty-state ng-if="vm.loaded && vm.videos.length === 0" position="center">
+                    <localize key="twentyThree_searchNoVideos">Your search did not match any videos.</localize>
+                </umb-empty-state>
                 <ul class="umb-card-grid -four-in-row">
                     <li ng-repeat="video in vm.videos">
                         <button type="button" class="umb-card-grid-item btn-reset" ng-click="vm.selectVideo(video)">
@@ -65,7 +69,7 @@
                             <button type="button" ng-click="vm.getVideos(pgn.page)">{{pgn.page}}</button>
                         </li>
                         <li ng-class="{disabled: vm.pagination.page >= vm.pagination.pages}" class="">
-                            <button type="button" ng-click="vm.next()" >
+                            <button type="button" ng-click="vm.next()">
                                 <localize key="general_next">Next</localize>
                             </button>
                         </li>

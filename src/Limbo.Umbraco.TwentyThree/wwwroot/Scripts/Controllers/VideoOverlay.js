@@ -4,7 +4,11 @@
 
     const vm = this;
 
+    const noAlbum = { id: "", title: "Select album" };
+
     vm.account = null;
+    vm.album = noAlbum;
+    vm.albums = [];
     vm.videos = [];
     vm.loaded = false;
 
@@ -48,6 +52,8 @@
             accountId: vm.account.id,
             limit: Math.max(10, vm.limit)
         };
+
+        if (vm.album) params.albumId = vm.album.id;
 
         if (page) params.page = page;
         if (vm.text) params.text = vm.text;
@@ -128,6 +134,21 @@
 
     };
 
+    vm.getAlbums = function () {
+
+        const params = {
+            accountId: vm.account.id
+        };
+
+        $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetAlbums`, { params }).then(function (res) {
+            vm.albums = res.data.albums;
+            vm.albums.unshift(noAlbum);
+        }, function (res) {
+            vm.albums = [];
+        });
+
+    };
+
     vm.selectAccount = function (account) {
 
         $scope.model.loading = true;
@@ -140,6 +161,8 @@
         localizationService.localize("twentyThree_videoOverlayTitle").then(function (value) {
             $scope.model.title = value;
         });
+
+        vm.getAlbums();
 
         $http.get(`${umbracoPath}/backoffice/Limbo/TwentyThree/GetPlayers?credentialsId=${vm.account.id}`).then(function (res1) {
 
@@ -174,5 +197,13 @@
         }, 300);
 
     };
+
+    vm.albumChanged = function () {
+        vm.getVideos();
+    }
+
+    localizationService.localize("twentyThree_selectAlbum").then(function (value) {
+        vm.album.title = value;
+    });
 
 });

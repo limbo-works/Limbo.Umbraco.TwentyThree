@@ -272,6 +272,13 @@
 .limbo-twentythree-video-overlay .pagination ul > li.disabled > button:hover {
   color: #d9d9d9;
 }
+.limbo-twentythree-video-overlay .search {
+  display: flex;
+  gap: 10px;
+}
+.limbo-twentythree-video-overlay .search .search-album {
+  width: 300px;
+}
 .limbo-twentythree-button-list {
   display: flex;
   flex-wrap: wrap;

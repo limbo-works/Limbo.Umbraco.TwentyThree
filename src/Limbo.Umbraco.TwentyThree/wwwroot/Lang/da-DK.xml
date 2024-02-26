@@ -29,5 +29,9 @@
     <key alias="labelAccountName">Navn</key>
     <key alias="labelAccountDomain">Domæne</key>
 
+    <key alias="selectAlbum">Vælg album</key>
+    <key alias="searchNoVideos">Din søgning matchede ingen videoer.</key>
+    <key alias="searchNoSpots">Din søgning matchede ingen spots.</key>
+
   </area>
 </language>

@@ -29,5 +29,9 @@
     <key alias="labelSiteName">Name</key>
     <key alias="labelSiteDomain">Domain</key>
 
+    <key alias="selectAlbum">Select album</key>
+    <key alias="searchNoVideos">Your search did not match any videos.</key>
+    <key alias="searchNoSpots">Your search did not match any spots.</key>
+
   </area>
 </language>
