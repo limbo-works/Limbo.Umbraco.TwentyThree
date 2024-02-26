@@ -43,7 +43,7 @@ or the NuGet Package Manager:
 Install-Package Limbo.Umbraco.TwentyThree -Version 13.0.0
 ```
 
-## Umbraco 10, 11 and 12
+### Umbraco 10, 11 and 12
 For the Umbraco 10-12 version of this package, see the [**v2/main**](https://github.com/limbo-works/Limbo.Umbraco.TwentyThree/tree/v2/main) branch instead.
 
 
