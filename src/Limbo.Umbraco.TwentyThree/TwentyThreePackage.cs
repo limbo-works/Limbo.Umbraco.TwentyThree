@@ -27,7 +27,9 @@ public static class TwentyThreePackage {
     /// <summary>
     /// Gets the informational version of the package.
     /// </summary>
-    public static readonly string InformationalVersion = ReflectionUtils.GetInformationalVersion(typeof(TwentyThreePackage));
+    public static readonly string InformationalVersion = ReflectionUtils
+        .GetInformationalVersion(typeof(TwentyThreePackage))
+        .Split('+')[0];
 
     /// <summary>
     /// Gets the semantic version of the package.
