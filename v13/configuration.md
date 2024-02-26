@@ -2,9 +2,7 @@
 
 ## App Settings
 
-In order to access the TwentyThree API, the package needs to be configured with a set of credentials, which should be added in your appSettings.json file like this:
-
-The package introduces a new `Limbo:TwentyThree` section in the appsettings.json file.
+In order to access the TwentyThree API, the package needs to be configured with a set of credentials, which should be added in your `appSettings.json` file via the `Limbo:TwentyThree` section like this:
 
 ```json
 {
