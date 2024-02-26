@@ -4,7 +4,7 @@ order: -1
 
 # Installation
 
-The `v13.x` version of package targets Umbraco 13 and is available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree).
+The `v13.x` version of package is build against and supports Umbraco 13.
 
 <div class="installation" version="13">
     <p>To install the package, you can use either .NET CLI:</p>
