@@ -77,8 +77,27 @@
                                     <limbo-video-duration ng-if="vm.duration" value="vm.duration"></limbo-video-duration>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>
+                                    <localize key="twentyThree_totalPlays">Total plays</localize>
+                                </th>
+                                <td>
+                                    {{vm.video.view_count}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <localize key="twentyThree_avgPlayTime">Avg. play time</localize>
+                                </th>
+                                <td>
+                                    <limbo-video-duration value="vm.duration  * (vm.video.avg_playtime / 100)"></limbo-video-duration>
+                                </td>
+                            </tr>
                         </table>
                     </div>
+                </div>
+                <div ng-if="vm.video.tags.length > 0" class="--tags">
+                    <span class="--tag" ng-repeat="tag in vm.video.tags">{{tag}}</span>
                 </div>
                 <div ng-if="vm.video.content_text" class="--description">{{vm.video.content_text}}</div>
             </div>

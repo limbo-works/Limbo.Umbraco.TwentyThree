@@ -153,6 +153,30 @@
 
     };
 
+    vm.getShadowVideo = function () {
+
+        const source = $scope.model.value && $scope.model.value.source ? $scope.model.value.source.trim() : null;
+
+        if (!source) {
+            vm.setVideo(null);
+            return;
+        }
+
+        twentyThreeService.getVideo(source, vm.config).then(function (res) {
+            vm.setVideo(res.data, null, false);
+            vm.loading = false;
+            vm.update();
+        }, function (res) {
+            vm.loading = false;
+            if (typeof res.data === "string") {
+                notificationsService.error("TwentyThree", res.data);
+            } else {
+                notificationsService.error("TwentyThree", "An unknown error occured.");
+            }
+        });
+
+    };
+
     // Triggered by the UI when the user changes the URL
     vm.updated = function () {
         if (vm.wait) $timeout.cancel(vm.wait);
@@ -295,6 +319,8 @@
             if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
 
             vm.update();
+
+            vm.getShadowVideo();
 
         } else if ($scope.model.value.spot) {
 

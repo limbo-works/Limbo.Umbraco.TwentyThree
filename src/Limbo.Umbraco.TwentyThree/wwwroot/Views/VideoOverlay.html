@@ -46,10 +46,14 @@
                             </div>
                             <div class="--details">
                                 <div class="--title">{{video.title}}</div>
-                                <div class="--duration">
+                                <div class="--stats">
                                     <limbo-video-duration value="video.duration"></limbo-video-duration>
+                                    &mdash;
+                                    {{video.video.view_count | number}}
+                                    <localize ng-if="video.video.view_count == 1" key="twentyThree_labelPlay">play</localize>
+                                    <localize ng-if="video.video.view_count != 1" key="twentyThree_labelPlays">plays</localize>
                                 </div>
-                                <div class="--description" ng-if="video.description">{{video.description}}</div>
+                                <div class="--description" ng-if="video.description" title="{{video.descriptionFull}}">{{video.description}}</div>
                             </div>
                         </button>
                     </li>

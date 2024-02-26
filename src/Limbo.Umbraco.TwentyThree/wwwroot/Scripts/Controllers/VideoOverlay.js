@@ -97,6 +97,7 @@
                     videoId: x.photo_id,
                     title: x.title,
                     description: x.content_text,
+                    descriptionFull: x.content_text,
                     duration: x.video_length,
                     thumbnails: twentyThreeService.getThumbnails(x),
                     player: vm.player

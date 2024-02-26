@@ -79,6 +79,20 @@
 .limbo-twentythree-video .--video .--box .--thumbnail {
   width: 270px;
 }
+.limbo-twentythree-video .--video .--box .--tags {
+  margin-top: 15px;
+  display: flex;
+  gap: 5px;
+}
+.limbo-twentythree-video .--video .--box .--tag {
+  background: #68676b;
+  border-radius: 6px;
+  display: inline-flex;
+  padding: 2px 8px;
+  color: #fff;
+  font-size: 11px;
+  line-height: 14px;
+}
 .limbo-twentythree-video .--video .--box .--description {
   margin-top: 15px;
   white-space: pre-wrap;
@@ -177,7 +191,7 @@
 .limbo-twentythree-video-overlay .umb-card-grid-item .--title {
   font-weight: bold;
 }
-.limbo-twentythree-video-overlay .umb-card-grid-item .--duration {
+.limbo-twentythree-video-overlay .umb-card-grid-item .--stats {
   font-size: 12px;
 }
 .limbo-twentythree-video-overlay .umb-card-grid-item .--description {
@@ -307,4 +321,9 @@
 .limbo-twentythree-button-list > button.--active {
   background-color: #F5C1BC;
   color: #1A2650;
+}
+@media (max-width: 1200px) {
+  .limbo-twentythree-video-overlay .umb-editor-header-content input:focus {
+    max-width: 400px;
+  }
 }

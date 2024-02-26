@@ -33,5 +33,11 @@
     <key alias="searchNoVideos">Your search did not match any videos.</key>
     <key alias="searchNoSpots">Your search did not match any spots.</key>
 
+    <key alias="totalPlays">Total plays</key>
+    <key alias="avgPlayTime">Avg. play time</key>
+
+    <key alias="labelPlay">play</key>
+    <key alias="labelPlays">plays</key>
+
   </area>
 </language>

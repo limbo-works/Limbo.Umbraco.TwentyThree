@@ -33,5 +33,11 @@
     <key alias="searchNoVideos">Din søgning matchede ingen videoer.</key>
     <key alias="searchNoSpots">Din søgning matchede ingen spots.</key>
 
+    <key alias="totalPlays">Afspilninger</key>
+    <key alias="avgPlayTime">Gns. afspilningstid</key>
+
+    <key alias="labelPlay">afspilning</key>
+    <key alias="labelPlays">afspilninger</key>
+
   </area>
 </language>
