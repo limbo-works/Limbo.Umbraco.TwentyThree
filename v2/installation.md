@@ -4,7 +4,7 @@ order: -1
 
 # Installation
 
-The `v2.x` version of package supports Umbraco 10-12 and is available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree).
+The `v2.x` version of package us build against Umbraco 10, but also supports Umbraco 10 and 11.
 
 <div class="installation" version="2">
     <p>To install the package, you can use either .NET CLI:</p>
