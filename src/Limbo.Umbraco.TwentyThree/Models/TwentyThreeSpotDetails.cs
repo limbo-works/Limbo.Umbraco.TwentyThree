@@ -5,39 +5,37 @@ using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Social.TwentyThree.Models.Spots;
 
-namespace Limbo.Umbraco.TwentyThree.Models {
+namespace Limbo.Umbraco.TwentyThree.Models;
+
+/// <summary>
+/// Class representing the details about a TwentyThree spot.
+/// </summary>
+public class TwentyThreeSpotDetails : TwentyThreeDetails {
+
+    #region Properties
 
     /// <summary>
-    /// Class representing the details about a TwentyThree spot.
+    /// Gets a reference to the raw video spot as received from the TwentyThree API.
     /// </summary>
-    public class TwentyThreeSpotDetails : TwentyThreeDetails {
+    [JsonIgnore]
+    public TwentyThreeSpot Data { get; }
 
-        #region Properties
+    #endregion
 
-        /// <summary>
-        /// Gets a reference to the raw video spot as received from the TwentyThree API.
-        /// </summary>
-        [JsonIgnore]
-        public TwentyThreeSpot Data { get; }
+    #region Constructors
 
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="json"/> object.
-        /// </summary>
-        /// <param name="json">The JSON object representing the details.</param>
-        /// <param name="thumbnails">An array of thumbnails.</param>
-        public TwentyThreeSpotDetails(JObject json, IReadOnlyList<TwentyThreeThumbnail> thumbnails) {
-            Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreeSpot.Parse))!;
-            Id = Data.SpotId;
-            Title = Data.SpotName;
-            Thumbnails = thumbnails;
-        }
-
-        #endregion
-
+    /// <summary>
+    /// Initializes a new instance based on the specified <paramref name="json"/> object.
+    /// </summary>
+    /// <param name="json">The JSON object representing the details.</param>
+    /// <param name="thumbnails">An array of thumbnails.</param>
+    public TwentyThreeSpotDetails(JObject json, IReadOnlyList<TwentyThreeThumbnail> thumbnails) {
+        Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreeSpot.Parse))!;
+        Id = Data.SpotId;
+        Title = Data.SpotName;
+        Thumbnails = thumbnails;
     }
+
+    #endregion
 
 }

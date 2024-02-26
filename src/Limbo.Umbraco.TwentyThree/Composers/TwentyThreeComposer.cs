@@ -8,19 +8,17 @@ using Umbraco.Cms.Core.DependencyInjection;
 
 #pragma warning disable 1591
 
-namespace Limbo.Umbraco.TwentyThree.Composers {
+namespace Limbo.Umbraco.TwentyThree.Composers;
 
-    public class TwentyThreeComposer : IComposer {
+public class TwentyThreeComposer : IComposer {
 
-        public void Compose(IUmbracoBuilder builder) {
+    public void Compose(IUmbracoBuilder builder) {
 
-            builder.Services.AddSingleton<TwentyThreeService>();
+        builder.Services.AddSingleton<TwentyThreeService>();
 
-            builder.AddUmbracoOptions<TwentyThreeSettings>();
+        builder.AddUmbracoOptions<TwentyThreeSettings>();
 
-            builder.ManifestFilters().Append<TwentyThreeManifestFilter>();
-
-        }
+        builder.ManifestFilters().Append<TwentyThreeManifestFilter>();
 
     }
 

@@ -7,41 +7,39 @@ using Skybrud.Essentials.Strings.Extensions;
 
 #pragma warning disable CS1591
 
-namespace Limbo.Umbraco.TwentyThree.Models.Api {
+namespace Limbo.Umbraco.TwentyThree.Models.Api;
 
-    public class ApiCredentials {
+public class ApiCredentials {
 
-        [JsonProperty("id")]
-        public Guid Key { get; }
+    [JsonProperty("id")]
+    public Guid Key { get; }
 
-        [JsonProperty("name")]
-        public string Name { get; }
+    [JsonProperty("name")]
+    public string Name { get; }
 
-        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-        public string? Description { get; }
+    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+    public string? Description { get; }
 
-        [JsonProperty("icon")]
-        public string Icon { get; }
+    [JsonProperty("icon")]
+    public string Icon { get; }
 
-        [JsonProperty("domains")]
-        public IReadOnlyList<string> Domains { get; }
+    [JsonProperty("domains")]
+    public IReadOnlyList<string> Domains { get; }
 
-        [JsonProperty("uploadUrl")]
-        public string? UploadUrl { get; }
+    [JsonProperty("uploadUrl")]
+    public string? UploadUrl { get; }
 
-        public ApiCredentials(TwentyThreeCredentials credentials) {
+    public ApiCredentials(TwentyThreeCredentials credentials) {
 
-            Key = credentials.Key;
-            Name = credentials.Name;
-            Description = credentials.Description;
-            Icon = StringUtils.FirstWithValue(credentials.Icon, "icon-application-window-alt");
-            Domains = credentials.Domains;
-            UploadUrl = credentials.UploadUrl.NullIfWhiteSpace();
+        Key = credentials.Key;
+        Name = credentials.Name;
+        Description = credentials.Description;
+        Icon = StringUtils.FirstWithValue(credentials.Icon, "icon-application-window-alt");
+        Domains = credentials.Domains;
+        UploadUrl = credentials.UploadUrl.NullIfWhiteSpace();
 
-            if (UploadUrl is not null && UploadUrl.StartsWith("/")) {
-                UploadUrl = Domains.Count > 0 ? $"https://{Domains[0]}{UploadUrl}" : null;
-            }
-
+        if (UploadUrl is not null && UploadUrl.StartsWith("/")) {
+            UploadUrl = Domains.Count > 0 ? $"https://{Domains[0]}{UploadUrl}" : null;
         }
 
     }

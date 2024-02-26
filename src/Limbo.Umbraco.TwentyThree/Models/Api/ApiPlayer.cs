@@ -3,25 +3,23 @@ using Skybrud.Social.TwentyThree.Models.Players;
 
 #pragma warning disable CS1591
 
-namespace Limbo.Umbraco.TwentyThree.Models.Api {
-    
-    public class ApiPlayer {
+namespace Limbo.Umbraco.TwentyThree.Models.Api;
 
-        [JsonProperty("id")]
-        public string Id { get; }
+public class ApiPlayer {
 
-        [JsonProperty("name")]
-        public string Name { get; }
+    [JsonProperty("id")]
+    public string Id { get; }
 
-        [JsonProperty("default", NullValueHandling = NullValueHandling.Ignore)]
-        public bool IsDefault { get; }
+    [JsonProperty("name")]
+    public string Name { get; }
 
-        public ApiPlayer(TwentyThreePlayer player) {
-            Id = player.PlayerId;
-            Name = player.PlayerName;
-            IsDefault = player.IsDefault;
-        }
+    [JsonProperty("default", NullValueHandling = NullValueHandling.Ignore)]
+    public bool IsDefault { get; }
 
+    public ApiPlayer(TwentyThreePlayer player) {
+        Id = player.PlayerId;
+        Name = player.PlayerName;
+        IsDefault = player.IsDefault;
     }
 
 }

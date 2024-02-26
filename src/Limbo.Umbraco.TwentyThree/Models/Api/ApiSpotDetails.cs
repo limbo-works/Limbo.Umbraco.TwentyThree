@@ -8,37 +8,35 @@ using Skybrud.Social.TwentyThree.Models.Spots;
 
 #pragma warning disable CS1591
 
-namespace Limbo.Umbraco.TwentyThree.Models.Api {
+namespace Limbo.Umbraco.TwentyThree.Models.Api;
 
-    public class ApiSpotDetails {
+public class ApiSpotDetails {
 
-        [JsonProperty("type")]
-        public string Type { get; }
+    [JsonProperty("type")]
+    public string Type { get; }
 
-        [JsonProperty("source")]
-        public string? Source { get; }
+    [JsonProperty("source")]
+    public string? Source { get; }
 
-        [JsonProperty("credentials")]
-        public ApiCredentials Credentials { get; }
+    [JsonProperty("credentials")]
+    public ApiCredentials Credentials { get; }
 
-        [JsonProperty("spot")]
-        public JObject Spot { get; }
+    [JsonProperty("spot")]
+    public JObject Spot { get; }
 
-        [JsonProperty("thumbnails")]
-        public IReadOnlyList<TwentyThreeThumbnail> Thumbnails { get; }
+    [JsonProperty("thumbnails")]
+    public IReadOnlyList<TwentyThreeThumbnail> Thumbnails { get; }
 
-        [JsonProperty("site")]
-        public ApiSite Site { get; }
+    [JsonProperty("site")]
+    public ApiSite Site { get; }
 
-        public ApiSpotDetails(TwentyThreeSpotOptions options, TwentyThreeCredentials credentials, TwentyThreeSpot spot, TwentyThreeThumbnail[] thumbnails, TwentyThreeSite site) {
-            Thumbnails = thumbnails;
-            Type = "spot";
-            Source = options.Source;
-            Credentials = new ApiCredentials(credentials);
-            Spot = spot.JObject!;
-            Site = new ApiSite(site);
-        }
-
+    public ApiSpotDetails(TwentyThreeSpotOptions options, TwentyThreeCredentials credentials, TwentyThreeSpot spot, TwentyThreeThumbnail[] thumbnails, TwentyThreeSite site) {
+        Thumbnails = thumbnails;
+        Type = "spot";
+        Source = options.Source;
+        Credentials = new ApiCredentials(credentials);
+        Spot = spot.JObject!;
+        Site = new ApiSite(site);
     }
 
 }
