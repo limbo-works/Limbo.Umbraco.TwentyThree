@@ -5,7 +5,7 @@
 [![NuGet](https://img.shields.io/nuget/dt/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree)
 [![Umbraco Marketplace](https://img.shields.io/badge/umbraco-marketplace-%233544B1)](https://marketplace.umbraco.com/package/limbo.umbraco.twentythree)
 
-**Limbo.Umbraco.TwentyThree** is a package for Umbraco 10+ that features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
+**Limbo.Umbraco.TwentyThree** is a package for Umbraco 13 that features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
 
 <table>
   <tr>
@@ -15,13 +15,13 @@
   <tr>
     <td><strong>Umbraco:</strong></td>
     <td>
-      Umbraco 10, 11 and 12
+      Umbraco 13
     </td>
   </tr>
   <tr>
     <td><strong>Target Framework:</strong></td>
     <td>
-      .NET 6
+      .NET 8
     </td>
   </tr>
 </table>
@@ -31,18 +31,20 @@
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/2.0.6). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/13.0.0). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 2.0.6
+dotnet add package Limbo.Umbraco.TwentyThree --version 13.0.0
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.6
+Install-Package Limbo.Umbraco.TwentyThree -Version 13.0.0
 ```
 
+## Umbraco 10, 11 and 12
+For the Umbraco 10-12 version of this package, see the [**v2/main**](https://github.com/limbo-works/Limbo.Umbraco.TwentyThree/tree/v2/main) branch instead.
 
 
 
@@ -52,8 +54,8 @@ Install-Package Limbo.Umbraco.TwentyThree -Version 2.0.6
 <br /><br />
 ## Dependencies
 
-- [**Umbraco 10**](https://github.com/umbraco/Umbraco-CMS)  
-The package currently only supports Umbraco 10 and 11. While build against Umbraco 10, the package can also be used with Umbraco 11.
+- [**Umbraco 13**](https://github.com/umbraco/Umbraco-CMS)  
+The `v13.x` releases are build against Umbraco 13.
 
 - [**Skybrud.Essentials.Http**](https://github.com/skybrud/Skybrud.Essentials.Http)  
 Our package for making HTTP requests.
@@ -63,9 +65,6 @@ Our integration package and API wrapper for the Twenty Three API.
 
 - [**Limbo.Umbraco.Video**](https://github.com/limbo-works/Limbo.Umbraco.Video)  
 Base package with common functionality for our various video pickers.
-
-- [**Limbo.Umbraco.IconServiceFix**](https://github.com/limbo-works/Limbo.Umbraco.IconServiceFix)  
-Small package fixing an issue with Umbraco's icon service not detecing backoffice icons in Razor class libraries.
 
 
 
