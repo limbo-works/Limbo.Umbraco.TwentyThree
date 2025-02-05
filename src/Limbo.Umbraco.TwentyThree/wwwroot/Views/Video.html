@@ -99,7 +99,7 @@
                 <div ng-if="vm.video.tags.length > 0" class="--tags">
                     <span class="--tag" ng-repeat="tag in vm.video.tags">{{tag}}</span>
                 </div>
-                <div ng-if="vm.video.content_text" class="--description">{{vm.video.content_text}}</div>
+                <div ng-if="vm.video.content_text" class="--description">{{vm.video.content_text.trim()}}</div>
             </div>
         </div>
         <div class="--site" ng-if="vm.showSite">
