@@ -25,7 +25,7 @@ public class TwentyThreeModelFactory {
     /// <param name="json">The JSON object representing the video value.</param>
     /// <param name="config">An instance of <see cref="TwentyThreeConfiguration"/> representing the data type configuration.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoValue"/> representing the video value.</returns>
-    public TwentyThreeVideoValue CreateVideoValue(JObject json, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeVideoValue CreateVideoValue(JObject json, TwentyThreeConfiguration? config) {
 
         var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x))!;
         var details = json.GetObject("video", CreateVideoDetails)!;
