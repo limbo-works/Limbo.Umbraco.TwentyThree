@@ -61,6 +61,7 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
     /// Initializes a new instance based on the specified <paramref name="json"/> object.
     /// </summary>
     /// <param name="json">The JSON object representing the details.</param>
+    [Obsolete("Use the 'TwentyThreeModelFactory.CreateVideoDetails' method instead.")]
     public TwentyThreeVideoDetails(JObject json) {
         Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreePhoto.Parse))!;
         Id = Data.PhotoId;
@@ -68,6 +69,21 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
         Duration = Data.VideoLength;
         Thumbnails = Data.Thumbnails.Select(x => new TwentyThreeThumbnail(Data, x)).ToArray();
         Files = Data.VideoFormats.Select(x => new TwentyThreeVideoFile(Data, x)).ToArray();
+    }
+
+    /// <summary>
+    /// Initializes a new instance based on the specified parameters.
+    /// </summary>
+    /// <param name="data">The video data.</param>
+    /// <param name="thumbnails">A list of thumbnails.</param>
+    /// <param name="files">A list of video files.</param>
+    public TwentyThreeVideoDetails(TwentyThreePhoto data, IReadOnlyList<TwentyThreeThumbnail> thumbnails, IReadOnlyList<TwentyThreeVideoFile> files) {
+        Data = data;
+        Id = Data.PhotoId;
+        Title = Data.Title;
+        Duration = Data.VideoLength;
+        Thumbnails = thumbnails;
+        Files = files;
     }
 
     #endregion

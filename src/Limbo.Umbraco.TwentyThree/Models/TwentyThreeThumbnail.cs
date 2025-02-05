@@ -1,4 +1,6 @@
-﻿using Limbo.Umbraco.TwentyThree.Options;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,34 +20,41 @@ public class TwentyThreeThumbnail : IVideoThumbnail {
     /// Gets the alias of the thumbnail.
     /// </summary>
     [JsonProperty("alias")]
-    public string Alias { get; }
+    public required string Alias { get; init; }
 
     /// <summary>
     /// Gets the width of the thumbnail.
     /// </summary>
     [JsonProperty("width")]
-    public int Width { get; }
+    public required int Width { get; init; }
 
     /// <summary>
     /// Gets the height of the thumbnail.
     /// </summary>
     [JsonProperty("height")]
-    public int Height { get; }
+    public required int Height { get; init; }
 
     /// <summary>
     /// Gets the URL of the thumbnail.
     /// </summary>
     [JsonProperty("url")]
-    public string Url { get; }
+    public required string Url { get; init; }
 
     #endregion
 
     #region Constructors
 
     /// <summary>
+    /// Initializes a new thumbnail. When using the parameterless constructor, properties most be initialized via property initializers.
+    /// </summary>
+    public TwentyThreeThumbnail() { }
+
+    /// <summary>
     /// Initializes a new thumbnail based on the specified <paramref name="thumbnail"/>.
     /// </summary>
     /// <param name="thumbnail">The thumbnail as received from the TwentyThree API.</param>
+    [SetsRequiredMembers]
+    [Obsolete("Use the 'TwentyThreeModelFactory.CreateThumbnail' method instead.")]
     public TwentyThreeThumbnail(Skybrud.Social.TwentyThree.Models.Photos.TwentyThreeThumbnail thumbnail) {
         Alias = thumbnail.Alias;
         Width = thumbnail.Width;
@@ -58,6 +67,7 @@ public class TwentyThreeThumbnail : IVideoThumbnail {
     /// </summary>
     /// <param name="options">The options about the spot.</param>
     /// <param name="thumbnail">The thumbnail as received from the TwentyThree API.</param>
+    [SetsRequiredMembers]
     public TwentyThreeThumbnail(TwentyThreeSpotOptions options, Skybrud.Social.TwentyThree.Models.Photos.TwentyThreeThumbnail thumbnail) {
         Alias = thumbnail.Alias;
         Width = thumbnail.Width;
@@ -70,18 +80,26 @@ public class TwentyThreeThumbnail : IVideoThumbnail {
     /// </summary>
     /// <param name="video">The video.</param>
     /// <param name="thumbnail">The thumbnail as received from the TwentyThree API.</param>
+    [Obsolete("Use the 'TwentyThreeModelFactory.CreateThumbnail' method instead.")]
+    [SetsRequiredMembers]
     public TwentyThreeThumbnail(TwentyThreePhoto video, Skybrud.Social.TwentyThree.Models.Photos.TwentyThreeThumbnail thumbnail) {
-
         string scheme = video.AbsoluteUrl.Split(':')[0];
         string domain = video.AbsoluteUrl.Split('/')[2];
-
         Alias = thumbnail.Alias;
         Width = thumbnail.Width;
         Height = thumbnail.Height;
         Url = $"{scheme}://{domain}{thumbnail.Url}";
     }
 
-    private TwentyThreeThumbnail(string alias, int width, int height, string url) {
+    /// <summary>
+    /// Initializes a new instanced based on the specified <paramref name="alias"/>, <paramref name="width"/>, <paramref name="height"/> and <paramref name="url"/>.
+    /// </summary>
+    /// <param name="alias">The alias of the thumbnail.</param>
+    /// <param name="width">The width of the thumbnail.</param>
+    /// <param name="height">The height of the thumbnail.</param>
+    /// <param name="url">The absolute URL of the thumbnail.</param>
+    [SetsRequiredMembers]
+    public TwentyThreeThumbnail(string alias, int width, int height, string url) {
         Alias = alias;
         Width = width;
         Height = height;

@@ -1,4 +1,5 @@
-﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
+﻿using System;
+using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
@@ -34,7 +35,14 @@ public class TwentyThreeVideoValue : TwentyThreeValue {
 
     #region Constructors
 
-    private TwentyThreeVideoValue(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoDetails details, TwentyThreeVideoEmbed embed) : base(json, "video", details, embed) {
+    /// <summary>
+    /// Initializes a new instance based on the specified parameters.
+    /// </summary>
+    /// <param name="json">A JSON object representing the video value.</param>
+    /// <param name="parameters">The video parameters.</param>
+    /// <param name="details">The video details.</param>
+    /// <param name="embed">The video embed information.</param>
+    public TwentyThreeVideoValue(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoDetails details, TwentyThreeVideoEmbed embed) : base(json, "video", details, embed) {
         Parameters = parameters;
         Details = details;
         Embed = embed;
@@ -50,6 +58,7 @@ public class TwentyThreeVideoValue : TwentyThreeValue {
     /// <param name="json">The JSOn object representing the video value.</param>
     /// <param name="config">The configuration of the TwentyThree data type.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoValue"/>.</returns>
+    [Obsolete("Use the 'TwentyThreeModelFactory.CreateVideoValue' method instead.")]
     public static TwentyThreeVideoValue Create(JObject json, TwentyThreeConfiguration? config) {
         var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x))!;
         var details = json.GetObject("video", x => new TwentyThreeVideoDetails(x))!;

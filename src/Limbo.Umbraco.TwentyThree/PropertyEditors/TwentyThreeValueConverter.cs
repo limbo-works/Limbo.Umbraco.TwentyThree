@@ -1,4 +1,5 @@
 ﻿using System;
+using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Newtonsoft;
@@ -11,6 +12,18 @@ using Umbraco.Extensions;
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
 public class TwentyThreeValueConverter : PropertyValueConverterBase {
+
+    private readonly TwentyThreeModelFactory _modelFactory;
+
+    #region Constructors
+
+    public TwentyThreeValueConverter(TwentyThreeModelFactory modelFactory) {
+        _modelFactory = modelFactory;
+    }
+
+    #endregion
+
+    #region Member methods
 
     public override bool IsConverter(IPublishedPropertyType propertyType) {
         return propertyType.EditorAlias == TwentyThreeEditor.EditorAlias;
@@ -26,7 +39,7 @@ public class TwentyThreeValueConverter : PropertyValueConverterBase {
 
         if (inter is not JObject json) return null;
 
-        if (json.Property("video") is not null) return TwentyThreeVideoValue.Create(json, config);
+        if (json.Property("video") is not null) return _modelFactory.CreateVideoValue(json, config);
         if (json.Property("spot") is not null) return TwentyThreeSpotValue.Create(json);
 
         return null;
@@ -48,5 +61,7 @@ public class TwentyThreeValueConverter : PropertyValueConverterBase {
     public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) {
         return PropertyCacheLevel.Element;
     }
+
+    #endregion
 
 }

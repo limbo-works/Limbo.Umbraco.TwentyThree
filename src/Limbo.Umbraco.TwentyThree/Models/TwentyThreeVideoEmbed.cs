@@ -1,4 +1,5 @@
-﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
+﻿using System;
+using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -50,6 +51,7 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
     /// <param name="video">The video.</param>
     /// <param name="parameters">The video parameters.</param>
     /// <param name="config">The configuration of the <see cref="TwentyThreeEditor"/> data type.</param>
+    [Obsolete("Use the 'TwentyThreeModelFactory.CreateVideoEmbed' method instead.")]
     public TwentyThreeVideoEmbed(JObject json, TwentyThreeVideoDetails video, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
 
         Token = video.Data.Token;
@@ -67,6 +69,23 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
 
         Html = new HtmlString($"<div style=\"width:100%; height:0; position: relative; padding-bottom:33.333333333333336%\"><iframe src=\"{embedUrl}\" style=\"width:100%; height:100%; position: absolute; top: 0; left: 0;\" frameborder=\"0\" border=\"0\" scrolling=\"no\" mozallowfullscreen=\"1\" webkitallowfullscreen=\"1\" allowfullscreen=\"1\" allow=\"autoplay; fullscreen\"></iframe></div>");
 
+    }
+
+    /// <summary>
+    /// Initializes a new instance from the specified parameters.
+    /// </summary>
+    /// <param name="token">The token of the video.</param>
+    /// <param name="playerId">The ID of the player, if any.</param>
+    /// <param name="autoplay">Whether embedded videos should automatically start playing.</param>
+    /// <param name="endOn">What should happen when a video ends.</param>
+    /// <param name="html">The embed HTML for the video.</param>
+    /// <exception cref="System.NotImplementedException"></exception>
+    public TwentyThreeVideoEmbed(string token, string? playerId, bool? autoplay, TwentyThreeEndOn? endOn, IHtmlContent html) {
+        Token = token;
+        PlayerId = playerId;
+        Autoplay = autoplay;
+        EndOn = endOn;
+        Html = html;
     }
 
     #endregion

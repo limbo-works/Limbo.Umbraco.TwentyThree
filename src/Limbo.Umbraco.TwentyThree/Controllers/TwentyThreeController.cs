@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models.Api;
 using Limbo.Umbraco.TwentyThree.Models.Api.Albums;
 using Limbo.Umbraco.TwentyThree.Models.Credentials;
@@ -48,12 +49,14 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     private readonly IDataTypeService _dataTypeService;
     private readonly IOptions<TwentyThreeSettings> _options;
     private readonly TwentyThreeService _service;
+    private readonly TwentyThreeModelFactory _modelFactory;
 
-    public TwentyThreeController(ILogger<TwentyThreeController> logger, IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service) {
+    public TwentyThreeController(ILogger<TwentyThreeController> logger, IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service, TwentyThreeModelFactory modelFactory) {
         _logger = logger;
         _dataTypeService = dataTypeService;
         _options = options;
         _service = service;
+        _modelFactory = modelFactory;
     }
 
     #region Public API methods
@@ -474,9 +477,9 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         return photo?.JObject;
     }
 
-    private static object? ToApiModel(TwentyThreeSpot? spot, TwentyThreePhoto? photo) {
+    private object? ToApiModel(TwentyThreeSpot? spot, TwentyThreePhoto? photo) {
         if (spot == null) return null;
-        if (photo != null) spot.JObject!.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => new TwentyThreeThumbnail(photo, x))));
+        if (photo != null) spot.JObject!.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => _modelFactory.CreateThumbnail(x, photo))));
         return spot.JObject;
     }
 
