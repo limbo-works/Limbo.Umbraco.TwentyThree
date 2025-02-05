@@ -19,6 +19,7 @@
     <key alias="videos">videoer</key>
     <key alias="spot">spot</key>
     <key alias="urlOrEmbedCode">URL eller embedkode</key>
+    <key alias="appUrlTooltip">Administrér videon i TwentyTree's kontrolpanel</key>
 
     <key alias="titleVideo">Video</key>
     <key alias="titleSpot">Spot</key>

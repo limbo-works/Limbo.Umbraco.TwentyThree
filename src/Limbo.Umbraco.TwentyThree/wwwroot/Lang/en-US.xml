@@ -19,6 +19,7 @@
     <key alias="video">video</key>
     <key alias="spot">spot</key>
     <key alias="urlOrEmbedCode">URL or embed code</key>
+    <key alias="appUrlTooltip">Manage the video in the TwentyTree control panel</key>
 
     <key alias="titleVideo">Video</key>
     <key alias="titleSpot">Spot</key>

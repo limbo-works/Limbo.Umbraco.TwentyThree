@@ -61,6 +61,7 @@
         if (!item) {
             vm.spot = null;
             vm.video = null;
+            vm.appUrl = null;
             if ($scope.model.value) {
                 if ($scope.model.value.source) {
                     delete $scope.model.value.credentials;
@@ -106,6 +107,8 @@
         } else if (item.spot) {
 
             delete vm.video;
+
+            delete vm.appUrl;
 
             delete $scope.model.value.parameters;
             delete $scope.model.value.video;
@@ -213,6 +216,8 @@
             vm.duration = vm.video.video_length;
             vm.thumbnails = twentyThreeService.getThumbnails(vm.video);
             vm.thumbnail = vm.thumbnails.medium;
+
+            vm.appUrl = $scope.model.value?.site?.secureDomain ? "https://" + $scope.model.value.site.secureDomain + "/manage/video/" + vm.id : null;
 
             if (vm.config.autoplay !== "inherit") {
                 vm.currentAutoplay = vm.autoplay.find(x => x.alias === vm.config.autoplay);
