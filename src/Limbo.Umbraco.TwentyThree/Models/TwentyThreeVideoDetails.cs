@@ -26,13 +26,13 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
     /// Gets the width of the video.
     /// </summary>
     [JsonProperty("width")]
-    public int Width => Data.JObject.GetInt32("video_original_width");
+    public int Width { get; }
 
     /// <summary>
     /// Gets the height of the video.
     /// </summary>
     [JsonProperty("height")]
-    public int Height => Data.JObject.GetInt32("video_original_height");
+    public int Height { get; }
 
     /// <summary>
     /// Gets the duration of the video.
@@ -66,6 +66,8 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
         Data = json.GetString("_data", x => JsonUtils.ParseJsonObject(x, TwentyThreePhoto.Parse))!;
         Id = Data.PhotoId;
         Title = Data.Title;
+        Width = Data.JObject.GetInt32OrNull("original_width") ?? Data.JObject.GetInt32("video_original_width");
+        Height = Data.JObject.GetInt32OrNull("original_height") ?? Data.JObject.GetInt32("video_original_height");
         Duration = Data.VideoLength;
         Thumbnails = Data.Thumbnails.Select(x => new TwentyThreeThumbnail(Data, x)).ToArray();
         Files = Data.VideoFormats.Select(x => new TwentyThreeVideoFile(Data, x)).ToArray();
@@ -81,6 +83,8 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
         Data = data;
         Id = Data.PhotoId;
         Title = Data.Title;
+        Width = Data.Original.Width;
+        Height = Data.Original.Height;
         Duration = Data.VideoLength;
         Thumbnails = thumbnails;
         Files = files;
