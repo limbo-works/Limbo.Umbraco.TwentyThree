@@ -10,6 +10,7 @@
     vm.config.hideSite = vm.config.hideSite === true;
     vm.config.hidePlayer = vm.config.hidePlayer === true;
     vm.config.hideEmbed = vm.config.hideEmbed === true;
+    vm.config.hidePlayer = vm.config.hidePlayer === true;
 
     vm.config.allowVideos = vm.config.allowVideos !== false;
     vm.config.allowSpots = vm.config.allowSpots !== false;

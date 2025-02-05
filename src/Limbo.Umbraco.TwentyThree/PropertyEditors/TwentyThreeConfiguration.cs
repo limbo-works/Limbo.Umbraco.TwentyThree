@@ -46,6 +46,15 @@ public class TwentyThreeConfiguration {
     public bool HideEmbed { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the <strong>Player</strong> option should be hidden in the property editor.
+    /// </summary>
+    [ConfigurationField("hidePlayer",
+        "Hide player",
+        "boolean",
+        Description = "Select whether player option should be hidden in the property editor.")]
+    public bool HidePlayer { get; set; }
+
+    /// <summary>
     /// Gets or sets whether the property editor should allow regular videos.
     /// </summary>
     [ConfigurationField("allowVideos",
