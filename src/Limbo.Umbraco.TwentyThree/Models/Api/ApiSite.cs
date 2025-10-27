@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Social.TwentyThree.Models.Sites;
 
 #pragma warning disable CS1591
@@ -11,6 +10,9 @@ public class ApiSite {
     [JsonProperty("id")]
     public string Id { get; }
 
+    [JsonProperty("key")]
+    public string Key { get; }
+
     [JsonProperty("name")]
     public string Name { get; }
 
@@ -21,7 +23,8 @@ public class ApiSite {
     public string SecureDomain { get; }
 
     public ApiSite(TwentyThreeSite site) {
-        Id = site.JObject.GetString("site_id")!;
+        Id = site.SiteId;
+        Key = site.SiteKey;
         Name = site.SiteName;
         Domain = site.Domain;
         SecureDomain = site.SecureDomain;
