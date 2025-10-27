@@ -4,7 +4,7 @@
 
     const vm = this;
 
-    const noAlbum = { id: "", title: "Select album" };
+    const noAlbum = { id: "", title: "Select category" };
 
     vm.account = null;
     vm.album = noAlbum;
