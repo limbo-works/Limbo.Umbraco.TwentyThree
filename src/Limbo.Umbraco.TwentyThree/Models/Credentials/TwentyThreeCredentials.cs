@@ -15,6 +15,11 @@ public class TwentyThreeCredentials : ICredentials {
     public Guid Key { get; internal set; }
 
     /// <summary>
+    /// Gets the key (alias) of the associated TwentyThree site.
+    /// </summary>
+    public string? SiteKey { get; internal set; }
+
+    /// <summary>
     /// Gets the friendly name of the credentials.
     /// </summary>
     public string Name { get; internal set; } = null!;

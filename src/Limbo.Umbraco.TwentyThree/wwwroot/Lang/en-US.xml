@@ -40,5 +40,8 @@
     <key alias="labelPlay">play</key>
     <key alias="labelPlays">plays</key>
 
+    <key alias="noSource">No URL or embed code specified.</key>
+    <key alias="invalidSource">Invalid URL or embed code specified.</key>
+
   </area>
 </language>

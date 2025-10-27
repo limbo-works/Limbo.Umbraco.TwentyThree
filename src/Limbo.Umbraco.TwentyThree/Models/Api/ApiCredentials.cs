@@ -26,7 +26,7 @@ public class ApiCredentials {
     [JsonProperty("domains")]
     public IReadOnlyList<string> Domains { get; }
 
-    [JsonProperty("uploadUrl")]
+    [JsonProperty("uploadUrl", NullValueHandling = NullValueHandling.Ignore)]
     public string? UploadUrl { get; }
 
     public ApiCredentials(TwentyThreeCredentials credentials) {

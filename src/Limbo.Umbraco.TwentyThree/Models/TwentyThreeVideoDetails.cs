@@ -83,8 +83,8 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
         Data = data;
         Id = Data.PhotoId;
         Title = Data.Title;
-        Width = Data.Original.Width;
-        Height = Data.Original.Height;
+        Width = Data.Original!.Width;
+        Height = Data.Original!.Height;
         Duration = Data.VideoLength;
         Thumbnails = thumbnails;
         Files = files;

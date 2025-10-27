@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Enums;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Essentials.Strings.Extensions;
 
 namespace Limbo.Umbraco.TwentyThree.Models;

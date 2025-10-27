@@ -82,7 +82,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         if (!_service.IsMatch(source, out ITwentyThreeOptions? options)) return BadRequest("Invalid URL or embed code specified.");
 
         // Do we have valid credentials for the TwentyThree site/domain?
-        if (!_service.TryGetCredentials(options!.Domain, out TwentyThreeCredentials? credentials)) return BadRequest($"No or invalid configuration found for the '{options.Domain}' domain.");
+        if (!_service.TryGetCredentials(options.Domain, out TwentyThreeCredentials? credentials)) return BadRequest($"No or invalid configuration found for the '{options.Domain}' domain.");
 
         // Get a reference to the data type (if specified)
         IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
@@ -90,8 +90,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         // Handle the different options types
         return options switch {
-            TwentyThreeVideoOptions vo => GetVideo(credentials!, vo, config),
-            TwentyThreeSpotOptions so => GetSpot(credentials!, so, config),
+            TwentyThreeVideoOptions vo => GetVideo(credentials, vo, config),
+            TwentyThreeSpotOptions so => GetSpot(credentials, so, config),
             _ => BadRequest($"Unknown type {options.GetType()}.")
         };
 
@@ -171,7 +171,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
             // Set the album ID if present in the query string
             if (!string.IsNullOrWhiteSpace(albumId)) options.AlbumId = albumId;
 
-            // Make the request to the TwnetyThree API
+            // Make the request to the TwentyThree API
             TwentyThreePhotoListResponse response = http.Photos.GetList(options);
 
             list = response.Body;
@@ -215,8 +215,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
             // Initialize the options for the request
             TwentyThreeGetSpotsOptions options = new() { Size = limit, Page = page };
 
-            // Make the request to the TwnetyThree API
-            TwentyThreeSpotListResponse? response = http.Spots.GetList(options);
+            // Make the request to the TwentyThree API
+            TwentyThreeSpotListResponse response = http.Spots.GetList(options);
 
             list = response.Body;
 
@@ -338,7 +338,6 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         TwentyThreePhoto? video = null;
         TwentyThreeSite? site = null;
-        TwentyThreePlayer? player = null;
 
         try {
 
@@ -374,12 +373,12 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         try {
 
             // Get a list of the first 200 players from the TwentyThree API
-            TwentyThreePlayerListResponse? response = http.Players.GetList(new TwentyThreeGetPlayersOptions {
+            TwentyThreePlayerListResponse response = http.Players.GetList(new TwentyThreeGetPlayersOptions {
                 Size = 200
             });
 
             // Get the selected player from the response
-            player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
+            TwentyThreePlayer? player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
             if (player == null) return NotFound("Player not found.");
 
             return new ApiVideoDetails(options, credentials, video, player, site);
@@ -451,14 +450,14 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
                     PhotoId = firstPhotoId
                 });
 
-                // Get the thumbnails from the first video/photo (currently asuming that one video is returned)
+                // Get the thumbnails from the first video/photo (currently assuming that one video is returned)
                 thumbnails = response.Body.Photos[0].Thumbnails.Select(x => new TwentyThreeThumbnail(options, x)).ToArray();
 
             } catch {
-                thumbnails = Array.Empty<TwentyThreeThumbnail>();
+                thumbnails = [];
             }
         } else {
-            thumbnails = Array.Empty<TwentyThreeThumbnail>();
+            thumbnails = [];
         }
 
         return new ApiSpotDetails(options, credentials, spot, thumbnails, site);
@@ -479,7 +478,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     private object? ToApiModel(TwentyThreeSpot? spot, TwentyThreePhoto? photo) {
         if (spot == null) return null;
-        if (photo != null) spot.JObject!.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => _modelFactory.CreateThumbnail(x, photo))));
+        if (photo != null) spot.JObject.Add("__thumbnails", JArray.FromObject(photo.Thumbnails.Select(x => _modelFactory.CreateThumbnail(x, photo))));
         return spot.JObject;
     }
 

@@ -1,7 +1,7 @@
 ﻿using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 
 namespace Limbo.Umbraco.TwentyThree.Models;
 

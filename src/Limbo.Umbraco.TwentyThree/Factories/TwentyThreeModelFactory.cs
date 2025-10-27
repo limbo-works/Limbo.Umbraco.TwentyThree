@@ -27,9 +27,10 @@ public class TwentyThreeModelFactory {
     /// <returns>An instance of <see cref="TwentyThreeVideoValue"/> representing the video value.</returns>
     public virtual TwentyThreeVideoValue CreateVideoValue(JObject json, TwentyThreeConfiguration? config) {
 
-        var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x))!;
-        var details = json.GetObject("video", CreateVideoDetails)!;
-        var embed = json.GetObject("embed", x => CreateVideoEmbed(x, details, parameters, config))!;
+        var parameters = json.GetRequiredObject("parameters", x => new TwentyThreeParameters(x));
+        var details = json.GetRequiredObject("video", CreateVideoDetails);
+        var player = json.GetRequiredObject("player", CreateVideoPlayer);
+        var embed = json.GetRequiredObject("embed", x => CreateVideoEmbed(x, details, player, parameters, config));
 
         return new TwentyThreeVideoValue(json, parameters, details, embed);
 
@@ -55,18 +56,26 @@ public class TwentyThreeModelFactory {
 
     }
 
+    public virtual TwentyThreeVideoPlayer CreateVideoPlayer(JObject json) {
+        string id = json.GetRequiredString("id");
+        string name = json.GetRequiredString("name");
+        bool isDefault = json.GetRequiredBoolean("default");
+        return new TwentyThreeVideoPlayer(id, name, isDefault);
+    }
+
     /// <summary>
     /// Creates a new instance of <see cref="TwentyThreeVideoEmbed"/> based on the specified <paramref name="json"/> object.
     /// </summary>
     /// <param name="json">The JSON object representing the embed information.</param>
     /// <param name="details">The video details.</param>
+    /// <param name="player"></param>
     /// <param name="parameters">The video parameters.</param>
     /// <param name="config">The configuration of the <see cref="TwentyThreeEditor"/> data type.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoEmbed"/> representing the video embed information.</returns>
-    public virtual TwentyThreeVideoEmbed CreateVideoEmbed(JObject json, TwentyThreeVideoDetails details, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeVideoEmbed CreateVideoEmbed(JObject json, TwentyThreeVideoDetails details, TwentyThreeVideoPlayer player, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
 
         string token = details.Data.Token;
-        string? playerId = parameters.PlayerId.NullIfWhiteSpace();
+        string? playerId = player.IsDefault ? null : player.Id;
         bool? autoplay = ParseAutoplay(json, parameters, config);
         TwentyThreeEndOn? endOn = ParseEndOn(json, parameters, config);
 

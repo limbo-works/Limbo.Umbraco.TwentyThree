@@ -4,7 +4,7 @@ using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Social.TwentyThree.Models.Photos;
 
 namespace Limbo.Umbraco.TwentyThree.Models;
