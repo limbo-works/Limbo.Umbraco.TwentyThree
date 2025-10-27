@@ -48,6 +48,35 @@ public class TwentyThreeService {
     }
 
     /// <summary>
+    /// Attempts to get the credentials matching the video identified by the specified <paramref name="options"/>.
+    /// </summary>
+    /// <param name="options">The options.</param>
+    /// <param name="result">When this method returns, holds the <see cref="TwentyThreeCredentials"/> if successful; otherwise, <c>null</c>.</param>
+    /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
+    public bool TryGetCredentials(ITwentyThreeOptions options, [NotNullWhen(true)] out TwentyThreeCredentials? result) {
+
+        string? siteKey = (options as TwentyThreeVideoOptions)?.SiteKey;
+
+        foreach (var cred in _settings.Credentials) {
+
+            if (!string.IsNullOrWhiteSpace(siteKey) && cred.SiteKey == siteKey) {
+                result = cred;
+                return true;
+            }
+
+            if (cred.Domains.Contains(options.Domain)) {
+                result = cred;
+                return true;
+            }
+
+        }
+
+        result = null;
+        return false;
+
+    }
+
+    /// <summary>
     /// Attempts to get the credentials matching the specified <paramref name="input"/> (ID or domain).
     /// </summary>
     /// <param name="input">The input (ID or domain).</param>
@@ -79,18 +108,33 @@ public class TwentyThreeService {
 
         options = null;
 
+        Match m0 = Regex.Match(source, @"^(https)://(app\.twentythree\.com)/([a-zA-Z0-9-\.]+)/manage/video/([0-9]+)$", RegexOptions.IgnoreCase);
         Match m1 = Regex.Match(source, "^(http|https)://([a-zA-Z0-9-\\.]+)/manage/video/([0-9]+)$", RegexOptions.IgnoreCase);
         Match m2 = Regex.Match(source, "(http:|https:|)//(.+?)/(v|[0-9]+)\\.ihtml/player\\.html\\?token=([a-z0-9]+)&source=embed&photo%5fid=([0-9]+)");
         Match m3 = Regex.Match(source, "<script src=\"(http|https)://(.+?)/spot/([0-9]+)/([a-z0-9]+)/include\\.js");
 
-        // From manage URL
+        // From new manage URL
+        if (m0.Success) {
+
+            string scheme = m0.Groups[1].Value;
+            string domain = m0.Groups[2].Value;
+            string siteKey = m0.Groups[3].Value;
+            string videoId = m0.Groups[4].Value;
+
+            options = new TwentyThreeVideoOptions(source, TwentyThreeSourceType.AppUrl, scheme, domain, siteKey, videoId, null, null);
+
+            return true;
+
+        }
+
+        // From old manage URL
         if (m1.Success) {
 
             string scheme = m1.Groups[1].Value;
             string domain = m1.Groups[2].Value;
             string videoId = m1.Groups[3].Value;
 
-            options = new TwentyThreeVideoOptions(source, scheme, domain, videoId, null, null);
+            options = new TwentyThreeVideoOptions(source, TwentyThreeSourceType.OldAppUrl, scheme, domain, null, videoId, null, null);
 
             return true;
 
@@ -120,7 +164,7 @@ public class TwentyThreeService {
 
             if (string.IsNullOrWhiteSpace(scheme)) scheme = "https";
 
-            options = new TwentyThreeVideoOptions(source, scheme, domain, videoId, token, playerId, autoplay, endOn);
+            options = new TwentyThreeVideoOptions(source, TwentyThreeSourceType.Embed, scheme, domain, null, videoId, token, playerId, autoplay, endOn);
 
             return true;
 
@@ -134,7 +178,7 @@ public class TwentyThreeService {
             string spotId = m3.Groups[3].Value;
             string token = m2.Groups[4].Value;
 
-            options = new TwentyThreeSpotOptions(source, scheme, domain, spotId, token);
+            options = new TwentyThreeSpotOptions(source, TwentyThreeSourceType.Script, scheme, domain, spotId, token);
 
             return true;
 
@@ -168,7 +212,7 @@ public class TwentyThreeService {
     /// </summary>
     /// <param name="source">The URL or embed code.</param>
     /// <returns>An instance of <see cref="ITwentyThreeOptions"/>.</returns>
-    protected virtual ITwentyThreeOptions GetOptionsFromSource(string source) {
+    public virtual ITwentyThreeOptions GetOptionsFromSource(string source) {
 
         // Check whether a "source" was specified
         if (string.IsNullOrWhiteSpace(source)) throw TwentyThreeSourceException.NoSource();
@@ -202,7 +246,12 @@ public class TwentyThreeService {
         ITwentyThreeOptions options = GetOptionsFromSource(source);
 
         // Do we have valid credentials for the TwentyThree site/domain?
-        if (!TryGetCredentials(options.Domain, out TwentyThreeCredentials? credentials)) throw new Exception($"No or invalid configuration found for the '{options.Domain}' domain.");
+        if (!TryGetCredentials(options, out TwentyThreeCredentials? credentials)) {
+            if (options is TwentyThreeVideoOptions video && !string.IsNullOrWhiteSpace(video.SiteKey)) {
+                throw TwentyThreeSiteNotFoundException.Create(video.SiteKey, video);
+            }
+            throw TwentyThreeDomainNotFoundException.Create(options.Domain, options);
+        }
 
         // Handle the different options types
         return options switch {

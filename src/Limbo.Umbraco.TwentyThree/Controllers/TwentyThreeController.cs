@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using Limbo.Umbraco.TwentyThree.Exceptions;
 using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models.Api;
 using Limbo.Umbraco.TwentyThree.Models.Api.Albums;
@@ -29,7 +32,9 @@ using Skybrud.Social.TwentyThree.Responses.Albums;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
+using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
@@ -46,14 +51,20 @@ namespace Limbo.Umbraco.TwentyThree.Controllers;
 public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     private readonly ILogger<TwentyThreeController> _logger;
+    private readonly IOptions<GlobalSettings> _globalSettings;
     private readonly IDataTypeService _dataTypeService;
+    private readonly ILocalizedTextService _localizedTextService;
+    private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
     private readonly IOptions<TwentyThreeSettings> _options;
     private readonly TwentyThreeService _service;
     private readonly TwentyThreeModelFactory _modelFactory;
 
-    public TwentyThreeController(ILogger<TwentyThreeController> logger, IDataTypeService dataTypeService, IOptions<TwentyThreeSettings> options, TwentyThreeService service, TwentyThreeModelFactory modelFactory) {
+    public TwentyThreeController(ILogger<TwentyThreeController> logger, IOptions<GlobalSettings> globalSettings, IDataTypeService dataTypeService, ILocalizedTextService localizedTextService, IBackOfficeSecurityAccessor backOfficeSecurityAccessor, IOptions<TwentyThreeSettings> options, TwentyThreeService service, TwentyThreeModelFactory modelFactory) {
         _logger = logger;
+        _globalSettings = globalSettings;
         _dataTypeService = dataTypeService;
+        _localizedTextService = localizedTextService;
+        _backOfficeSecurityAccessor = backOfficeSecurityAccessor;
         _options = options;
         _service = service;
         _modelFactory = modelFactory;
@@ -78,22 +89,47 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         // Check whether a "source" was specified
         if (string.IsNullOrWhiteSpace(source)) return BadRequest("No URL or embed code specified.");
 
-        // Does "source" match a valid TwentyThree URL or embed code?
-        if (!_service.IsMatch(source, out ITwentyThreeOptions? options)) return BadRequest("Invalid URL or embed code specified.");
 
-        // Do we have valid credentials for the TwentyThree site/domain?
-        if (!_service.TryGetCredentials(options.Domain, out TwentyThreeCredentials? credentials)) return BadRequest($"No or invalid configuration found for the '{options.Domain}' domain.");
+        try {
 
-        // Get a reference to the data type (if specified)
-        IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
-        TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
+            // Parse the source
+            ITwentyThreeOptions options = _service.GetOptionsFromSource(source);
 
-        // Handle the different options types
-        return options switch {
-            TwentyThreeVideoOptions vo => GetVideo(credentials, vo, config),
-            TwentyThreeSpotOptions so => GetSpot(credentials, so, config),
-            _ => BadRequest($"Unknown type {options.GetType()}.")
-        };
+            // Do we have valid credentials for the TwentyThree site/domain?
+            if (!_service.TryGetCredentials(options, out TwentyThreeCredentials? credentials)) {
+                if (options is TwentyThreeVideoOptions video && !string.IsNullOrWhiteSpace(video.SiteKey)) {
+                    throw TwentyThreeSiteNotFoundException.Create(video.SiteKey, video);
+                }
+
+                throw TwentyThreeDomainNotFoundException.Create(options.Domain, options);
+            }
+
+            // Get a reference to the data type (if specified)
+            IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
+            TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
+
+            // Handle the different options types
+            return options switch {
+                TwentyThreeVideoOptions vo => GetVideo(credentials, vo, config),
+                TwentyThreeSpotOptions so => GetSpot(credentials, so, config),
+                _ => BadRequest($"Unknown type {options.GetType()}.")
+            };
+
+        } catch (TwentyThreeUserException ex) {
+
+            string?[] tokens = ex.UserMessageArgs.Select(x => x.ToString()).ToArray();
+
+            _logger.LogError(ex, "Failed getting TwentyThree video information: {Source}", source);
+
+            return InternalServerError(Localize(ex.UserMessageKey, tokens));
+
+        } catch (Exception ex) {
+
+            _logger.LogError(ex, "Failed getting TwentyThree video information: {Source}", source);
+
+            return GenericError();
+
+        }
 
     }
 
@@ -330,6 +366,38 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     #region Private methods
 
+    private string Localize(string alias, params string?[] args) {
+
+        var culture = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?
+            .GetUserCulture(_localizedTextService, _globalSettings.Value) ?? CultureInfo.CurrentCulture;
+
+
+        return _localizedTextService.Localize("twentyThree", alias, culture, args);
+
+    }
+
+    private bool TryGetTranslation(string alias, [NotNullWhen(true)] out string? result) {
+
+        var culture = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?
+            .GetUserCulture(_localizedTextService, _globalSettings.Value) ?? CultureInfo.CurrentCulture;
+
+        string temp = _localizedTextService.Localize("twentyThree", alias, culture);
+
+        if (string.IsNullOrWhiteSpace(temp) || temp.StartsWith('[')) {
+            result = null;
+            return false;
+        }
+
+        result = temp;
+        return true;
+
+    }
+
+    private IActionResult GenericError() {
+        if (!TryGetTranslation("errorGeneric", out string? message)) message = "An error occured on the server.";
+        return InternalServerError(message);
+    }
+
     private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
 
         if (config is { AllowVideos: false }) return BadRequest("Videos are not allowed.");
@@ -482,7 +550,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         return spot.JObject;
     }
 
-    private static object InternalServerError(object value) {
+    private static IActionResult InternalServerError(object value) {
         return new ObjectResult(value) {
             StatusCode = StatusCodes.Status500InternalServerError
         };

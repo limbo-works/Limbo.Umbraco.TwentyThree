@@ -43,5 +43,14 @@
     <key alias="noSource">No URL or embed code specified.</key>
     <key alias="invalidSource">Invalid URL or embed code specified.</key>
 
+    <key alias="siteNotFound">No or invalid configuration found for site with key '%0%' was not found.</key>
+    <key alias="domainNotFound">No or invalid configuration found for the '%0%' domain.</key>
+    <key alias="videosNotAllowed">Videos are not allowed for this property.</key>
+    <key alias="spotsNotAllowed">Spots are not allowed for this property.</key>
+    <key alias="playerNotFound1">Player not found.</key>
+    <key alias="playerNotFound2">Player with ID '%0%' not found.</key>
+    <key alias="videoNotFound">Video with ID '%0%' not found.</key>
+    <key alias="spotNotFound">Spot with ID '%0%' not found.</key>
+
   </area>
 </language>

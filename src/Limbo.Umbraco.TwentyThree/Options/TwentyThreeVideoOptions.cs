@@ -3,7 +3,7 @@
 namespace Limbo.Umbraco.TwentyThree.Options;
 
 /// <summary>
-/// Class with options for embedding a TwnetyThree video.
+/// Class with options for embedding a TwentyThree video.
 /// </summary>
 public class TwentyThreeVideoOptions : ITwentyThreeOptions {
 
@@ -11,6 +11,11 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     /// Gets a reference to the original source the options were parsed from.
     /// </summary>
     public string? Source { get; }
+
+    /// <summary>
+    /// Gets the type of the embed code.
+    /// </summary>
+    public TwentyThreeSourceType Type { get; }
 
     /// <summary>
     /// Gets the scheme of the video.
@@ -21,6 +26,11 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     /// Gets the domain of the video.
     /// </summary>
     public string Domain { get; }
+
+    /// <summary>
+    /// Gets the site key, if any.
+    /// </summary>
+    public string? SiteKey { get; }
 
     /// <summary>
     /// Gets the ID of the video.
@@ -51,15 +61,19 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     /// Initializes a new instance based on the specified parameters.
     /// </summary>
     /// <param name="source">The original source the options were parsed from.</param>
+    /// <param name="type">The type of the source.</param>
     /// <param name="scheme">The scheme of the video.</param>
     /// <param name="domain">The domain of the video.</param>
+    /// <param name="siteKey">The site key, if any.</param>
     /// <param name="videoId">The ID of the video.</param>
     /// <param name="token">The token of the video.</param>
     /// <param name="playerId">The ID of the player.</param>
-    public TwentyThreeVideoOptions(string? source, string scheme, string domain, string videoId, string? token, string? playerId) {
+    public TwentyThreeVideoOptions(string? source, TwentyThreeSourceType type, string scheme, string domain, string? siteKey, string videoId, string? token, string? playerId) {
         Source = source;
+        Type = type;
         Scheme = scheme;
         Domain = domain;
+        SiteKey = siteKey;
         VideoId = videoId;
         Token = token;
         PlayerId = playerId;
@@ -69,17 +83,21 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     /// Initializes a new instance based on the specified parameters.
     /// </summary>
     /// <param name="source">The original source the options were parsed from.</param>
+    /// <param name="type">The type of the source.</param>
     /// <param name="scheme">The scheme of the video.</param>
     /// <param name="domain">The domain of the video.</param>
+    /// <param name="siteKey">The site key, if any.</param>
     /// <param name="videoId">The ID of the video.</param>
     /// <param name="token">The token of the video.</param>
     /// <param name="playerId">The ID of the player.</param>
     /// <param name="autoplay">Indicates whether the video should autoplay.</param>
     /// <param name="endOn">Indicates what happens when the video ends.</param>
-    public TwentyThreeVideoOptions(string? source, string scheme, string domain, string videoId, string? token, string? playerId, bool? autoplay, TwentyThreeEndOn? endOn) {
+    public TwentyThreeVideoOptions(string? source, TwentyThreeSourceType type, string scheme, string domain, string? siteKey, string videoId, string? token, string? playerId, bool? autoplay, TwentyThreeEndOn? endOn) {
         Source = source;
+        Type = type;
         Scheme = scheme;
         Domain = domain;
+        SiteKey = siteKey;
         VideoId = videoId;
         Token = token;
         PlayerId = playerId;

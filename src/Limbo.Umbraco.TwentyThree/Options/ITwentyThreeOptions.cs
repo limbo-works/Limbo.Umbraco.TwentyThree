@@ -1,4 +1,6 @@
-﻿namespace Limbo.Umbraco.TwentyThree.Options;
+﻿using Limbo.Umbraco.TwentyThree.Models;
+
+namespace Limbo.Umbraco.TwentyThree.Options;
 
 /// <summary>
 /// Interface describing a generic TwentyThree video.
@@ -9,6 +11,11 @@ public interface ITwentyThreeOptions {
     /// Gets a reference to the original source the options were parsed from.
     /// </summary>
     string? Source { get; }
+
+    /// <summary>
+    /// Gets the type of the embed code.
+    /// </summary>
+    TwentyThreeSourceType Type { get; }
 
     /// <summary>
     /// Gets the scheme of the video.
