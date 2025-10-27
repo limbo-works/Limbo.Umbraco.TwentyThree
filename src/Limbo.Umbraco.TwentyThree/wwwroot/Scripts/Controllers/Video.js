@@ -29,11 +29,11 @@
     ];
 
     vm.endOn = [
-        { alias: "inherit", label: "Inherit" },
-        { alias: "share", label: "Share" },
-        { alias: "browse", label: "Browse" },
-        { alias: "loop", label: "Loop" },
-        { alias: "thumbnail", label: "Thumbnail" }
+        { alias: "inherit", label: "Inherit", title: "Inherit from player or embed code" },
+        { alias: "share", label: "Share", title: "Show share" },
+        { alias: "browse", label: "Browse", title: "Show recommended videos" },
+        { alias: "loop", label: "Loop", title: "Loop through recommendations" },
+        { alias: "thumbnail", label: "Thumbnail", title: "Show thumbnail" }
     ];
 
     vm.labels = {

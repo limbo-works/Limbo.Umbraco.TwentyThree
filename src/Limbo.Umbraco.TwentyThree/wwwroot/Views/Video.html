@@ -181,7 +181,8 @@
                                 <button type="button"
                                         ng-repeat="o in vm.endOn"
                                         ng-class="{'--active': o.alias == model.value.embed.endOn}"
-                                        ng-click="vm.setEndOn(o)">
+                                        ng-click="vm.setEndOn(o)"
+                                        title="{{o.title}}">
                                     {{o.label}}
                                 </button>
                             </div>
