@@ -10,6 +10,7 @@ using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Skybrud.Essentials.Enums;
 using Skybrud.Essentials.Strings;
 using Skybrud.Essentials.Strings.Extensions;
@@ -26,6 +27,7 @@ using Skybrud.Social.TwentyThree.Options.Spots;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
+using Umbraco.Cms.Core.Models;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
 namespace Limbo.Umbraco.TwentyThree.Services;
@@ -359,6 +361,18 @@ public class TwentyThreeService {
 
         return new TwentyThreeIntermediarySpotValue(options, credentials, spot, thumbnails, site);
 
+    }
+
+    /// <summary>
+    /// Sets the value of the specified <paramref name="propertyAlias"/> on the given <paramref name="content"/> to the JSON representation of the specified <paramref name="value"/>.
+    /// </summary>
+    /// <param name="content">The content item.</param>
+    /// <param name="propertyAlias">The alias of the property.</param>
+    /// <param name="value">The value to be saved.</param>
+    /// <param name="culture">The culture, if any.</param>
+    /// <param name="segment">The segment, if any.</param>
+    public void SetValue(IContentBase content, string propertyAlias, TwentyThreeIntermediaryValue? value, string? culture = null, string? segment = null) {
+        content.SetValue(propertyAlias, value is null ? null : JsonConvert.SerializeObject(value, Formatting.None), culture, segment);
     }
 
 }
