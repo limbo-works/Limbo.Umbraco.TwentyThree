@@ -313,7 +313,7 @@ public class TwentyThreeService {
 
             // Get the first spot (if any)
             spot = response.Body.Spots.FirstOrDefault();
-            if (spot == null) throw HejException.SpotNotFound("Spot not found.");
+            if (spot == null) throw new TwentyThreeSpotNotFoundException(options.SpotId);
 
             // Get a reference to the current site
             site = response.Body.Site;
