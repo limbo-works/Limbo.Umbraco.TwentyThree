@@ -31,16 +31,16 @@
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/13.0.1). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/13.0.2). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 13.0.1
+dotnet add package Limbo.Umbraco.TwentyThree --version 13.0.2
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 13.0.1
+Install-Package Limbo.Umbraco.TwentyThree -Version 13.0.2
 ```
 
 ### Umbraco 10, 11 and 12
