@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.PropertyEditors;
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
 /// <summary>
-/// Class represrnting the configuration for the <see cref="TwentyThreeEditor"/>.
+/// Class representing the configuration for the <see cref="TwentyThreeEditor"/>.
 /// </summary>
 public class TwentyThreeConfiguration {
 
@@ -17,6 +17,15 @@ public class TwentyThreeConfiguration {
         $"/App_Plugins/{TwentyThreePackage.Alias}/Views/ButtonList.html?type={{alias}}",
         Description = "Select whether videos should autoplay when embedded.")]
     public TwentyThreeAutoplay Autoplay { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether embedded videos should loop.
+    /// </summary>
+    [ConfigurationField("loop",
+        "Loop",
+        $"/App_Plugins/{TwentyThreePackage.Alias}/Views/ButtonList.html?type={{alias}}",
+        Description = "Select whether videos should loop.")]
+    public TwentyThreeLoop Loop { get; set; }
 
     /// <summary>
     /// Gets or sets what should happen when a video ends.

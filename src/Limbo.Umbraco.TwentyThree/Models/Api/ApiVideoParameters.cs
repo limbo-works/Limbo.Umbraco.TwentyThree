@@ -19,6 +19,9 @@ public class ApiVideoParameters {
     [JsonProperty("autoplay")]
     public bool? Autoplay { get; }
 
+    [JsonProperty("loop")]
+    public bool? Loop { get; }
+
     [JsonProperty("endOn")]
     public TwentyThreeEndOn? EndOn { get; }
 
@@ -27,6 +30,7 @@ public class ApiVideoParameters {
         Token = options.Token;
         PlayerId = options.PlayerId;
         Autoplay = options.Autoplay;
+        Loop = options.Loop;
         EndOn = options.EndOn;
     }
 

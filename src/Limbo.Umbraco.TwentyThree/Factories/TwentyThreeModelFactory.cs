@@ -1,4 +1,5 @@
-﻿using Limbo.Umbraco.TwentyThree.Models;
+﻿using System;
+using Limbo.Umbraco.TwentyThree.Models;
 using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json.Linq;
@@ -77,17 +78,19 @@ public class TwentyThreeModelFactory {
         string token = details.Data.Token;
         string? playerId = player.IsDefault ? null : player.Id;
         bool? autoplay = ParseAutoplay(json, parameters, config);
+        bool? loop = ParseLoop(json, parameters, config);
         TwentyThreeEndOn? endOn = ParseEndOn(json, parameters, config);
 
         string domain = details.Data.AbsoluteUrl.Split('/')[2];
 
         string embedUrl = $"//{domain}/{playerId ?? "v"}.ihtml/player.html?token={details.Data.Token}&source=embed&photo%5fid={details.Data.PhotoId}";
         if (autoplay != null) embedUrl += $"&autoPlay={(autoplay.Value ? "1" : "0")}";
+        if (loop != null) embedUrl += $"&loop={(loop.Value ? "1" : "0")}";
         if (endOn != null) embedUrl += $"&endOn={endOn.Value.ToLower()}";
 
         HtmlString html = new($"<div style=\"width:100%; height:0; position: relative; padding-bottom:33.333333333333336%\"><iframe src=\"{embedUrl}\" style=\"width:100%; height:100%; position: absolute; top: 0; left: 0;\" frameborder=\"0\" border=\"0\" scrolling=\"no\" mozallowfullscreen=\"1\" webkitallowfullscreen=\"1\" allowfullscreen=\"1\" allow=\"autoplay; fullscreen\"></iframe></div>");
 
-        return new TwentyThreeVideoEmbed(token, playerId, autoplay, endOn, html);
+        return new TwentyThreeVideoEmbed(token, playerId, autoplay, loop, endOn, html);
 
     }
 
@@ -134,6 +137,21 @@ public class TwentyThreeModelFactory {
             "enabled" => true,
             "disabled" => false,
             _ => parameters.Autoplay
+        };
+
+    }
+
+    protected virtual bool? ParseLoop(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+
+        if (config != null && config.Loop != TwentyThreeLoop.Inherit) {
+            return config.Loop == TwentyThreeLoop.Enabled;
+        }
+
+        string? value = json.GetString("loop");
+        return value switch {
+            "enabled" => true,
+            "disabled" => false,
+            _ => parameters.Loop
         };
 
     }

@@ -53,6 +53,11 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     public bool? Autoplay { get; }
 
     /// <summary>
+    /// Gets whether the video should loop.
+    /// </summary>
+    public bool? Loop { get; }
+
+    /// <summary>
     /// Gets what happens when the video ends.
     /// </summary>
     public TwentyThreeEndOn? EndOn { get; init; }
@@ -91,8 +96,9 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
     /// <param name="token">The token of the video.</param>
     /// <param name="playerId">The ID of the player.</param>
     /// <param name="autoplay">Indicates whether the video should autoplay.</param>
+    /// <param name="loop">Indicates whether the video should loop.</param>
     /// <param name="endOn">Indicates what happens when the video ends.</param>
-    public TwentyThreeVideoOptions(string? source, TwentyThreeSourceType type, string scheme, string domain, string? siteKey, string videoId, string? token, string? playerId, bool? autoplay, TwentyThreeEndOn? endOn) {
+    public TwentyThreeVideoOptions(string? source, TwentyThreeSourceType type, string scheme, string domain, string? siteKey, string videoId, string? token, string? playerId, bool? autoplay, bool? loop, TwentyThreeEndOn? endOn) {
         Source = source;
         Type = type;
         Scheme = scheme;
@@ -102,6 +108,7 @@ public class TwentyThreeVideoOptions : ITwentyThreeOptions {
         Token = token;
         PlayerId = playerId;
         Autoplay = autoplay;
+        Loop = loop;
         EndOn = endOn;
     }
 

@@ -173,6 +173,28 @@
                     </div>
                     <div class="--property">
                         <div class="--label">
+                            Loop<br />
+                            <small>Select whether the video should loop.</small>
+                        </div>
+                        <div class="--value">
+                            <div class="--button-list" ng-if="model.config.loop === 'inherit'">
+                                <button type="button"
+                                        ng-repeat="o in vm.loop"
+                                        ng-class="{'--active': o.alias == model.value.embed.loop}"
+                                        ng-click="vm.setLoop(o)">
+                                    {{o.label}}
+                                </button>
+                            </div>
+                            <div ng-if="model.config.loop !== 'inherit'">
+                                <umb-node-preview single="true"
+                                                  name="vm.currentLoop.label"
+                                                  description="vm.labels.overridden">
+                                </umb-node-preview>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="--property">
+                        <div class="--label">
                             When video ends<br />
                             <small>Select what happens when the video ends.</small>
                         </div>

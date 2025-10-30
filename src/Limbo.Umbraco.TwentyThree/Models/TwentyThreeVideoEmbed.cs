@@ -35,6 +35,12 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
     public bool? Autoplay { get; set; }
 
     /// <summary>
+    /// Gets whether embedded videos should loop.
+    /// </summary>
+    [JsonProperty("loop")]
+    public bool? Loop { get; set; }
+
+    /// <summary>
     /// Gets what should happen when a video ends.
     /// </summary>
     [JsonProperty("endOn")]
@@ -77,13 +83,15 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
     /// <param name="token">The token of the video.</param>
     /// <param name="playerId">The ID of the player, if any.</param>
     /// <param name="autoplay">Whether embedded videos should automatically start playing.</param>
+    /// <param name="loop">Whether embedded videos should loop.</param>
     /// <param name="endOn">What should happen when a video ends.</param>
     /// <param name="html">The embed HTML for the video.</param>
     /// <exception cref="System.NotImplementedException"></exception>
-    public TwentyThreeVideoEmbed(string token, string? playerId, bool? autoplay, TwentyThreeEndOn? endOn, IHtmlContent html) {
+    public TwentyThreeVideoEmbed(string token, string? playerId, bool? autoplay, bool? loop, TwentyThreeEndOn? endOn, IHtmlContent html) {
         Token = token;
         PlayerId = playerId;
         Autoplay = autoplay;
+        Loop = loop;
         EndOn = endOn;
         Html = html;
     }

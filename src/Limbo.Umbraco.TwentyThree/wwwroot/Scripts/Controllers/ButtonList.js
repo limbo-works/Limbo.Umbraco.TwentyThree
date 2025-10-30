@@ -13,7 +13,7 @@
         $scope.model.value = option.alias;
     };
 
-    if (type === "autoplay") {
+    if (type === "autoplay" || type === "loop") {
 
         vm.options = [
             { alias: "inherit", label: "Inherit" },

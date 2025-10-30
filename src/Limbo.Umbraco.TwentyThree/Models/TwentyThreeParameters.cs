@@ -32,6 +32,11 @@ public class TwentyThreeParameters {
     public bool? Autoplay { get; }
 
     /// <summary>
+    /// Gets whether embedded videos should loop.
+    /// </summary>
+    public bool? Loop { get; }
+
+    /// <summary>
     /// Gets what should happen when a video ends.
     /// </summary>
     public TwentyThreeEndOn? EndOn { get; }
@@ -49,6 +54,7 @@ public class TwentyThreeParameters {
         Token = json.GetString("token")!;
         PlayerId = json.GetString("playerId");
         Autoplay = json.GetBooleanOrNull("autoplay");
+        Loop = json.GetBooleanOrNull("loop");
         EndOn = json.GetEnumOrNull<TwentyThreeEndOn>("endOn");
     }
 

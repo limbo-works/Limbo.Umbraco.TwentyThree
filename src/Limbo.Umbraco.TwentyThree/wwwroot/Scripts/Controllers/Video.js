@@ -5,6 +5,7 @@
     vm.config = $scope.model.config ?? {};
 
     if (!vm.config.autoplay) vm.config.autoplay = "inherit";
+    if (!vm.config.loop) vm.config.loop = "inherit";
     if (!vm.config.endOn) vm.config.endOn = "inherit";
 
     vm.config.hideSite = vm.config.hideSite === true;
@@ -23,6 +24,12 @@
     vm.showEmbed = vm.config.hideEmbed !== true;
 
     vm.autoplay = [
+        { alias: "inherit", label: "Inherit" },
+        { alias: "enabled", label: "Enabled" },
+        { alias: "disabled", label: "Disabled" }
+    ];
+
+    vm.loop = [
         { alias: "inherit", label: "Inherit" },
         { alias: "enabled", label: "Enabled" },
         { alias: "disabled", label: "Disabled" }
@@ -99,7 +106,7 @@
                 $scope.model.value.player = item.player;
             }
 
-            if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
+            if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", loop: "inherit", endOn: "inherit" };
 
             // Keep the raw video data around for later
             vm.video = item.video;
@@ -225,6 +232,12 @@
                 vm.currentAutoplay = vm.autoplay.find(x => x.alias === $scope.model.value.embed.autoplay);
             }
 
+            if (vm.config.loop !== "inherit") {
+                vm.currentLoop = vm.loop.find(x => x.alias === vm.config.loop);
+            } else {
+                vm.currentLoop = vm.loop.find(x => x.alias === $scope.model.value.embed.loop);
+            }
+
             if (vm.config.endOn !== "inherit") {
                 vm.currentEndOn = vm.endOn.find(x => x.alias === vm.config.endOn);
             } else {
@@ -304,6 +317,11 @@
         $scope.model.value.embed.autoplay = o.alias;
     };
 
+    vm.setLoop = function (o) {
+        if (!$scope.model.embed) $scope.model.embed = {};
+        $scope.model.value.embed.loop = o.alias;
+    };
+
     vm.setEndOn = function (o) {
         if (!$scope.model.embed) $scope.model.embed = {};
         $scope.model.value.embed.endOn = o.alias;
@@ -322,7 +340,10 @@
             vm.video = angular.fromJson($scope.model.value.video._data);
             vm.duration = vm.video.video_length;
 
-            if (!$scope.model.value.embed) $scope.model.value.embed = { autoplay: "inherit", endOn: "inherit" };
+            if (!$scope.model.value.embed) $scope.model.value.embed = {};
+            if (!$scope.model.value.embed.autoplay) $scope.model.value.embed.autoplay = "inherit";
+            if (!$scope.model.value.embed.loop) $scope.model.value.embed.loop = "inherit";
+            if (!$scope.model.value.embed.endOn) $scope.model.value.embed.endOn = "inherit";
 
             vm.update();
 

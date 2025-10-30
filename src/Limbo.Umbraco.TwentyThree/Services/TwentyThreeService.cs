@@ -152,10 +152,15 @@ public class TwentyThreeService {
             if (playerId == "v") playerId = null;
 
             bool? autoplay = null;
+            bool? loop = null;
             TwentyThreeEndOn? endOn = null;
 
             if (RegexUtils.IsMatch(source, "autoPlay=(1|0)", out string result)) {
                 autoplay = result == "1";
+            }
+
+            if (RegexUtils.IsMatch(source, "loop=(1|0)", out result)) {
+                loop = result == "1";
             }
 
             if (RegexUtils.IsMatch(source, "endOn=([a-z]+)", out result) && EnumUtils.TryParseEnum(result, out TwentyThreeEndOn result2)) {
@@ -164,7 +169,7 @@ public class TwentyThreeService {
 
             if (string.IsNullOrWhiteSpace(scheme)) scheme = "https";
 
-            options = new TwentyThreeVideoOptions(source, TwentyThreeSourceType.Embed, scheme, domain, null, videoId, token, playerId, autoplay, endOn);
+            options = new TwentyThreeVideoOptions(source, TwentyThreeSourceType.Embed, scheme, domain, null, videoId, token, playerId, autoplay, loop, endOn);
 
             return true;
 
