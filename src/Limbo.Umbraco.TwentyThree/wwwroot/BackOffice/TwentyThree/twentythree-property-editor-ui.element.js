@@ -3,6 +3,8 @@ import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
 import { UmbChangeEvent } from "@umbraco-cms/backoffice/event";
 import { UmbFormControlMixin } from "@umbraco-cms/backoffice/validation";
 
+import { TwentyThreeService } from "@limbo/twentythree/service";
+
 const DEFAULT_CONFIG = {
   allowVideos: true,
   allowSpots: true,
@@ -236,7 +238,22 @@ class TwentyThreePropertyEditorUiElement extends UmbFormControlMixin(UmbLitEleme
   async #lookup(source) {
     const requestId = ++this.#requestToken;
     this._loading = true;
-    this._error = "";
+      this._error = "";
+
+
+      TwentyThreeService.getVideo(source).then((response) => {
+
+          console.log(response);
+
+      });
+
+
+
+      return;
+
+
+
+
 
     try {
         const response = await fetch(`limbo/twentythree/GetVideo?source=${encodeURIComponent(source)}`, {
