@@ -1,0 +1,13 @@
+{
+  "id": "Limbo.Umbraco.TwentyThree",
+  "name": "Limbo TwentyThree",
+  "version": "17.0.0",
+  "extensions": [
+    {
+      "type": "bundle",
+      "alias": "Limbo.Umbraco.TwentyThree.Bundle",
+      "name": "Limbo TwentyThree Bundle",
+      "js": "/App_Plugins/Limbo.Umbraco.TwentyThree/BackOffice/TwentyThree/twentythree.bundle.js"
+    }
+  ]
+}

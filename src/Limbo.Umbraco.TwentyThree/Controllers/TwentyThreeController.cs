@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using Asp.Versioning;
 using Limbo.Umbraco.TwentyThree.Exceptions;
 using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models.Api;
@@ -12,6 +13,7 @@ using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Limbo.Umbraco.TwentyThree.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,8 +38,9 @@ using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Web.BackOffice.Controllers;
-using Umbraco.Cms.Web.Common.Attributes;
+using Umbraco.Cms.Web.Common.Authorization;
+using Umbraco.Cms.Web.Common.Controllers;
+using Umbraco.Cms.Web.Common.Routing;
 using Umbraco.Extensions;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
@@ -47,8 +50,12 @@ using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbna
 
 namespace Limbo.Umbraco.TwentyThree.Controllers;
 
-[PluginController("Limbo")]
-public class TwentyThreeController : UmbracoAuthorizedApiController {
+[ApiController]
+[BackOfficeRoute("limbo/twentythree")]
+[Authorize(Policy = AuthorizationPolicies.SectionAccessContent)]
+[ApiVersion("1.0")]
+[ApiExplorerSettings(GroupName = "Limbo TwentyThree")]
+public class TwentyThreeController : Controller {
 
     private readonly ILogger<TwentyThreeController> _logger;
     private readonly IOptions<GlobalSettings> _globalSettings;
@@ -78,6 +85,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// <param name="source">The video source (URL or embed code).</param>
     /// <param name="dataTypeKey">The key of the underlying data type, if any.</param>
     /// <returns>Information about the video matching <paramref name="source"/>.</returns>
+    [HttpGet("video")]
+    [HttpGet("GetVideo")]
     public object GetVideo(string? source, Guid? dataTypeKey = null) {
 
         // Get the "source" parameter from either GET or POST
@@ -105,8 +114,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
             }
 
             // Get a reference to the data type (if specified)
-            IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
-            TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
+            IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetAsync(dataTypeKey.Value).GetAwaiter().GetResult();
+            TwentyThreeConfiguration? config = dataType?.ConfigurationAs<TwentyThreeConfiguration>();
 
             // Handle the different options types
             return options switch {
@@ -146,10 +155,14 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// Returns a list of all configured TwentyThree accounts (credentials).
     /// </summary>
     /// <returns>A list of accounts.</returns>
+    [HttpGet("accounts")]
+    [HttpGet("GetAccounts")]
     public object GetAccounts() {
         return _options.Value.Credentials.Select(ToApiModel);
     }
 
+    [HttpGet("accounts/{accountId}")]
+    [HttpGet("GetAccounts/{accountId}")]
     public object GetAlbums(Guid accountId) {
 
         TwentyThreeCredentials? credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
@@ -190,6 +203,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// <param name="page">The page to be returned.</param>
     /// <param name="albumId">The ID of the album the returned videos should match. Default is <see langword="null"/>.</param>
     /// <returns>A list of vídeos.</returns>
+    [HttpGet("GetVideos")]
+    [HttpGet("accounts/{accountId}/videos")]
     public object GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1, string? albumId = null) {
 
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
@@ -237,6 +252,9 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     }
 
+
+    [HttpGet("GetSpots")]
+    [HttpGet("accounts/{accountId}/spots")]
     public object GetSpots(Guid accountId, string? text = null, int limit = 0, int page = 1) {
 
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
@@ -322,6 +340,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     }
 
+    [HttpGet("GetPlayers")]
+    [HttpGet("players")]
     public object GetPlayers(Guid credentialsId) {
 
         // Find the credentials

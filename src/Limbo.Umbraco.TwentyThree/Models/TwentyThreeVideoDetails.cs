@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Newtonsoft;
@@ -45,10 +46,10 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
     }
 
     /// <summary>
-    /// Returns a list of <see cref="TwentyThreeThumbnail"/> representing the video formats of the video.
+    /// Returns a list of <see cref="IVideoFile"/> representing the video formats of the video.
     /// </summary>
     [JsonProperty("files")]
-    public new IReadOnlyList<TwentyThreeVideoFile> Files {
+    public new IReadOnlyList<IVideoFile> Files {
         get => base.Files!;
         set => base.Files = value;
     }

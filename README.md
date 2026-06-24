@@ -5,7 +5,7 @@
 [![NuGet](https://img.shields.io/nuget/dt/Limbo.Umbraco.TwentyThree.svg)](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree)
 [![Umbraco Marketplace](https://img.shields.io/badge/umbraco-marketplace-%233544B1)](https://marketplace.umbraco.com/package/limbo.umbraco.twentythree)
 
-**Limbo.Umbraco.TwentyThree** is a package for Umbraco 13 that features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
+**Limbo.Umbraco.TwentyThree** is a package for Umbraco 17 that features a property editor for inserting (via URL or embed code) a TwentyThree video. The property editor saves a bit of information about the video, which then will be availble in C#.
 
 <table>
   <tr>
@@ -15,13 +15,13 @@
   <tr>
     <td><strong>Umbraco:</strong></td>
     <td>
-      Umbraco 13
+      Umbraco 17
     </td>
   </tr>
   <tr>
     <td><strong>Target Framework:</strong></td>
     <td>
-      .NET 8
+      .NET 10
     </td>
   </tr>
 </table>
@@ -31,16 +31,16 @@
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/13.0.3). To install the package, you can use either .NET CLI:
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/17.0.0). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 13.0.3
+dotnet add package Limbo.Umbraco.TwentyThree --version 17.0.0
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 13.0.3
+Install-Package Limbo.Umbraco.TwentyThree -Version 17.0.0
 ```
 
 ### Umbraco 10, 11 and 12
@@ -54,8 +54,8 @@ For the Umbraco 10-12 version of this package, see the [**v2/main**](https://git
 <br /><br />
 ## Dependencies
 
-- [**Umbraco 13**](https://github.com/umbraco/Umbraco-CMS)  
-The `v13.x` releases are build against Umbraco 13.
+- [**Umbraco 17**](https://github.com/umbraco/Umbraco-CMS)  
+The `v17.x` releases are build against Umbraco 17.
 
 - [**Skybrud.Essentials.Http**](https://github.com/skybrud/Skybrud.Essentials.Http)  
 Our package for making HTTP requests.
@@ -64,7 +64,7 @@ Our package for making HTTP requests.
 Our integration package and API wrapper for the Twenty Three API.
 
 - [**Limbo.Umbraco.Video**](https://github.com/limbo-works/Limbo.Umbraco.Video)  
-Base package with common functionality for our various video pickers.
+Shared video model contracts used by the TwentyThree package.
 
 
 

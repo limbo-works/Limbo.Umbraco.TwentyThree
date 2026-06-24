@@ -3,19 +3,19 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <StaticWebAssetBasePath>App_Plugins/$(AssemblyName)</StaticWebAssetBasePath>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>13.0.3</VersionPrefix>
+    <VersionPrefix>17.0.0-alpha000</VersionPrefix>
     <VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
     <Company>Limbo</Company>
     <Authors>Anders Bjerner</Authors>
     <Copyright>Copyright © $([System.DateTime]::UtcNow.ToString(`yyyy`))</Copyright>
     <Title>Limbo TwentyThree</Title>
-    <Description>TwentyThree video picker for Umbraco 13.</Description>
+    <Description>TwentyThree video picker for Umbraco 17.</Description>
   </PropertyGroup>
 
   <!-- Information for the NuGet package -->
@@ -23,7 +23,7 @@
     <PackageId>Limbo.Umbraco.TwentyThree</PackageId>
     <PackageTags>Skybrud, Limbo, Umbraco, TwentyThree, 23Video, Video, Umbraco-Marketplace</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://packages.limbo.works/limbo.umbraco.twentythree/v13/</PackageProjectUrl>
+    <PackageProjectUrl>https://packages.limbo.works/limbo.umbraco.twentythree/v17/</PackageProjectUrl>
     <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/limbo-works/Limbo.Umbraco.TwentyThree</RepositoryUrl>
@@ -31,12 +31,12 @@
 
   <!-- Include NuGet dependencies -->
   <ItemGroup>
-    <PackageReference Include="Limbo.Umbraco.Video" Version="13.0.0" />
+    <PackageReference Include="Limbo.Umbraco.Video" Version="17.0.0-alpha001" />
     <PackageReference Include="Skybrud.Essentials" Version="1.1.61" />
     <PackageReference Include="Skybrud.Social.TwentyThree" Version="1.1.3" />
-    <PackageReference Include="Umbraco.Cms.Core" Version="[13.0.0,13.999)" NoWarn="NU1902" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[13.0.0,13.999)" NoWarn="NU1902" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="[13.0.0,13.999)" NoWarn="NU1902" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="[17.0.0,17.999)" NoWarn="NU1902" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[17.0.0,17.999)" NoWarn="NU1902" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[17.0.0,17.999)" NoWarn="NU1902" />
   </ItemGroup>
 
   <!-- Include package icon for NuGet -->
@@ -46,10 +46,6 @@
 
   <!-- Remove non-package files from the NuGet package -->
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-    <Content Remove="wwwroot/Scripts/Intellisense.js" />
-    <None Include="compilerconfig.json" />
-    <None Include="wwwroot/Scripts/Intellisense.js" />
   </ItemGroup>
 
   <!-- Generate XML documentation -->
