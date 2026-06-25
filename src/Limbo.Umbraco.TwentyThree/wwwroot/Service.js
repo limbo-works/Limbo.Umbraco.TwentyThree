@@ -1,55 +1,50 @@
 ﻿import { TwentyThreeAuth } from "@limbo/twentythree/auth";
 
-
-function hi(url, config) {
+async function hi(url, config) {
 
     if (!config) config = {};
     if (!config.method) config.method = "GET";
     if (!config.headers) config.headers = {};
 
-    return new Promise((resolve, reject) => {
+    const token = await TwentyThreeAuth.TOKEN();
+    config.headers.Authorization = `Bearer ${token}`;
 
-        TwentyThreeAuth.TOKEN().then(function (token) {
+    const res = await fetch(url, config);
 
-            config.headers.Authorization = "Bearer " + token;
+    const contentType = res.headers.get("content-type") || "";
 
-            //console.log(config.method + " " + url);
+    if (contentType.includes("application/json")) {
+        res.data = await res.json();
+    } else if (contentType.startsWith("text/")) {
+        res.textContent = await res.text();
+    } else {
+        throw new Error(`Unsupported content type: ${contentType}`);
+    }
 
-            const response = fetch(url, config);
+    if (!res.ok) {
+        throw res;
+    }
 
-            response.then(function (res) {
-
-                res.json().then(function (json) {
-                    res.data = json;
-                    if (res.status < 400) {
-                        resolve(res);
-                    } else {
-                        reject(res);
-                    }
-                });
-
-            }, function (res) {
-
-                // sending the request failed (before actually calling the URL)
-
-                console.log("failed", arguments);
-
-            });
-
-        });
-
-    });
+    return res;
 
 }
 
-function get(url) {
-    return hi(url);
+async function get(url) {
+    return await hi(url);
 }
+
+const baseUrl = "/umbraco/limbo/twentythree";
 
 export class TwentyThreeService {
 
+    static getServerVariables() {
+        return get(`${baseUrl}/serverVariables`).then(function (res) {
+            return res.data;
+        });
+    }
+
     static getVideo(source) {
-        return get("/umbraco/limbo/twentythree/video?source=" + encodeURIComponent(source));
+        return get(`${baseUrl}/video?source=${encodeURIComponent(source)}`);
     }
 
 };

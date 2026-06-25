@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Essentials.Json.Newtonsoft.Extensions;
+using Skybrud.Essentials.Time;
 using Skybrud.Social.TwentyThree.Models.Photos;
 
 namespace Limbo.Umbraco.TwentyThree.Models;
@@ -39,7 +40,7 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
     /// Gets the duration of the video.
     /// </summary>
     [JsonProperty("duration")]
-    [JsonConverter(typeof(Skybrud.Essentials.Json.Converters.Time.TimeSpanSecondsConverter))]
+    [JsonConverter(typeof(Skybrud.Essentials.Json.Newtonsoft.Converters.Time.TimeSpanConverter), TimeSpanFormat.Seconds)]
     public new TimeSpan Duration {
         get => base.Duration!.Value;
         set => base.Duration = value;

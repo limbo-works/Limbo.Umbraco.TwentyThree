@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Skybrud.Essentials.AspNetCore.Json.Newtonsoft;
+using Skybrud.Essentials.Security.Extensions;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Social.TwentyThree;
 using Skybrud.Social.TwentyThree.Exceptions;
@@ -39,7 +41,6 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Authorization;
-using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.Routing;
 using Umbraco.Extensions;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
@@ -78,6 +79,15 @@ public class TwentyThreeController : Controller {
     }
 
     #region Public API methods
+
+    [HttpGet]
+    [Route("serverVariables")]
+    public object GetServerVariables() {
+        return new {
+            version = TwentyThreePackage.InformationalVersion,
+            cacheBuster = TwentyThreePackage.InformationalVersion.ToMd5Hash()
+        };
+    }
 
     /// <summary>
     /// Returns information about the video or spot with the specified <paramref name="source"/>.
@@ -119,8 +129,8 @@ public class TwentyThreeController : Controller {
 
             // Handle the different options types
             return options switch {
-                TwentyThreeVideoOptions vo => GetVideo(credentials, vo, config),
-                TwentyThreeSpotOptions so => GetSpot(credentials, so, config),
+                TwentyThreeVideoOptions vo => NewtonsoftJsonResult.Ok(GetVideo(credentials, vo, config)),
+                TwentyThreeSpotOptions so => NewtonsoftJsonResult.Ok(GetSpot(credentials, so, config)),
                 _ => BadRequest($"Unknown type {options.GetType()}.")
             };
 

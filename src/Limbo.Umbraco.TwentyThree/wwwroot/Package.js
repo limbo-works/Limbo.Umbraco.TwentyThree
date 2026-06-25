@@ -12,10 +12,6 @@
         return this._serverVariables["cacheBuster"];
     }
 
-    static get dashboard() {
-        return this._serverVariables["dashboard"] ?? { limit: 20 };
-    }
-
 }
 
 export default TwentyThreePackage;

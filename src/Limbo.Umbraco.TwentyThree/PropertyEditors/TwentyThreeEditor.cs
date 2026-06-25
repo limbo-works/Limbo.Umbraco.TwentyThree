@@ -1,6 +1,5 @@
 ﻿using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.Services;
 
 #pragma warning disable 1591
 
@@ -16,7 +15,7 @@ public class TwentyThreeEditor : DataEditor {
 
     #region Constants
 
-    public const string EditorAlias = "Limbo.Umbraco.TwentyThree";
+    public const string EditorAlias = "Limbo.Umbraco.TwentyThree.Video";
 
     #endregion
 

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="28px" viewBox="0 0 32 18" version="1.1">
+﻿export default `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="28px" viewBox="0 0 32 18" version="1.1">
     <g stroke-width="1" fill-rule="evenodd">
         <g transform="translate(-9.000000, -16.000000)">
             <g transform="translate(9.000000, 16.000000)">
@@ -8,5 +8,4 @@
             </g>
         </g>
     </g>
-</svg>
-
+</svg>`;

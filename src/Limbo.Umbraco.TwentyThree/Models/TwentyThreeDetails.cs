@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
-using Skybrud.Essentials.Json.Converters.Time;
+using Skybrud.Essentials.Json.Newtonsoft.Converters.Time;
+using Skybrud.Essentials.Time;
 
 namespace Limbo.Umbraco.TwentyThree.Models;
 
@@ -27,7 +28,7 @@ public abstract class TwentyThreeDetails : IVideoDetails {
     /// Gets the duration of the video.
     /// </summary>
     [JsonProperty("duration", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(TimeSpanSecondsConverter))]
+    [JsonConverter(typeof(TimeSpanConverter), TimeSpanFormat.Seconds)]
     public TimeSpan? Duration { get; protected set; }
 
     /// <summary>
