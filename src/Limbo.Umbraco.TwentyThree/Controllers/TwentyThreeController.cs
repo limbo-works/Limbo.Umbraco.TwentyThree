@@ -12,11 +12,15 @@ using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.PropertyEditors;
 using Limbo.Umbraco.TwentyThree.Services;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Umbraco.Cms.Api.Management.Controllers;
+using Umbraco.Cms.Api.Management.Routing;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Social.TwentyThree;
 using Skybrud.Social.TwentyThree.Exceptions;
@@ -33,11 +37,8 @@ using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
 using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Web.BackOffice.Controllers;
-using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Extensions;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
@@ -47,22 +48,27 @@ using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbna
 
 namespace Limbo.Umbraco.TwentyThree.Controllers;
 
-[PluginController("Limbo")]
-public class TwentyThreeController : UmbracoAuthorizedApiController {
+// [CHANGE: Umbraco 17 migration — replaced AngularJS UmbracoAuthorizedApiController with a management-API
+// controller (ManagementApiControllerBase) so it is discovered + authenticated by the backoffice cookie
+// pipeline; responses serialized via Newtonsoft (JsonNet helper) to preserve the existing JSON contract]
+// Related: wwwroot/Service.js, wwwroot/umbraco-package.json, PropertyEditors/TwentyThreeEditor.cs
+// ManagementApiControllerBase supplies [ApiController], [MapToApi("management")] and the BackOfficeAccess
+// authorization. Served at: /umbraco/management/api/v1/twentythree/{action}
+[VersionedApiBackOfficeRoute("twentythree")]
+[ApiVersion("1.0")]
+public class TwentyThreeController : ManagementApiControllerBase {
 
     private readonly ILogger<TwentyThreeController> _logger;
     private readonly IOptions<GlobalSettings> _globalSettings;
-    private readonly IDataTypeService _dataTypeService;
     private readonly ILocalizedTextService _localizedTextService;
     private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
     private readonly IOptions<TwentyThreeSettings> _options;
     private readonly TwentyThreeService _service;
     private readonly TwentyThreeModelFactory _modelFactory;
 
-    public TwentyThreeController(ILogger<TwentyThreeController> logger, IOptions<GlobalSettings> globalSettings, IDataTypeService dataTypeService, ILocalizedTextService localizedTextService, IBackOfficeSecurityAccessor backOfficeSecurityAccessor, IOptions<TwentyThreeSettings> options, TwentyThreeService service, TwentyThreeModelFactory modelFactory) {
+    public TwentyThreeController(ILogger<TwentyThreeController> logger, IOptions<GlobalSettings> globalSettings, ILocalizedTextService localizedTextService, IBackOfficeSecurityAccessor backOfficeSecurityAccessor, IOptions<TwentyThreeSettings> options, TwentyThreeService service, TwentyThreeModelFactory modelFactory) {
         _logger = logger;
         _globalSettings = globalSettings;
-        _dataTypeService = dataTypeService;
         _localizedTextService = localizedTextService;
         _backOfficeSecurityAccessor = backOfficeSecurityAccessor;
         _options = options;
@@ -76,15 +82,12 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// Returns information about the video or spot with the specified <paramref name="source"/>.
     /// </summary>
     /// <param name="source">The video source (URL or embed code).</param>
-    /// <param name="dataTypeKey">The key of the underlying data type, if any.</param>
     /// <returns>Information about the video matching <paramref name="source"/>.</returns>
-    public object GetVideo(string? source, Guid? dataTypeKey = null) {
+    [HttpGet("video")]
+    public IActionResult GetVideo(string? source) {
 
-        // Get the "source" parameter from either GET or POST
+        // Get the "source" parameter from the query string
         source = HttpContext.Request.Query["source"].FirstOrDefault();
-        if (string.IsNullOrWhiteSpace(source) && HttpContext.Request.HasFormContentType) {
-            source = HttpContext.Request.Form["source"].FirstOrDefault();
-        }
 
         // Check whether a "source" was specified
         if (string.IsNullOrWhiteSpace(source)) return BadRequest("No URL or embed code specified.");
@@ -104,14 +107,10 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
                 throw TwentyThreeDomainNotFoundException.Create(options.Domain, options);
             }
 
-            // Get a reference to the data type (if specified)
-            IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetDataType(dataTypeKey.Value);
-            TwentyThreeConfiguration? config = dataType?.Configuration as TwentyThreeConfiguration;
-
-            // Handle the different options types
+            // Handle the different options types (allow/deny is enforced client-side from the data type config)
             return options switch {
-                TwentyThreeVideoOptions vo => GetVideo(credentials, vo, config),
-                TwentyThreeSpotOptions so => GetSpot(credentials, so, config),
+                TwentyThreeVideoOptions vo => GetVideo(credentials, vo, null),
+                TwentyThreeSpotOptions so => GetSpot(credentials, so, null),
                 _ => BadRequest($"Unknown type {options.GetType()}.")
             };
 
@@ -146,11 +145,13 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// Returns a list of all configured TwentyThree accounts (credentials).
     /// </summary>
     /// <returns>A list of accounts.</returns>
-    public object GetAccounts() {
-        return _options.Value.Credentials.Select(ToApiModel);
+    [HttpGet("accounts")]
+    public IActionResult GetAccounts() {
+        return JsonNet(_options.Value.Credentials.Select(ToApiModel));
     }
 
-    public object GetAlbums(Guid accountId) {
+    [HttpGet("albums")]
+    public IActionResult GetAlbums(Guid accountId) {
 
         TwentyThreeCredentials? credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
@@ -163,7 +164,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
                 Size = 1000
             });
 
-            return new ApiAlbumList(response);
+            return JsonNet(new ApiAlbumList(response));
 
         } catch (TwentyThreeHttpException ex) when (ex.HasError) {
 
@@ -190,7 +191,8 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     /// <param name="page">The page to be returned.</param>
     /// <param name="albumId">The ID of the album the returned videos should match. Default is <see langword="null"/>.</param>
     /// <returns>A list of vídeos.</returns>
-    public object GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1, string? albumId = null) {
+    [HttpGet("videos")]
+    public IActionResult GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1, string? albumId = null) {
 
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
@@ -226,18 +228,19 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         }
 
-        return new {
+        return JsonNet(new {
             page = list.Page,
             limit = list.Size,
             total = list.TotalCount,
             pages = list.TotalCount == 0 ? 0 : Math.Ceiling((double) list.TotalCount / list.Size),
             site = new ApiSite(list.Site),
             videos = list.Photos.Select(ToApiModel)
-        };
+        });
 
     }
 
-    public object GetSpots(Guid accountId, string? text = null, int limit = 0, int page = 1) {
+    [HttpGet("spots")]
+    public IActionResult GetSpots(Guid accountId, string? text = null, int limit = 0, int page = 1) {
 
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
@@ -302,7 +305,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
         }
 
-        return new {
+        return JsonNet(new {
             page = list.Page,
             limit = list.Size,
             total = list.TotalCount,
@@ -318,11 +321,12 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
                 }
                 return ToApiModel(x, photo);
             })
-        };
+        });
 
     }
 
-    public object GetPlayers(Guid credentialsId) {
+    [HttpGet("players")]
+    public IActionResult GetPlayers(Guid credentialsId) {
 
         // Find the credentials
         var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == credentialsId);
@@ -358,7 +362,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         }
 
         // Return the players
-        return players.Select(ToApiModel);
+        return JsonNet(players.Select(ToApiModel));
 
     }
 
@@ -398,7 +402,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
         return InternalServerError(message);
     }
 
-    private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
+    private IActionResult GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
 
         if (config is { AllowVideos: false }) return BadRequest("Videos are not allowed.");
 
@@ -449,7 +453,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
             TwentyThreePlayer? player = response.Body.Players.FirstOrDefault(x => options.PlayerId is null ? x.IsDefault : x.PlayerId == options.PlayerId);
             if (player == null) return NotFound("Player not found.");
 
-            return new ApiVideoDetails(options, credentials, video, player, site);
+            return JsonNet(new ApiVideoDetails(options, credentials, video, player, site));
 
         } catch (TwentyThreeHttpException ex) when (ex.HasError) {
 
@@ -465,7 +469,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
 
     }
 
-    private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeConfiguration? config) {
+    private IActionResult GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeConfiguration? config) {
 
         if (config is { AllowSpots: false }) return BadRequest("Spots are not allowed.");
 
@@ -528,7 +532,7 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
             thumbnails = [];
         }
 
-        return new ApiSpotDetails(options, credentials, spot, thumbnails, site);
+        return JsonNet(new ApiSpotDetails(options, credentials, spot, thumbnails, site));
 
     }
 
@@ -553,6 +557,17 @@ public class TwentyThreeController : UmbracoAuthorizedApiController {
     private static IActionResult InternalServerError(object value) {
         return new ObjectResult(value) {
             StatusCode = StatusCodes.Status500InternalServerError
+        };
+    }
+
+    // The API models rely on Newtonsoft.Json attributes (and some return raw JObject values), so responses are
+    // serialized explicitly with Newtonsoft to keep the exact JSON contract the backoffice client expects, rather
+    // than the System.Text.Json pipeline used by the Umbraco management API.
+    private static IActionResult JsonNet(object? value, int statusCode = StatusCodes.Status200OK) {
+        return new ContentResult {
+            Content = JsonConvert.SerializeObject(value),
+            ContentType = "application/json; charset=utf-8",
+            StatusCode = statusCode
         };
     }
 

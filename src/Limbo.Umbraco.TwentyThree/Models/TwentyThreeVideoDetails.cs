@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Limbo.Umbraco.Video.Models.Videos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Essentials.Json.Newtonsoft.Extensions;
+using Skybrud.Essentials.Time;
 using Skybrud.Social.TwentyThree.Models.Photos;
 
 namespace Limbo.Umbraco.TwentyThree.Models;
@@ -38,17 +40,17 @@ public class TwentyThreeVideoDetails : TwentyThreeDetails {
     /// Gets the duration of the video.
     /// </summary>
     [JsonProperty("duration")]
-    [JsonConverter(typeof(Skybrud.Essentials.Json.Converters.Time.TimeSpanSecondsConverter))]
+    [JsonConverter(typeof(Skybrud.Essentials.Json.Newtonsoft.Converters.Time.TimeSpanConverter), TimeSpanFormat.Seconds)]
     public new TimeSpan Duration {
         get => base.Duration!.Value;
         set => base.Duration = value;
     }
 
     /// <summary>
-    /// Returns a list of <see cref="TwentyThreeThumbnail"/> representing the video formats of the video.
+    /// Returns a list of <see cref="IVideoFile"/> representing the video formats of the video.
     /// </summary>
     [JsonProperty("files")]
-    public new IReadOnlyList<TwentyThreeVideoFile> Files {
+    public new IReadOnlyList<IVideoFile> Files {
         get => base.Files!;
         set => base.Files = value;
     }

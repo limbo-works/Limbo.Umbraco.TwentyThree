@@ -7,6 +7,7 @@ namespace Limbo.Umbraco.TwentyThree.Models;
 /// Enum class indicating what should happen when a video ends.
 /// </summary>
 [JsonConverter(typeof(EnumCamelCaseConverter))]
+[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
 public enum TwentyThreeEndOn {
 
     /// <summary>

@@ -1,19 +1,18 @@
 ﻿using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.Services;
 
 #pragma warning disable 1591
 
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
 /// <summary>
-/// Represents a block list property editor.
+/// Represents the server-side schema for the TwentyThree property editor. The editor UI lives client-side
+/// (see <c>wwwroot/umbraco-package.json</c>), so this only defines the alias, value type and configuration.
 /// </summary>
-[DataEditor(EditorAlias, EditorName, EditorView, ValueType = ValueTypes.Json, Group = "Limbo", Icon = EditorIcon)]
+[DataEditor(EditorAlias, ValueType = ValueTypes.Json)]
 public class TwentyThreeEditor : DataEditor {
 
     private readonly IIOHelper _ioHelper;
-    private readonly IEditorConfigurationParser _editorConfigurationParser;
 
     #region Constants
 
@@ -21,17 +20,12 @@ public class TwentyThreeEditor : DataEditor {
 
     public const string EditorName = "Limbo TwentyThree Video";
 
-    public const string EditorView = "/App_Plugins/Limbo.Umbraco.TwentyThree/Views/Video.html";
-
-    public const string EditorIcon = "icon-limbo-twentythree-alt color-limbo";
-
     #endregion
 
     #region Constructors
 
-    public TwentyThreeEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper, IEditorConfigurationParser editorConfigurationParser) : base(dataValueEditorFactory) {
+    public TwentyThreeEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper ioHelper) : base(dataValueEditorFactory) {
         _ioHelper = ioHelper;
-        _editorConfigurationParser = editorConfigurationParser;
     }
 
     #endregion
@@ -39,7 +33,7 @@ public class TwentyThreeEditor : DataEditor {
     #region Member methods
 
     protected override IConfigurationEditor CreateConfigurationEditor() {
-        return new TwentyThreeConfigurationEditor(_ioHelper, _editorConfigurationParser);
+        return new TwentyThreeConfigurationEditor(_ioHelper);
     }
 
     #endregion

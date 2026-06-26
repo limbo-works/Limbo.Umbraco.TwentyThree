@@ -1,6 +1,5 @@
 ﻿using Limbo.Umbraco.TwentyThree.Extensions;
 using Limbo.Umbraco.TwentyThree.Factories;
-using Limbo.Umbraco.TwentyThree.Manifests;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +19,6 @@ public class TwentyThreeComposer : IComposer {
         builder.Services.AddSingleton<TwentyThreeModelFactory>();
 
         builder.AddUmbracoOptions<TwentyThreeSettings>();
-
-        builder.ManifestFilters().Append<TwentyThreeManifestFilter>();
 
     }
 

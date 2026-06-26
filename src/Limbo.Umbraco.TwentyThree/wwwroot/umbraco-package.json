@@ -1,0 +1,27 @@
+{
+  "$schema": "../umbraco-package-schema.json",
+  "id": "Limbo.Umbraco.TwentyThree",
+  "name": "Limbo TwentyThree",
+  "version": "17.0.0",
+  "allowTelemetry": true,
+  "importmap": {
+    "imports": {
+      "@limbo/twentythree/auth": "/App_Plugins/Limbo.Umbraco.TwentyThree/Auth.js",
+      "@limbo/twentythree/service": "/App_Plugins/Limbo.Umbraco.TwentyThree/Service.js"
+    }
+  },
+  "extensions": [
+    {
+      "type": "backofficeEntryPoint",
+      "alias": "Limbo.Umbraco.TwentyThree.EntryPoint",
+      "name": "Limbo TwentyThree Entry Point",
+      "js": "/App_Plugins/Limbo.Umbraco.TwentyThree/EntryPoint.js"
+    },
+    {
+      "type": "bundle",
+      "alias": "Limbo.Umbraco.TwentyThree.Bundle",
+      "name": "Limbo TwentyThree Bundle",
+      "js": "/App_Plugins/Limbo.Umbraco.TwentyThree/BackOffice/TwentyThree/twentythree.bundle.js"
+    }
+  ]
+}

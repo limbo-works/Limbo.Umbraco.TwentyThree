@@ -6,6 +6,7 @@ using Skybrud.Essentials.Json.Newtonsoft.Converters.Enums;
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
 [JsonConverter(typeof(EnumCamelCaseConverter))]
+[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
 public enum TwentyThreeLoop {
 
     Inherit,
