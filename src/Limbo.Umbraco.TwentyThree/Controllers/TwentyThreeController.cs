@@ -96,7 +96,6 @@ public class TwentyThreeController : Controller {
     /// <param name="dataTypeKey">The key of the underlying data type, if any.</param>
     /// <returns>Information about the video matching <paramref name="source"/>.</returns>
     [HttpGet("video")]
-    [HttpGet("GetVideo")]
     public object GetVideo(string? source, Guid? dataTypeKey = null) {
 
         // Get the "source" parameter from either GET or POST
@@ -166,13 +165,11 @@ public class TwentyThreeController : Controller {
     /// </summary>
     /// <returns>A list of accounts.</returns>
     [HttpGet("accounts")]
-    [HttpGet("GetAccounts")]
     public object GetAccounts() {
-        return _options.Value.Credentials.Select(ToApiModel);
+        return Ok(_options.Value.Credentials.Select(ToApiModel));
     }
 
-    [HttpGet("accounts/{accountId}")]
-    [HttpGet("GetAccounts/{accountId}")]
+    [HttpGet("accounts/{accountId}/albums")]
     public object GetAlbums(Guid accountId) {
 
         TwentyThreeCredentials? credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
@@ -186,7 +183,7 @@ public class TwentyThreeController : Controller {
                 Size = 1000
             });
 
-            return new ApiAlbumList(response);
+            return Ok(new ApiAlbumList(response));
 
         } catch (TwentyThreeHttpException ex) when (ex.HasError) {
 
@@ -213,14 +210,15 @@ public class TwentyThreeController : Controller {
     /// <param name="page">The page to be returned.</param>
     /// <param name="albumId">The ID of the album the returned videos should match. Default is <see langword="null"/>.</param>
     /// <returns>A list of vídeos.</returns>
-    [HttpGet("GetVideos")]
     [HttpGet("accounts/{accountId}/videos")]
     public object GetVideos(Guid accountId, string? text = null, int limit = 0, int page = 1, string? albumId = null) {
 
-        var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
+        if (limit == 0) limit = 10;
+
+        TwentyThreeCredentials? credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
 
-        var http = _service.GetHttpService(credentials);
+        TwentyThreeHttpService http = _service.GetHttpService(credentials);
 
         TwentyThreePhotoList list;
 
@@ -251,7 +249,7 @@ public class TwentyThreeController : Controller {
 
         }
 
-        return new {
+        var result = new {
             page = list.Page,
             limit = list.Size,
             total = list.TotalCount,
@@ -259,6 +257,8 @@ public class TwentyThreeController : Controller {
             site = new ApiSite(list.Site),
             videos = list.Photos.Select(ToApiModel)
         };
+
+        return Ok(result);
 
     }
 
@@ -330,7 +330,7 @@ public class TwentyThreeController : Controller {
 
         }
 
-        return new {
+        var result = new {
             page = list.Page,
             limit = list.Size,
             total = list.TotalCount,
@@ -347,6 +347,8 @@ public class TwentyThreeController : Controller {
                 return ToApiModel(x, photo);
             })
         };
+
+        return Ok(result);
 
     }
 
@@ -388,13 +390,17 @@ public class TwentyThreeController : Controller {
         }
 
         // Return the players
-        return players.Select(ToApiModel);
+        return Ok(players.Select(ToApiModel));
 
     }
 
     #endregion
 
     #region Private methods
+
+    private static new NewtonsoftJsonResult Ok(object value) {
+        return NewtonsoftJsonResult.Ok(value);
+    }
 
     private string Localize(string alias, params string?[] args) {
 

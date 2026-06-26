@@ -104,6 +104,13 @@ function onPackageLoaded(extensionRegistry) {
         "js": "/App_Plugins/Limbo.Umbraco.TwentyThree/Icons.js?v=" + TwentyThreePackage.cacheBuster,
     });
 
+    extensionRegistry.register({
+        "type": "modal",
+        "alias": "Limbo.Umbraco.TwentyThree.AddVideoModal",
+        "name": "Add Video Modal",
+        "element": "/App_Plugins/Limbo.Umbraco.TwentyThree/Modals/AddVideo.js?v=" + TwentyThreePackage.cacheBuster,
+    });
+
 }
 
 export const onInit = (_host, extensionRegistry) => {

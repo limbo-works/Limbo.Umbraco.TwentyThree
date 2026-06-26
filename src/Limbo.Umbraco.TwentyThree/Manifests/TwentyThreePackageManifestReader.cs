@@ -32,7 +32,8 @@ public class TwentyThreePackageManifestReader : IPackageManifestReader {
                     Imports = new Dictionary<string, string> {
                         {"@limbo/twentythree/auth", $"/App_Plugins/{alias}/Auth.js?v={cacheBuster}"},
                         {"@limbo/twentythree/package", $"/App_Plugins/{alias}/Package.js?{cacheBuster}"},
-                        {"@limbo/twentythree/service", $"/App_Plugins/{alias}/Service.js?v={cacheBuster}"}
+                        {"@limbo/twentythree/service", $"/App_Plugins/{alias}/Service.js?v={cacheBuster}"},
+                        {"@limbo/twentythree/modals/add-video", $"/App_Plugins/{alias}/Modals/AddVideo.js?v={cacheBuster}"}
                     }
                 }
             }

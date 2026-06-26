@@ -7,6 +7,10 @@ import { TwentyThreeService } from "@limbo/twentythree/service";
 
 import "@limbo/video/elements/duration";
 
+import { LIMBO_TWENTYTHREE_ADD_VIDEO_MODAL } from "@limbo/twentythree/modals/add-video";
+import { UMB_MODAL_MANAGER_CONTEXT } from "@umbraco-cms/backoffice/modal";
+import { UMB_NOTIFICATION_CONTEXT } from '@umbraco-cms/backoffice/notification';
+
 const DEFAULT_CONFIG = {
     allowVideos: true,
     allowSpots: true,
@@ -147,7 +151,8 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
             showUploadLink: config.getValueByAlias("showUploadLink") !== false,
             autoplay: config.getValueByAlias("autoplay") ?? "inherit",
             loop: config.getValueByAlias("loop") ?? "inherit",
-            endOn: config.getValueByAlias("endOn") ?? "inherit"
+            endOn: config.getValueByAlias("endOn") ?? "inherit",
+            descriptionMaxLength: config.getValueByAlias("descriptionMaxLength") ?? 0
         };
         this.requestUpdate();
     }
@@ -160,6 +165,20 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
         const oldValue = this.#value;
         this.#value = value ?? null;
         this.requestUpdate("value", oldValue);
+    }
+
+    constructor() {
+
+        super();
+
+        this.consumeContext(UMB_MODAL_MANAGER_CONTEXT, (instance) => {
+            this._modalManagerContext = instance;
+        });
+
+        this.consumeContext(UMB_NOTIFICATION_CONTEXT, (instance) => {
+            this._notificationContext = instance;
+        });
+
     }
 
     firstUpdated() {
@@ -289,6 +308,20 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
         }
 
         this.#lookup(source);
+    }
+
+    #openAddVideo() {
+
+        const self = this;
+
+        const modal = this._modalManagerContext?.open(this, LIMBO_TWENTYTHREE_ADD_VIDEO_MODAL, { bacon: true, config: this.#config });
+
+        modal.onSubmit().then(function (video) {
+            self.#applyResponse(video, video.url);
+        }, function () {
+            // modal closed by the user
+        });
+
     }
 
     #renderStatus() {
@@ -422,6 +455,9 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
                         target="_blank"
                         rel="noopener noreferrer"></uui-button>
                     `)}
+
+                    <uui-button color="default" look="secondary" label="Add video" @click=${() => this.#openAddVideo()}></uui-button>
+
             </div>
         `;
     }
