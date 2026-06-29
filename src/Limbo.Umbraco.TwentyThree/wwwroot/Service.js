@@ -98,6 +98,17 @@ export class TwentyThreeService {
         return response.data;
     }
 
+    static async getSpots(account, query) {
+        if (!query) query = {};
+        const response = await get(`${baseUrl}/accounts/${account.id}/spots?${new URLSearchParams(query).toString()}`);
+        return response.data;
+    }
+
+    static async getPlayers(account) {
+        const response = await get(`${baseUrl}/accounts/${account.id}/players`);
+        return response.data;
+    }
+
     static getThumbnails(video) {
         return getThumbnails(video);
     }

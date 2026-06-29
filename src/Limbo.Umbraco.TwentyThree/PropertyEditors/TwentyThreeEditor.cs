@@ -32,3 +32,12 @@ public class TwentyThreeEditor : DataEditor {
     #endregion
 
 }
+
+//[DataEditor(EditorAlias, ValueType = ValueTypes.String)]
+//public class TwentyThreeButtonListPropertyEditor : DataEditor {
+
+//    public const string EditorAlias = "Limbo.Umbraco.TwentyThree.ButtonList";
+
+//    public TwentyThreeButtonListPropertyEditor(IDataValueEditorFactory dataValueEditorFactory) : base(dataValueEditorFactory) { }
+
+//}

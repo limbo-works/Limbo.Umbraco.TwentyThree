@@ -263,7 +263,6 @@ public class TwentyThreeController : Controller {
     }
 
 
-    [HttpGet("GetSpots")]
     [HttpGet("accounts/{accountId}/spots")]
     public object GetSpots(Guid accountId, string? text = null, int limit = 0, int page = 1) {
 
@@ -352,12 +351,11 @@ public class TwentyThreeController : Controller {
 
     }
 
-    [HttpGet("GetPlayers")]
-    [HttpGet("players")]
-    public object GetPlayers(Guid credentialsId) {
+    [HttpGet("accounts/{accountId}/players")]
+    public object GetPlayers(Guid accountId) {
 
         // Find the credentials
-        var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == credentialsId);
+        var credentials = _options.Value.Credentials.FirstOrDefault(x => x.Key == accountId);
         if (credentials == null) return NotFound("Account not found.");
 
         // Get a reference to the HTTP service

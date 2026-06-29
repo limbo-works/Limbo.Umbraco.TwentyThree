@@ -16,7 +16,8 @@ public class TwentyThreePackageManifestReader : IPackageManifestReader {
         string cacheBuster = TwentyThreePackage.InformationalVersion.ToMd5Hash();
 
         List<PackageManifest> temp = [
-            new PackageManifest {
+            new () {
+                Id = TwentyThreePackage.Alias,
                 Name = TwentyThreePackage.Name,
                 AllowTelemetry = true,
                 Version = TwentyThreePackage.InformationalVersion,
@@ -33,7 +34,11 @@ public class TwentyThreePackageManifestReader : IPackageManifestReader {
                         {"@limbo/twentythree/auth", $"/App_Plugins/{alias}/Auth.js?v={cacheBuster}"},
                         {"@limbo/twentythree/package", $"/App_Plugins/{alias}/Package.js?{cacheBuster}"},
                         {"@limbo/twentythree/service", $"/App_Plugins/{alias}/Service.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/modals/add-video", $"/App_Plugins/{alias}/Modals/AddVideo.js?v={cacheBuster}"}
+                        {"@limbo/twentythree/elements/pagination", $"/App_Plugins/{alias}/Elements/Pagination.js?v={cacheBuster}"},
+                        {"@limbo/twentythree/modals/tokens", $"/App_Plugins/{alias}/Modals/Tokens.js?v={cacheBuster}"},
+                        {"@limbo/twentythree/modals/select-video", $"/App_Plugins/{alias}/Modals/SelectVideo.js?v={cacheBuster}"},
+                        {"@limbo/twentythree/modals/select-spot", $"/App_Plugins/{alias}/Modals/SelectSpot.js?v={cacheBuster}"},
+                        {"@limbo/twentythree/modals/upload-video", $"/App_Plugins/{alias}/Modals/UploadVideo.js?v={cacheBuster}"}
                     }
                 }
             }

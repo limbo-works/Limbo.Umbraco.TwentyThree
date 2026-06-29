@@ -1,21 +1,16 @@
 ﻿import { html, css, when, repeat } from "@umbraco-cms/backoffice/external/lit";
-import { UmbModalToken } from "@umbraco-cms/backoffice/modal";
 import { UmbModalBaseElement } from "@umbraco-cms/backoffice/modal";
 
 import { TwentyThreeService } from "@limbo/twentythree/service";
 
-export const LIMBO_TWENTYTHREE_ADD_VIDEO_MODAL = new UmbModalToken("Limbo.Umbraco.TwentyThree.AddVideoModal", {
-    modal: {
-        type: "sidebar",
-        size: "normal"
-    },
-});
-
 const NO_ALBUM = { id: "", title: "Select category" };
 
-export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
+import "@limbo/twentythree/elements/pagination";
 
-    #searchTimer;
+export class LimboTwentyThreeSelectVideoModalElement extends UmbModalBaseElement {
+
+    #searchTimer = 0;
+    #pagination = null;
 
     get #config() {
         return this.data?.config ?? {};
@@ -24,8 +19,6 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
     constructor() {
 
         super();
-
-        this.#searchTimer = 0;
 
         this._loading = true;
         this._album = NO_ALBUM;
@@ -61,10 +54,15 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
         this.requestUpdate();
     }
 
+    #buildPagination(page, pages) {
+        const pagination = { page, pages, items: [] };
+        const from = Math.max(1, page - 7);
+        const to = Math.min(pages, page + 7);
+        for (let i = from; i <= to; i++) pagination.items.push({ page: i, active: page === i });
+        return pagination;
+    }
+
     async #loadVideos(page) {
-        console.log("config: ", this.#config.descriptionMaxLength);
-        console.log("config: ", this.#config);
-        console.log("config: ", this.data);
 
         if (!this.account) return;
 
@@ -82,7 +80,11 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
 
         if (this._album?.id) query.albumId = this._album.id;
 
-        this.videoList = await TwentyThreeService.getVideos(this.account, query);
+        const response = await TwentyThreeService.getVideos(this.account, query);
+
+        this.pagination = this.#buildPagination(response.page, response.pages);
+
+        this.videoList = response;
 
         this.videoList.videos = this.videoList.videos.map(function (x) {
 
@@ -106,6 +108,10 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
             };
 
             if (item.description === item.title) item.description = null;
+
+            if (self.#config.descriptionMaxLength && item.description?.length > self.#config.descriptionMaxLength) {
+                item.description = item.description.substring(0, self.#config.descriptionMaxLength - 3) + "...";
+            }
 
             return item;
 
@@ -146,7 +152,7 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
     }
 
     #onPageChange(event) {
-        this.page = event.target.current;
+        this.page = event.detail.page;
         this.#loadVideos();
     }
 
@@ -229,15 +235,8 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
                     ${when(this.account, () => this.#renderVideos())}
                 </div>
                 <div slot="footer-info">
-                    ${when(this.videoList?.pages > 2, () => html`
-                        <uui-pagination
-                            .total=${this.videoList.pages}
-                            .current=${this.videoList.page}
-                            firstLabel="${this.localize.term("general_first")}"
-                            previousLabel="${this.localize.term("general_previous")}"
-                            nextLabel="${this.localize.term("general_next")}"
-                            lastLabel="${this.localize.term("general_last")}"
-                            @change=${this.#onPageChange}></uui-pagination>
+                    ${when(this.pagination?.pages > 1, () => html`
+                        <limbo-twentythree-pagination .pagination=${this.pagination} @change=${this.#onPageChange}></limbo-twentythree-pagination>
                     `)}
                 </div>
                 <div slot="actions">
@@ -371,6 +370,6 @@ export class LimboTwentyThreeAddVideoModalElement extends UmbModalBaseElement {
 
 }
 
-customElements.define("limbo-twentythree-add-video", LimboTwentyThreeAddVideoModalElement);
+customElements.define("limbo-twentythree-select-video", LimboTwentyThreeSelectVideoModalElement);
 
-export default LimboTwentyThreeAddVideoModalElement;
+export default LimboTwentyThreeSelectVideoModalElement;
