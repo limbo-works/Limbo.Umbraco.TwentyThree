@@ -31,20 +31,24 @@
 <br /><br />
 ## Installation
 
-The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree/17.0.0). To install the package, you can use either .NET CLI:
+### Umbraco 17
+
+The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 17.0.0
+dotnet add package Limbo.Umbraco.TwentyThree --version 17.0.0-alpha001
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 17.0.0
+Install-Package Limbo.Umbraco.TwentyThree -Version 17.0.0-alpha001
 ```
 
-### Umbraco 10, 11 and 12
-For the Umbraco 10-12 version of this package, see the [**v2/main**](https://github.com/limbo-works/Limbo.Umbraco.TwentyThree/tree/v2/main) branch instead.
+### Other versions of Umbraco
+
+- [**`v13/main`**](https://github.com/limbo-works/Limbo.Umbraco.TwentyThree/tree/v13/main) Umbraco 13
+- ~~[**v2/main**](https://github.com/limbo-works/Limbo.Umbraco.TwentyThree/tree/v2/main) Umbraco 10, 11 and 12~~ branch instead.
 
 
 
