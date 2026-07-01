@@ -33,7 +33,7 @@ async function get(url) {
     return await hi(url);
 }
 
-const baseUrl = "/umbraco/limbo/twentythree";
+const baseUrl = "/umbraco/management/api/v1/limbo/twentythree";
 
 function getThumbnails(video) {
 

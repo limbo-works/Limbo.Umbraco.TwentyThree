@@ -1,4 +1,5 @@
-﻿using Limbo.Umbraco.TwentyThree.Extensions;
+﻿using Limbo.Umbraco.TwentyThree.Api;
+using Limbo.Umbraco.TwentyThree.Extensions;
 using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Manifests;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
@@ -23,6 +24,9 @@ public class TwentyThreeComposer : IComposer {
         builder.AddUmbracoOptions<TwentyThreeSettings>();
 
         builder.Services.AddSingleton<IPackageManifestReader, TwentyThreePackageManifestReader>();
+
+        builder.Services.ConfigureOptions<TwentyThreeSwaggerGenOptions>();
+
     }
 
 }

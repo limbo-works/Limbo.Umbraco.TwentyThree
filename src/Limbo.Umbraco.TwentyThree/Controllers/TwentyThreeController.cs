@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Asp.Versioning;
+using Limbo.Umbraco.TwentyThree.Api;
 using Limbo.Umbraco.TwentyThree.Exceptions;
 using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models.Api;
@@ -36,12 +37,14 @@ using Skybrud.Social.TwentyThree.Responses.Albums;
 using Skybrud.Social.TwentyThree.Responses.Photos;
 using Skybrud.Social.TwentyThree.Responses.Players;
 using Skybrud.Social.TwentyThree.Responses.Spots;
+using Umbraco.Cms.Api.Common.Attributes;
+using Umbraco.Cms.Api.Management.Controllers;
+using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Authorization;
-using Umbraco.Cms.Web.Common.Routing;
 using Umbraco.Extensions;
 using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbnail;
 
@@ -52,11 +55,12 @@ using TwentyThreeThumbnail = Limbo.Umbraco.TwentyThree.Models.TwentyThreeThumbna
 namespace Limbo.Umbraco.TwentyThree.Controllers;
 
 [ApiController]
-[BackOfficeRoute("limbo/twentythree")]
+[VersionedApiBackOfficeRoute(TwentyThreeApiConstants.Route)]
 [Authorize(Policy = AuthorizationPolicies.SectionAccessContent)]
+[MapToApi(TwentyThreeApiConstants.Alias)]
 [ApiVersion("1.0")]
-[ApiExplorerSettings(GroupName = "Limbo TwentyThree")]
-public class TwentyThreeController : Controller {
+[ApiExplorerSettings(GroupName = TwentyThreeApiConstants.GroupName)]
+public class TwentyThreeController : ManagementApiControllerBase {
 
     private readonly ILogger<TwentyThreeController> _logger;
     private readonly IOptions<GlobalSettings> _globalSettings;
