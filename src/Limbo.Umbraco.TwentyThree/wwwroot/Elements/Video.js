@@ -151,7 +151,16 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
         }
 
 
-        .card-row { display: flex; gap: var(--uui-size-space-4); align-items: flex-start; }
+        .card-row {
+            display: flex;
+            gap: var(--uui-size-space-4);
+            align-items: flex-start;
+            flex-wrap: wrap;
+            table {
+                min-width: 250px;
+            }
+        }
+
         .thumbnail { flex: 0 0 270px; max-width: 270px; aspect-ratio: 16 / 9; border-radius: var(--uui-border-radius); overflow: hidden; background: var(--uui-color-surface); }
         .thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -168,8 +177,12 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
 
 
         .embed { display: grid; gap: var(--uui-size-space-4); }
-        .property { display: grid; grid-template-columns: minmax(160px, 1fr) 2fr; gap: var(--uui-size-space-4); align-items: center; }
+
+        .property { display: flex; flex-wrap: wrap; gap: var(--uui-size-space-4); align-items: center; }
+        .property .label { width: 250px; }
         .property .label small { color: var(--uui-color-text-alt); }
+        .property .value { flex: 1; min-width: 350px; }
+
         .player { display: flex; gap: var(--uui-size-space-3); align-items: center; }
 
         .button-list { display: inline-flex; border: 1px solid var(--uui-color-border); border-radius: var(--uui-border-radius); overflow: hidden; }
