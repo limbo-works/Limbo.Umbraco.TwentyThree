@@ -261,7 +261,13 @@ class LimboTwentyThreeVideoElement extends UmbFormControlMixin(UmbLitElement, un
 
         const value = this.#currentValue();
 
-        if (value?.type === "video") {
+        if (!value) return;
+
+        if (!value.type && value.video) {
+            this.#video = JSON.parse(JSON.stringify(value));
+            this.#video.type = "video";
+            this.#video.video = parseJsonField(value.video);
+        } else if (value?.type === "video") {
             this.#video = JSON.parse(JSON.stringify(value));
             this.#video.video = parseJsonField(value.video);
         } else if (value?.type === "spot") {
