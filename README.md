@@ -36,13 +36,13 @@
 The package is only available via [**NuGet**](https://www.nuget.org/packages/Limbo.Umbraco.TwentyThree). To install the package, you can use either .NET CLI:
 
 ```
-dotnet add package Limbo.Umbraco.TwentyThree --version 17.0.0-alpha001
+dotnet add package Limbo.Umbraco.TwentyThree --version 17.0.0-alpha003
 ```
 
 or the NuGet Package Manager:
 
 ```
-Install-Package Limbo.Umbraco.TwentyThree -Version 17.0.0-alpha001
+Install-Package Limbo.Umbraco.TwentyThree -Version 17.0.0-alpha003
 ```
 
 ### Other versions of Umbraco
