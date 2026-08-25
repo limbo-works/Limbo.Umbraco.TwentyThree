@@ -65,4 +65,10 @@
     <NuGetAuditMode>direct</NuGetAuditMode>
   </PropertyGroup>
 
+  <!-- Include custom appsettings schema -->
+  <ItemGroup>
+    <None Include="appsettings-schema.Limbo.Umbraco.TwentyThree.json" Pack="true" PackagePath="" />
+    <None Include="buildTransitive\Limbo.Umbraco.TwentyThree.targets" Pack="true" PackagePath="buildTransitive\" />
+  </ItemGroup>
+
 </Project>
