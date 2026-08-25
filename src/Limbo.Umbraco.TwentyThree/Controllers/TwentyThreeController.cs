@@ -9,7 +9,6 @@ using Limbo.Umbraco.TwentyThree.Exceptions;
 using Limbo.Umbraco.TwentyThree.Factories;
 using Limbo.Umbraco.TwentyThree.Models.Api;
 using Limbo.Umbraco.TwentyThree.Models.Api.Albums;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Limbo.Umbraco.TwentyThree.PropertyEditors;

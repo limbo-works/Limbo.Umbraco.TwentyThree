@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Limbo.Umbraco.TwentyThree.Exceptions;
 using Limbo.Umbraco.TwentyThree.Models;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Limbo.Umbraco.TwentyThree.Models.Intermediary;
 using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;

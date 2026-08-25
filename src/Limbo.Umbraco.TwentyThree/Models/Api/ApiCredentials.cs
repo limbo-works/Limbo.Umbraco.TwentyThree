@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
+using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Newtonsoft.Json;
 using Skybrud.Essentials.Strings;
 using Skybrud.Essentials.Strings.Extensions;

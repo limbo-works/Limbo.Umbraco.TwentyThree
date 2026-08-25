@@ -1,6 +1,6 @@
 ﻿using Limbo.Umbraco.TwentyThree.Json.Converters;
 using Limbo.Umbraco.TwentyThree.Models.Api;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
+using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

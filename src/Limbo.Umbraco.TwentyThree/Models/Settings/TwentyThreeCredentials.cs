@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Limbo.Umbraco.Video.Models.Credentials;
 
-namespace Limbo.Umbraco.TwentyThree.Models.Credentials;
+namespace Limbo.Umbraco.TwentyThree.Models.Settings;
 
 /// <summary>
 /// Class with information about the credentials used for accessing the TwentyThree API.
@@ -12,22 +12,22 @@ public class TwentyThreeCredentials : ICredentials {
     /// <summary>
     /// Gets the key of the credentials.
     /// </summary>
-    public Guid Key { get; internal set; }
+    public required Guid Key { get; set; }
 
     /// <summary>
     /// Gets the key (alias) of the associated TwentyThree site.
     /// </summary>
-    public string? SiteKey { get; internal set; }
+    public string? SiteKey { get; set; }
 
     /// <summary>
     /// Gets the friendly name of the credentials.
     /// </summary>
-    public string Name { get; internal set; } = null!;
+    public required string Name { get; set; }
 
     /// <summary>
     /// Gets the description of the credentials.
     /// </summary>
-    public string? Description { get; internal set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Gets the icon of the credentials.
@@ -37,32 +37,32 @@ public class TwentyThreeCredentials : ICredentials {
     /// <summary>
     /// If configured, gets the domains of the associated TwentyThree site.
     /// </summary>
-    public IReadOnlyList<string> Domains { get; internal set; } = null!;
+    public List<string> Domains { get; internal set; } = [];
 
     /// <summary>
     /// If configured, gets the TwentyThree consumer key.
     /// </summary>
-    public string? ConsumerKey { get; internal set; }
+    public required string ConsumerKey { get; set; }
 
     /// <summary>
     /// If configured, gets the TwentyThree consumer secret.
     /// </summary>
-    public string? ConsumerSecret { get; internal set; }
+    public required string ConsumerSecret { get; set; }
 
     /// <summary>
     /// If configured, gets the TwentyThree access token.
     /// </summary>
-    public string? AccessToken { get; internal set; }
+    public required string? AccessToken { get; set; }
 
     /// <summary>
     /// If configured, gets the TwentyThree access token secret.
     /// </summary>
-    public string? AccessTokenSecret { get; internal set; }
+    public required string? AccessTokenSecret { get; set; }
 
     /// <summary>
     /// If configured, gets the URL of the upload page.
     /// </summary>
-    public string? UploadUrl { get; internal set; }
+    public string? UploadUrl { get; set; }
 
     /// <summary>
     /// Initializes a new instance with default options.

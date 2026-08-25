@@ -1,5 +1,5 @@
 ﻿using Limbo.Umbraco.TwentyThree.Models.Api;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
+using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Newtonsoft.Json;
 using Skybrud.Social.TwentyThree.Models.Sites;
 

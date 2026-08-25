@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
 using Umbraco.Cms.Core.Configuration.Models;
 
 namespace Limbo.Umbraco.TwentyThree.Models.Settings;
@@ -13,6 +12,6 @@ public class TwentyThreeSettings {
     /// <summary>
     /// Gets a collection of the credentials configured for the TwentyThree API.
     /// </summary>
-    public List<TwentyThreeCredentials> Credentials { get; internal set; } = new();
+    public List<TwentyThreeCredentials> Credentials { get; set; } = [];
 
 }

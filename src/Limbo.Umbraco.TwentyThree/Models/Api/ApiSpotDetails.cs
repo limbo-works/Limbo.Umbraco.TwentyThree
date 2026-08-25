@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Limbo.Umbraco.TwentyThree.Models.Credentials;
+using Limbo.Umbraco.TwentyThree.Models.Settings;
 using Limbo.Umbraco.TwentyThree.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
