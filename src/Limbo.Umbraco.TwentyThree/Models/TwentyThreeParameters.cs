@@ -5,7 +5,7 @@ using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 namespace Limbo.Umbraco.TwentyThree.Models;
 
 /// <summary>
-/// Class representing the parameters parsed from the source field of the <see cref="TwentyThreeEditor"/> property editor.
+/// Class representing the parameters parsed from the source field of the <see cref="TwentyThreeVideoPropertyEditor"/> property editor.
 /// </summary>
 public class TwentyThreeParameters {
 

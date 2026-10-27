@@ -6,7 +6,7 @@ using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 namespace Limbo.Umbraco.TwentyThree.Models;
 
 /// <summary>
-/// Class representing the value returned by the <see cref="TwentyThreeEditor"/> property editor.
+/// Class representing the value returned by the <see cref="TwentyThreeVideoPropertyEditor"/> property editor.
 /// </summary>
 public class TwentyThreeSpotValue : TwentyThreeValue {
 

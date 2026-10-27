@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Skybrud.Essentials.Security.Extensions;
 using Umbraco.Cms.Core.Manifest;
 using Umbraco.Cms.Infrastructure.Manifest;
+
+using static Limbo.Umbraco.TwentyThree.TwentyThreePackage;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
@@ -12,33 +13,30 @@ public class TwentyThreePackageManifestReader : IPackageManifestReader {
 
     public async Task<IEnumerable<PackageManifest>> ReadPackageManifestsAsync() {
 
-        const string alias = TwentyThreePackage.Alias;
-        string cacheBuster = TwentyThreePackage.InformationalVersion.ToMd5Hash();
-
         List<PackageManifest> temp = [
             new () {
-                Id = TwentyThreePackage.Alias,
-                Name = TwentyThreePackage.Name,
+                Id = Alias,
+                Name = Name,
                 AllowTelemetry = true,
-                Version = TwentyThreePackage.InformationalVersion,
+                Version = InformationalVersion,
                 Extensions = [
                     new {
-                        name = $"{alias}.EntryPoint",
-                        alias = $"{alias}.EntryPoint",
+                        name = $"{Alias}.EntryPoint",
+                        alias = $"{Alias}.EntryPoint",
                         type = "backofficeEntryPoint",
-                        js = $"/App_Plugins/{alias}/EntryPoint.js?v={cacheBuster}"
+                        js = $"/App_Plugins/{Alias}/EntryPoint.js"
                     }
                 ],
                 Importmap = new PackageManifestImportmap {
                     Imports = new Dictionary<string, string> {
-                        {"@limbo/twentythree/auth", $"/App_Plugins/{alias}/Auth.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/package", $"/App_Plugins/{alias}/Package.js?{cacheBuster}"},
-                        {"@limbo/twentythree/service", $"/App_Plugins/{alias}/Service.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/elements/pagination", $"/App_Plugins/{alias}/Elements/Pagination.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/modals/tokens", $"/App_Plugins/{alias}/Modals/Tokens.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/modals/select-video", $"/App_Plugins/{alias}/Modals/SelectVideo.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/modals/select-spot", $"/App_Plugins/{alias}/Modals/SelectSpot.js?v={cacheBuster}"},
-                        {"@limbo/twentythree/modals/upload-video", $"/App_Plugins/{alias}/Modals/UploadVideo.js?v={cacheBuster}"}
+                        {"@limbo/twentythree/auth", $"/App_Plugins/{Alias}/Auth.js"},
+                        {"@limbo/twentythree/package", $"/App_Plugins/{Alias}/Package.js"},
+                        {"@limbo/twentythree/service", $"/App_Plugins/{Alias}/Service.js"},
+                        {"@limbo/twentythree/elements/pagination", $"/App_Plugins/{Alias}/Elements/Pagination.js"},
+                        {"@limbo/twentythree/modals/tokens", $"/App_Plugins/{Alias}/Modals/Tokens.js"},
+                        {"@limbo/twentythree/modals/select-video", $"/App_Plugins/{Alias}/Modals/SelectVideo.js"},
+                        {"@limbo/twentythree/modals/select-spot", $"/App_Plugins/{Alias}/Modals/SelectSpot.js"},
+                        {"@limbo/twentythree/modals/upload-video", $"/App_Plugins/{Alias}/Modals/UploadVideo.js"}
                     }
                 }
             }

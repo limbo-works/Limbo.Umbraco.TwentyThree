@@ -7,7 +7,7 @@ using Skybrud.Essentials.Json.Extensions;
 namespace Limbo.Umbraco.TwentyThree.Models;
 
 /// <summary>
-/// Class representing the value returned by the <see cref="TwentyThreeEditor"/> property editor.
+/// Class representing the value returned by the <see cref="TwentyThreeVideoPropertyEditor"/> property editor.
 /// </summary>
 public class TwentyThreeVideoValue : TwentyThreeValue {
 
@@ -59,7 +59,7 @@ public class TwentyThreeVideoValue : TwentyThreeValue {
     /// <param name="config">The configuration of the TwentyThree data type.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoValue"/>.</returns>
     [Obsolete("Use the 'TwentyThreeModelFactory.CreateVideoValue' method instead.")]
-    public static TwentyThreeVideoValue Create(JObject json, TwentyThreeConfiguration? config) {
+    public static TwentyThreeVideoValue Create(JObject json, TwentyThreeVideoConfiguration? config) {
         var parameters = json.GetObject("parameters", x => new TwentyThreeParameters(x))!;
         var details = json.GetObject("video", x => new TwentyThreeVideoDetails(x))!;
         var embed = json.GetObject("embed", x => new TwentyThreeVideoEmbed(x, details, parameters, config))!;

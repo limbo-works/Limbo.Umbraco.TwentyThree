@@ -4,7 +4,7 @@ using Limbo.Umbraco.TwentyThree.PropertyEditors;
 namespace Limbo.Umbraco.TwentyThree.Exceptions;
 
 /// <summary>
-/// Class representing exceptions related to the configuration of the <see cref="TwentyThreeEditor"/> data type.
+/// Class representing exceptions related to the configuration of the <see cref="TwentyThreeVideoPropertyEditor"/> data type.
 /// </summary>
 public class TwentyThreeConfigException : TwentyThreeUserException {
 
@@ -13,7 +13,7 @@ public class TwentyThreeConfigException : TwentyThreeUserException {
     /// <summary>
     /// Gets a reference to the configuration.
     /// </summary>
-    public TwentyThreeConfiguration Config { get; }
+    public TwentyThreeVideoConfiguration Config { get; }
 
     #endregion
 
@@ -26,7 +26,7 @@ public class TwentyThreeConfigException : TwentyThreeUserException {
     /// <param name="message">The developer-focused error message.</param>
     /// <param name="userMessageKey">The key of the user-focused error message.</param>
     [SetsRequiredMembers]
-    public TwentyThreeConfigException(TwentyThreeConfiguration config, string message, string userMessageKey) : base(message, userMessageKey) {
+    public TwentyThreeConfigException(TwentyThreeVideoConfiguration config, string message, string userMessageKey) : base(message, userMessageKey) {
         Config = config;
     }
 
@@ -39,7 +39,7 @@ public class TwentyThreeConfigException : TwentyThreeUserException {
     /// </summary>
     /// <param name="config">The configuration.</param>
     /// <returns>An instance of <see cref="TwentyThreeConfigException"/>.</returns>
-    public static TwentyThreeConfigException VideosNotAllowed(TwentyThreeConfiguration config) {
+    public static TwentyThreeConfigException VideosNotAllowed(TwentyThreeVideoConfiguration config) {
         return new TwentyThreeConfigException(config, "Videos not allowed.", "videosNotAllowed");
     }
 
@@ -48,7 +48,7 @@ public class TwentyThreeConfigException : TwentyThreeUserException {
     /// </summary>
     /// <param name="config">The configuration.</param>
     /// <returns>An instance of <see cref="TwentyThreeConfigException"/>.</returns>
-    public static TwentyThreeConfigException SpotsNotAllowed(TwentyThreeConfiguration config) {
+    public static TwentyThreeConfigException SpotsNotAllowed(TwentyThreeVideoConfiguration config) {
         return new TwentyThreeConfigException(config, "Spots not allowed.", "spotsNotAllowed");
     }
 

@@ -23,9 +23,9 @@ public class TwentyThreeModelFactory {
     /// Creates a new instance of <see cref="TwentyThreeVideoValue"/> based on the specified <paramref name="json"/> object.
     /// </summary>
     /// <param name="json">The JSON object representing the video value.</param>
-    /// <param name="config">An instance of <see cref="TwentyThreeConfiguration"/> representing the data type configuration.</param>
+    /// <param name="config">An instance of <see cref="TwentyThreeVideoConfiguration"/> representing the data type configuration.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoValue"/> representing the video value.</returns>
-    public virtual TwentyThreeVideoValue CreateVideoValue(JObject json, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeVideoValue CreateVideoValue(JObject json, TwentyThreeVideoConfiguration? config) {
 
         var parameters = json.GetRequiredObject("parameters", x => new TwentyThreeParameters(x));
         var details = json.GetRequiredObject("video", CreateVideoDetails);
@@ -70,9 +70,9 @@ public class TwentyThreeModelFactory {
     /// <param name="details">The video details.</param>
     /// <param name="player"></param>
     /// <param name="parameters">The video parameters.</param>
-    /// <param name="config">The configuration of the <see cref="TwentyThreeEditor"/> data type.</param>
+    /// <param name="config">The configuration of the <see cref="TwentyThreeVideoPropertyEditor"/> data type.</param>
     /// <returns>An instance of <see cref="TwentyThreeVideoEmbed"/> representing the video embed information.</returns>
-    public virtual TwentyThreeVideoEmbed CreateVideoEmbed(JObject json, TwentyThreeVideoDetails details, TwentyThreeVideoPlayer player, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeVideoEmbed CreateVideoEmbed(JObject json, TwentyThreeVideoDetails details, TwentyThreeVideoPlayer player, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         string token = details.Data.Token;
         string? playerId = player.IsDefault ? null : player.Id;
@@ -125,7 +125,7 @@ public class TwentyThreeModelFactory {
 
     }
 
-    protected virtual bool? ParseAutoplay(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    protected virtual bool? ParseAutoplay(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         if (config != null && config.Autoplay != TwentyThreeAutoplay.Inherit) {
             return config.Autoplay == TwentyThreeAutoplay.Enabled;
@@ -140,7 +140,7 @@ public class TwentyThreeModelFactory {
 
     }
 
-    protected virtual bool? ParseLoop(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    protected virtual bool? ParseLoop(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         if (config != null && config.Loop != TwentyThreeLoop.Inherit) {
             return config.Loop == TwentyThreeLoop.Enabled;
@@ -155,7 +155,7 @@ public class TwentyThreeModelFactory {
 
     }
 
-    protected virtual TwentyThreeEndOn? ParseEndOn(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    protected virtual TwentyThreeEndOn? ParseEndOn(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         if (config != null && config.EndOn != TwentyThreeEndOn.Inherit) {
             return config.EndOn;

@@ -56,9 +56,9 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
     /// <param name="json">The JSON object representing the embed information.</param>
     /// <param name="video">The video.</param>
     /// <param name="parameters">The video parameters.</param>
-    /// <param name="config">The configuration of the <see cref="TwentyThreeEditor"/> data type.</param>
+    /// <param name="config">The configuration of the <see cref="TwentyThreeVideoPropertyEditor"/> data type.</param>
     [Obsolete("Use the 'TwentyThreeModelFactory.CreateVideoEmbed' method instead.")]
-    public TwentyThreeVideoEmbed(JObject json, TwentyThreeVideoDetails video, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    public TwentyThreeVideoEmbed(JObject json, TwentyThreeVideoDetails video, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         Token = video.Data.Token;
         PlayerId = parameters.PlayerId;
@@ -100,7 +100,7 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
 
     #region Static methods
 
-    private static bool? ParseAutoplay(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    private static bool? ParseAutoplay(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         if (config != null && config.Autoplay != TwentyThreeAutoplay.Inherit) {
             return config.Autoplay == TwentyThreeAutoplay.Enabled;
@@ -115,7 +115,7 @@ public class TwentyThreeVideoEmbed : TwentyThreeEmbed {
 
     }
 
-    private static TwentyThreeEndOn? ParseEndOn(JObject json, TwentyThreeParameters parameters, TwentyThreeConfiguration? config) {
+    private static TwentyThreeEndOn? ParseEndOn(JObject json, TwentyThreeParameters parameters, TwentyThreeVideoConfiguration? config) {
 
         if (config != null && config.EndOn != TwentyThreeEndOn.Inherit) {
             return config.EndOn;

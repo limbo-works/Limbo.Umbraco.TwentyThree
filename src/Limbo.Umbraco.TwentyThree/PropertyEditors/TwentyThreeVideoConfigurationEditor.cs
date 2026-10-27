@@ -6,9 +6,9 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
-public class TwentyThreeConfigurationEditor : ConfigurationEditor<TwentyThreeConfiguration> {
+public class TwentyThreeVideoConfigurationEditor : ConfigurationEditor<TwentyThreeVideoConfiguration> {
 
-    public TwentyThreeConfigurationEditor(IIOHelper ioHelper) : base(ioHelper) {
+    public TwentyThreeVideoConfigurationEditor(IIOHelper ioHelper) : base(ioHelper) {
 
     }
 

@@ -11,13 +11,13 @@ using Umbraco.Extensions;
 
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
-public class TwentyThreeValueConverter : PropertyValueConverterBase {
+public class TwentyThreeVideoValueConverter : PropertyValueConverterBase {
 
     private readonly TwentyThreeModelFactory _modelFactory;
 
     #region Constructors
 
-    public TwentyThreeValueConverter(TwentyThreeModelFactory modelFactory) {
+    public TwentyThreeVideoValueConverter(TwentyThreeModelFactory modelFactory) {
         _modelFactory = modelFactory;
     }
 
@@ -26,7 +26,7 @@ public class TwentyThreeValueConverter : PropertyValueConverterBase {
     #region Member methods
 
     public override bool IsConverter(IPublishedPropertyType propertyType) {
-        return propertyType.EditorAlias == TwentyThreeEditor.EditorAlias;
+        return propertyType.EditorAlias == TwentyThreeVideoPropertyEditor.EditorAlias;
     }
 
     public override object? ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object? source, bool preview) {
@@ -35,7 +35,7 @@ public class TwentyThreeValueConverter : PropertyValueConverterBase {
 
     public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview) {
 
-        var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
+        var config = propertyType.DataType.ConfigurationAs<TwentyThreeVideoConfiguration>();
 
         if (inter is not JObject json) return null;
 
@@ -48,7 +48,7 @@ public class TwentyThreeValueConverter : PropertyValueConverterBase {
 
     public override Type GetPropertyValueType(IPublishedPropertyType propertyType) {
 
-        var config = propertyType.DataType.ConfigurationAs<TwentyThreeConfiguration>();
+        var config = propertyType.DataType.ConfigurationAs<TwentyThreeVideoConfiguration>();
 
         return config switch {
             { AllowVideos: true, AllowSpots: false } => typeof(TwentyThreeVideoValue),

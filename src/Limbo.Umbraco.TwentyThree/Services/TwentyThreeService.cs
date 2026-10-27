@@ -245,7 +245,7 @@ public class TwentyThreeService {
     /// <param name="source">The source (URL or embed code) as entered by the user.</param>
     /// <param name="config">An optional data type configuration. Used for additional validation if specified.</param>
     /// <returns>An instance of <see cref="TwentyThreeIntermediaryValue"/> if successful; otherwise, <see langword="null"/>.</returns>
-    public virtual TwentyThreeIntermediaryValue GetIntermediaryValue(string source, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeIntermediaryValue GetIntermediaryValue(string source, TwentyThreeVideoConfiguration? config) {
 
         ITwentyThreeOptions options = GetOptionsFromSource(source);
 
@@ -273,7 +273,7 @@ public class TwentyThreeService {
     /// <param name="options">The options identifying the video.</param>
     /// <param name="config">An optional data type configuration. Used for additional validation if specified.</param>
     /// <returns>Returns an instance of <see cref="TwentyThreeIntermediaryVideoValue"/>.</returns>
-    protected virtual TwentyThreeIntermediaryVideoValue GetIntermediaryVideoValue(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
+    protected virtual TwentyThreeIntermediaryVideoValue GetIntermediaryVideoValue(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeVideoConfiguration? config) {
 
         if (config is { AllowVideos: false }) throw TwentyThreeConfigException.VideosNotAllowed(config);
 
@@ -349,7 +349,7 @@ public class TwentyThreeService {
     /// <param name="options">The options identifying the spot.</param>
     /// <param name="config">An optional data type configuration. Used for additional validation if specified.</param>
     /// <returns>Returns an instance of <see cref="TwentyThreeIntermediarySpotValue"/>.</returns>
-    public virtual TwentyThreeIntermediarySpotValue GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeConfiguration? config) {
+    public virtual TwentyThreeIntermediarySpotValue GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeVideoConfiguration? config) {
 
         if (config is { AllowSpots: false }) throw TwentyThreeConfigException.SpotsNotAllowed(config);
 

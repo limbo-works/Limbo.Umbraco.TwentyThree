@@ -5,9 +5,9 @@ using Umbraco.Cms.Core.PropertyEditors;
 namespace Limbo.Umbraco.TwentyThree.PropertyEditors;
 
 /// <summary>
-/// Class representing the configuration for the <see cref="TwentyThreeEditor"/>.
+/// Class representing the configuration for the <see cref="TwentyThreeVideoPropertyEditor"/>.
 /// </summary>
-public class TwentyThreeConfiguration {
+public class TwentyThreeVideoConfiguration {
 
     /// <summary>
     /// Gets or sets whether embedded videos should automatically start playing.

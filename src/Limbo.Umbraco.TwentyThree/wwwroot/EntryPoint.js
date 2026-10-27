@@ -4,8 +4,15 @@ import { TwentyThreeAuth } from "@limbo/twentythree/auth";
 import { TwentyThreePackage } from "@limbo/twentythree/package";
 import { TwentyThreeService } from "@limbo/twentythree/service";
 
+const ALIAS = "Limbo.Umbraco.TwentyThree";
 
-const BUTTON_LIST = "Limbo.Umbraco.TwentyThree.ButtonList.PropertyEditorUi";
+const NAME = "Limbo TwentyThree";
+
+const VIDEO_SCHEMA = "Limbo.Umbraco.TwentyThree.Video";
+
+const VIDEO_UI = "Limbo.Umbraco.TwentyThree.PropertyEditorUi.Video";
+
+const BUTTON_LIST = "Limbo.Umbraco.TwentyThree.PropertyEditorUi.ButtonList";
 
 const ON_OFF_INHERIT = [
     { alias: "inherit", label: "Inherit" },
@@ -26,7 +33,7 @@ function onPackageLoaded(extensionRegistry) {
     extensionRegistry.register({
         "type": "localization",
         "alias": "Limbo.Umbraco.TwentyThree.EnUs",
-        "name": "English",
+        "name": `${NAME}: English (en-US)`,
         "js": () => import("./Localization/en-US.js?v=" + TwentyThreePackage.cacheBuster),
         "meta": {
             "culture": "en"
@@ -36,7 +43,7 @@ function onPackageLoaded(extensionRegistry) {
     extensionRegistry.register({
         "type": "localization",
         "alias": "Limbo.Umbraco.TwentyThree.DaDk",
-        "name": "Danish",
+        "name": `${NAME}: Danish (da-DK)`,
         "js": () => import("./Localization/da-DK.js?v=" + TwentyThreePackage.cacheBuster),
         "meta": {
             "culture": "da"
@@ -45,13 +52,13 @@ function onPackageLoaded(extensionRegistry) {
 
     extensionRegistry.register({
         type: "propertyEditorSchema",
-        alias: "Limbo.Umbraco.TwentyThree.Video",
-        name: "TwentyThree Video",
+        alias: VIDEO_SCHEMA,
+        name: `${NAME}: Video Property Editor Schema`,
         meta: {
-            label: "TwentyThree Video",
-            icon: "limbo-twentythree",
+            label: "Limbo TwentyThree Video",
+            icon: "limbo-twentythree-alt",
             group: "Limbo",
-            defaultPropertyEditorUiAlias: "Limbo.Umbraco.TwentyThree.Video.Ui",
+            defaultPropertyEditorUiAlias: VIDEO_UI,
             settings: {
                 properties: [
                     {
@@ -139,26 +146,26 @@ function onPackageLoaded(extensionRegistry) {
     extensionRegistry.register({
         type: "propertyEditorUi",
         alias: BUTTON_LIST,
-        name: "Limbo TwentyThree Button List",
+        name: `${NAME}: Button List Property Editor UI`,
         js: () => import("./Elements/ButtonList.js?v=" + TwentyThreePackage.cacheBuster),
         elementName: "limbo-twentythree-button-list",
         meta: {
-            label: "TwentyThree Button List",
+            label: "Limbo TwentyThree Button List",
             icon: "icon-list",
-            group: "common"
+            group: "Limbo"
         }
     });
 
     extensionRegistry.register({
         type: "propertyEditorUi",
-        alias: "Limbo.Umbraco.TwentyThree.Video.Ui",
-        name: "TwentyThree Video Property Editor UI",
+        alias: VIDEO_UI,
+        name: `${NAME}: Video Property Editor UI`,
         js: () => import("./Elements/Video.js?v=" + TwentyThreePackage.cacheBuster),
         elementName: "limbo-twentythree-video",
         meta: {
-            label: "TwentyThree Video",
-            propertyEditorSchemaAlias: "Limbo.Umbraco.TwentyThree.Video",
-            icon: "limbo-twentythree",
+            label: "Limbo TwentyThree Video",
+            propertyEditorSchemaAlias: VIDEO_SCHEMA,
+            icon: "limbo-twentythree-alt",
             group: "Limbo",
             supportsReadOnly: true
         }
@@ -167,35 +174,35 @@ function onPackageLoaded(extensionRegistry) {
     extensionRegistry.register({
         "type": "icons",
         "alias": "Limbo.Umbraco.TwentyThree.Icons",
-        "name": "Limbo TwentyThree Icons",
+        "name": `${NAME}: Icons`,
         "js": "/App_Plugins/Limbo.Umbraco.TwentyThree/Icons.js?v=" + TwentyThreePackage.cacheBuster,
     });
 
     extensionRegistry.register({
         "type": "modal",
         "alias": "Limbo.Umbraco.TwentyThree.SelectVideoModal",
-        "name": "Select Video Modal",
+        "name": `${NAME}: Select Video Modal`,
         "element": "/App_Plugins/Limbo.Umbraco.TwentyThree/Modals/SelectVideo.js?v=" + TwentyThreePackage.cacheBuster,
     });
 
     extensionRegistry.register({
         "type": "modal",
         "alias": "Limbo.Umbraco.TwentyThree.SelectSpotModal",
-        "name": "Select Spot Modal",
+        "name": `${NAME}: Select Spot Modal`,
         "element": "/App_Plugins/Limbo.Umbraco.TwentyThree/Modals/SelectSpot.js?v=" + TwentyThreePackage.cacheBuster,
     });
 
     extensionRegistry.register({
         "type": "modal",
         "alias": "Limbo.Umbraco.TwentyThree.SelectPlayerModal",
-        "name": "Select Player Modal",
+        "name": `${NAME}: Select Player Modal`,
         "element": "/App_Plugins/Limbo.Umbraco.TwentyThree/Modals/SelectPlayer.js?v=" + TwentyThreePackage.cacheBuster,
     });
 
     extensionRegistry.register({
         "type": "modal",
         "alias": "Limbo.Umbraco.TwentyThree.UploadVideoModal",
-        "name": "Upload Video Modal",
+        "name": `${NAME}: Upload Video Modal`,
         "element": "/App_Plugins/Limbo.Umbraco.TwentyThree/Modals/UploadVideo.js?v=" + TwentyThreePackage.cacheBuster,
     });
 

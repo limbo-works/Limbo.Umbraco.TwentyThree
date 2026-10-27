@@ -127,7 +127,7 @@ public class TwentyThreeController : ManagementApiControllerBase {
 
             // Get a reference to the data type (if specified)
             IDataType? dataType = dataTypeKey == null ? null : _dataTypeService.GetAsync(dataTypeKey.Value).GetAwaiter().GetResult();
-            TwentyThreeConfiguration? config = dataType?.ConfigurationAs<TwentyThreeConfiguration>();
+            TwentyThreeVideoConfiguration? config = dataType?.ConfigurationAs<TwentyThreeVideoConfiguration>();
 
             // Handle the different options types
             return options switch {
@@ -435,7 +435,7 @@ public class TwentyThreeController : ManagementApiControllerBase {
         return InternalServerError(message);
     }
 
-    private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeConfiguration? config) {
+    private object GetVideo(TwentyThreeCredentials credentials, TwentyThreeVideoOptions options, TwentyThreeVideoConfiguration? config) {
 
         if (config is { AllowVideos: false }) return BadRequest("Videos are not allowed.");
 
@@ -502,7 +502,7 @@ public class TwentyThreeController : ManagementApiControllerBase {
 
     }
 
-    private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeConfiguration? config) {
+    private object GetSpot(TwentyThreeCredentials credentials, TwentyThreeSpotOptions options, TwentyThreeVideoConfiguration? config) {
 
         if (config is { AllowSpots: false }) return BadRequest("Spots are not allowed.");
 
